@@ -1,0 +1,50 @@
+server:
+  forward-headers-strategy: framework
+  port: ${MYBURGUER_SERVER_PORT:8080}
+
+spring:
+  application.name: myburguercontrol
+  config:
+    import: optional:file:.env[.properties]
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+    properties:
+      hibernate.jdbc.batch_size: 20
+      hibernate.cache.use_query_cache: false
+      hibernate.cache.use_second_level_cache: false
+      hibernate.cache.use_structured_entries: false
+      hibernate.cache.use_minimal_puts: false
+  datasource:
+    url: jdbc:${DATABASE_URL}
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
+    driverClassName: org.postgresql.Driver
+    maxActive: 10
+    maxIdle: 5
+    minIdle: 2
+    initialSize: 5
+    removeAbandoned: true
+  liquibase:
+    change-log: classpath:/db/changelog/master.xml
+    enabled: true
+
+springdoc:
+  version: '@springdoc.version@'
+  swagger-ui:
+    use-root-path: true
+
+logging:
+  level:
+    org:
+      springframework:
+        web: ${LOG_LEVEL:DEBUG}
+    io:
+      github:
+        soat7:
+          myburguercontrol: ${LOG_LEVEL:DEBUG}

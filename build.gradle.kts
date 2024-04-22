@@ -83,9 +83,9 @@ dependencies {
 
     // Liquibase
     liquibaseRuntime("info.picocli:picocli:4.+")
-    liquibaseRuntime("org.liquibase:liquibase-core")
-    liquibaseRuntime("org.postgresql:postgresql")
-    liquibaseRuntime("org.liquibase.ext:liquibase-hibernate6")
+    liquibaseRuntime("org.liquibase:liquibase-core:4.+")
+    liquibaseRuntime("org.postgresql:postgresql:42.7.+")
+    liquibaseRuntime("org.liquibase.ext:liquibase-hibernate6:4.+")
     liquibaseRuntime("org.springframework.boot:spring-boot-starter-data-jpa")
     liquibaseRuntime(sourceSets.main.get().runtimeClasspath)
 }
@@ -161,7 +161,7 @@ liquibase {
             "url" to "jdbc:${props["DATABASE_URL"]}",
             "username" to props["DATABASE_USER"],
             "password" to props["DATABASE_PASSWORD"],
-            "referenceUrl" to "hibernate:spring:io.github.soat7.myburguercontrol.models?" +
+            "referenceUrl" to "hibernate:spring:io.github.soat7.myburguercontrol.entities?" +
                     "dialect=org.hibernate.dialect.PostgreSQLDialect&" +
                     "hibernate.physical_naming_strategy=org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy&" +
                     "hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy",

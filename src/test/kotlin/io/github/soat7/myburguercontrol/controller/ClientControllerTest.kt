@@ -18,7 +18,11 @@ import org.springframework.boot.test.web.client.postForEntity
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
-import kotlin.test.*
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
@@ -28,7 +32,7 @@ import kotlin.test.*
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class ClientControllerTest @Autowired constructor(
     private val restTemplate: TestRestTemplate,
-    private val clientRepository: ClientRepository,
+    private val clientRepository: ClientRepository
 ) {
 
     companion object {

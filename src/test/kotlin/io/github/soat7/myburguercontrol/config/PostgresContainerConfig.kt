@@ -25,5 +25,4 @@ object PostgresContainerConfig {
     fun stop() {
         postgresql.stop()
     }
-
 }

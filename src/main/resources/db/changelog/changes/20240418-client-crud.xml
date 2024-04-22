@@ -9,4 +9,20 @@
             CREATE SCHEMA IF NOT EXISTS myburguer;
         </sql>
     </changeSet>
+    <changeSet id="2024-04-22-client-table-creation" author="rafaelpc@gmail.com">
+        <createSequence incrementBy="1" sequenceName="sq_client_id" startValue="1" schemaName="myburguer"/>
+
+        <createTable tableName="client" schemaName="myburguer">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_client"/>
+            </column>
+            <column name="cpf" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint columnNames="cpf" constraintName="uk_client_cpf" tableName="client"
+                             schemaName="myburguer"/>
+    </changeSet>
+
 </databaseChangeLog>

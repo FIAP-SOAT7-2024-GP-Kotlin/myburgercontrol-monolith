@@ -18,6 +18,8 @@ class ClientService @Autowired constructor(
     }
 
     fun getClient(id: Long): ClientDTO? = repository.findByIdOrNull(id)?.toDTO()
+
+    fun getClientByCPF(cpf: String): ClientDTO? = repository.findByCpf(cpf)?.toDTO()
 }
 
 fun ClientEntity.toDTO() = ClientDTO(

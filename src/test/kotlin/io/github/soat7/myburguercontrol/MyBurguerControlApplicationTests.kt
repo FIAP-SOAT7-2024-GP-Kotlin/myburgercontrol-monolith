@@ -2,7 +2,10 @@ package io.github.soat7.myburguercontrol
 
 import io.github.soat7.myburguercontrol.config.MyBurguerControlConfig
 import io.github.soat7.myburguercontrol.config.PostgresContainerConfig
+import org.junit.jupiter.api.MethodOrderer
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.TestMethodOrder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc
 import org.springframework.boot.test.context.SpringBootTest
@@ -20,11 +23,14 @@ import kotlin.test.assertTrue
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     classes = [MyBurguerControlTestConfig::class, MyBurguerControlApplication::class]
 )
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class MyBurguerControlApplicationTests @Autowired constructor(
     private val restTemplate: TestRestTemplate
 ) {
 
     companion object {
+        @JvmStatic
         private val postgresql = PostgresContainerConfig.postgresql
 
         @JvmStatic
@@ -57,5 +63,5 @@ class MyBurguerControlApplicationTests @Autowired constructor(
 }
 
 @AutoConfigureWebMvc
-@Import(MyBurguerControlApplication::class, MyBurguerControlConfig::class)
+@Import(MyBurguerControlApplication::class, MyBurguerControlConfig::class, PostgresContainerConfig::class)
 class MyBurguerControlTestConfig

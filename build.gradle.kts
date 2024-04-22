@@ -52,6 +52,7 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
     implementation("io.github.microutils:kotlin-logging-jvm:3.+")
@@ -60,8 +61,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.postgresql:postgresql")
-    implementation("org.liquibase:liquibase-core")
+    implementation("org.postgresql:postgresql:42.7.+")
+    implementation("org.liquibase:liquibase-core:4.+")
     implementation("com.google.guava:guava:33.1.0-jre")
 
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.+")
@@ -74,11 +75,9 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("com.ninja-squad:springmockk:4.+")
     testImplementation("io.mockk:mockk:1.+")
-    testImplementation("org.testcontainers:junit-jupiter")
-    testImplementation("org.testcontainers:postgresql")
+    testImplementation("org.testcontainers:postgresql:1.19.+")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-    testImplementation("org.testcontainers:postgresql")
     testImplementation("org.awaitility:awaitility-kotlin:4.+")
 
     // Liquibase
@@ -103,6 +102,7 @@ tasks.named<Jar>("jar") {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+//    forkEvery = 0
     environment.putAll(
         props.entries.associate { it.key.toString() to it.value.toString() }
     )
@@ -165,6 +165,7 @@ liquibase {
                     "dialect=org.hibernate.dialect.PostgreSQLDialect&" +
                     "hibernate.physical_naming_strategy=org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy&" +
                     "hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy",
+            "defaultSchemaName" to "myburguer",
             //"logLevel" to "debug",
         )
     }

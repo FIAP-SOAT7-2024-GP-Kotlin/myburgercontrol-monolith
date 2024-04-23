@@ -3,15 +3,23 @@ package io.github.soat7.myburguercontrol.entities
 import com.google.common.base.MoreObjects
 import com.google.common.base.Objects
 import com.google.common.base.Objects.equal
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.SequenceGenerator
+import jakarta.persistence.Table
+import jakarta.persistence.UniqueConstraint
 
 @Entity
 @Table(
-    name = "client", schema = "myburguer",
+    name = "client",
+    schema = "myburguer",
     uniqueConstraints = [
         UniqueConstraint(name = "pk_client_id", columnNames = ["id"]),
-        UniqueConstraint(name = "uk_client_cpf", columnNames = ["cpf"]),
-    ],
+        UniqueConstraint(name = "uk_client_cpf", columnNames = ["cpf"])
+    ]
 )
 @SequenceGenerator(name = "sq_client_id", sequenceName = "sq_client_id", schema = "myburguer", allocationSize = 1)
 class ClientEntity(
@@ -21,7 +29,7 @@ class ClientEntity(
     var id: Long? = null,
 
     @Column(name = "cpf", length = 255, nullable = false)
-    var cpf: String,
+    var cpf: String
 ) {
 
     override fun equals(other: Any?): Boolean {

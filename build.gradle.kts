@@ -21,6 +21,7 @@ plugins {
     id("io.spring.dependency-management") version "1.1.4"
     id("org.liquibase.gradle") version "2.2.1"
     id("org.barfuin.gradle.jacocolog") version "3.1.0"
+    id("org.jlleitschuh.gradle.ktlint") version "11.3.1"
 }
 
 group = "io.github.soat7"
@@ -32,7 +33,7 @@ if (JavaVersion.current() != JavaVersion.VERSION_21) {
         =======================================================
         RUN WITH JAVA 21
         =======================================================
-    """.trimIndent()
+        """.trimIndent()
     )
 }
 
@@ -66,7 +67,6 @@ dependencies {
     implementation("com.google.guava:guava:33.1.0-jre")
 
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.+")
-
 
     // Test
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
@@ -141,7 +141,7 @@ liquibase {
             "classpath" to sourceSets.main.get().output.resourcesDir?.absolutePath,
             "url" to "jdbc:${props["DATABASE_URL"]}",
             "username" to props["DATABASE_USER"],
-            "password" to props["DATABASE_PASSWORD"],
+            "password" to props["DATABASE_PASSWORD"]
         )
     }
     activities.register("rollback") {
@@ -151,7 +151,7 @@ liquibase {
             "url" to "jdbc:${props["DATABASE_URL"]}",
             "username" to props["DATABASE_USER"],
             "password" to props["DATABASE_PASSWORD"],
-            "count" to 1,
+            "count" to 1
         )
     }
     activities.register("diffLog") {
@@ -162,15 +162,14 @@ liquibase {
             "username" to props["DATABASE_USER"],
             "password" to props["DATABASE_PASSWORD"],
             "referenceUrl" to "hibernate:spring:io.github.soat7.myburguercontrol.entities?" +
-                    "dialect=org.hibernate.dialect.PostgreSQLDialect&" +
-                    "hibernate.physical_naming_strategy=org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy&" +
-                    "hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy",
-            "defaultSchemaName" to "myburguer",
-            //"logLevel" to "debug",
+                "dialect=org.hibernate.dialect.PostgreSQLDialect&" +
+                "hibernate.physical_naming_strategy=org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy&" +
+                "hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy",
+            "defaultSchemaName" to "myburguer"
+            // "logLevel" to "debug",
         )
     }
 }
-
 
 tasks.named<LiquibaseTask>("update") {
     doFirst {

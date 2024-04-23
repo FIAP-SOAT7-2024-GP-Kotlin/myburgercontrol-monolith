@@ -6,21 +6,8 @@ spring:
   application.name: myburguercontrol
   config:
     import: optional:file:.env[.properties]
-  jpa:
-    database: POSTGRESQL
-    show-sql: true
-    hibernate:
-      ddl-auto: validate
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
-        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
-    properties:
-      hibernate.jdbc.batch_size: 20
-      hibernate.cache.use_query_cache: false
-      hibernate.cache.use_second_level_cache: false
-      hibernate.cache.use_structured_entries: false
-      hibernate.cache.use_minimal_puts: false
   datasource:
+    schema: myburguer
     url: jdbc:${DATABASE_URL}
     username: ${DATABASE_USER}
     password: ${DATABASE_PASSWORD}
@@ -30,9 +17,27 @@ spring:
     minIdle: 2
     initialSize: 5
     removeAbandoned: true
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+    properties:
+      hibernate:
+        default_schema: ${spring.datasource.schema}
+        jdbc.batch_size: 20
+        cache:
+          use_query_cache: false
+          use_second_level_cache: false
+          use_structured_entries: false
+          use_minimal_puts: false
   liquibase:
     change-log: classpath:/db/changelog/master.xml
     enabled: true
+    default-schema: ${spring.datasource.schema}
 
 springdoc:
   version: '@springdoc.version@'

@@ -1,19 +1,20 @@
-FROM gradle:8.4-alpine AS build
+FROM eclipse-temurin:21-jdk-alpine AS build
 
-COPY --chown=gradle:gradle . /home/gradle/src
+COPY . /source/
+COPY .editorconfig /source/
 
-WORKDIR /home/gradle/src
+WORKDIR /source/
 
-RUN cp .env.template .env
-RUN gradle build --no-daemon -x test
+RUN cp .env.example .env
+RUN sh gradlew build --no-daemon -x test
 
-FROM eclipse-temurin:17-jdk-alpine
+FROM eclipse-temurin:21-jdk-alpine
 
 EXPOSE 8080
 
 RUN mkdir /app
 RUN env
 
-COPY --from=build /home/gradle/src/build/libs/*.jar /app/spring-boot-application.jar
+COPY --from=build /source/build/libs/*.jar /app/spring-boot-application.jar
 
 ENTRYPOINT ["java", "-jar","/app/spring-boot-application.jar"]

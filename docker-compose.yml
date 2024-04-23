@@ -11,7 +11,23 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-
+  myburguer:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: "postgresql://db:5432/myburguer"
+      DATABASE_USER: "myburguer"
+      DATABASE_PASSWORD: "mb"
+      LOG_LEVEL: "DEBUG"
 
 volumes:
   pgdata:
+
+networks:
+  myburger:
+    driver: bridge

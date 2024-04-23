@@ -1,7 +1,7 @@
-import org.jetbrains.kotlin.gradle.tasks.*
-import org.liquibase.gradle.*
-import java.io.*
-import java.util.*
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.liquibase.gradle.LiquibaseTask
+import java.io.IOException
+import java.util.Properties
 
 val props = Properties()
 try {

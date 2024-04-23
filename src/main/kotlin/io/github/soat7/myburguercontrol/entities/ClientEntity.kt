@@ -1,8 +1,16 @@
 package io.github.soat7.myburguercontrol.entities
 
-import com.google.common.base.*
-import com.google.common.base.Objects.*
-import jakarta.persistence.*
+import com.google.common.base.MoreObjects
+import com.google.common.base.Objects.equal
+import com.google.common.base.Objects.hashCode
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.SequenceGenerator
+import jakarta.persistence.Table
+import jakarta.persistence.UniqueConstraint
 
 @Entity
 @Table(

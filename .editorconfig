@@ -1,0 +1,17 @@
+root = true
+
+[*]
+charset = utf-8
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{kt,kts}]
+indent_size = 4
+ktlint_code_style = intellij_idea
+ktlint_no-wildcard-imports = disabled
+ij_kotlin_packages_to_use_import_on_demand = java.**, javax.**, jakarta.**, com.**, org.**
+ij_kotlin_name_count_to_use_star_import = 5
+ij_kotlin_name_count_to_use_star_import_for_members = 3
+
+[*.{yml,yaml}]
+indent_size = 2

@@ -1,6 +1,6 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.liquibase.gradle.LiquibaseTask
-import java.io.IOException
+import org.jetbrains.kotlin.gradle.tasks.*
+import org.liquibase.gradle.*
+import java.io.*
 import java.util.*
 
 val props = Properties()
@@ -72,7 +72,6 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
-    testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("com.ninja-squad:springmockk:4.+")
     testImplementation("io.mockk:mockk:1.+")
     testImplementation("org.testcontainers:postgresql:1.19.+")
@@ -169,6 +168,11 @@ liquibase {
             // "logLevel" to "debug",
         )
     }
+}
+
+ktlint {
+    this.coloredOutput.set(true)
+    this.outputToConsole.set(true)
 }
 
 tasks.named<LiquibaseTask>("update") {

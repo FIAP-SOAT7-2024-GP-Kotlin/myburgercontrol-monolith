@@ -1,16 +1,8 @@
 package io.github.soat7.myburguercontrol.entities
 
-import com.google.common.base.MoreObjects
-import com.google.common.base.Objects
-import com.google.common.base.Objects.equal
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.SequenceGenerator
-import jakarta.persistence.Table
-import jakarta.persistence.UniqueConstraint
+import com.google.common.base.*
+import com.google.common.base.Objects.*
+import jakarta.persistence.*
 
 @Entity
 @Table(
@@ -42,7 +34,7 @@ class ClientEntity(
     }
 
     override fun hashCode(): Int {
-        return this.id?.let { Objects.hashCode(it) } ?: Objects.hashCode(cpf)
+        return this.id?.let { hashCode(it) } ?: hashCode(cpf)
     }
 
     override fun toString(): String {

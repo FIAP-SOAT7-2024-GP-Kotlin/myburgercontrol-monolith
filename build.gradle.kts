@@ -3,6 +3,9 @@ import org.liquibase.gradle.LiquibaseTask
 import java.io.IOException
 import java.util.Properties
 
+// from gradle.properties
+val testContainerVersion: String by ext
+
 val props = Properties()
 try {
     props.load(file("$projectDir/.env").inputStream())
@@ -39,6 +42,7 @@ if (JavaVersion.current() != JavaVersion.VERSION_21) {
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 allOpen {
@@ -52,6 +56,7 @@ repositories {
 }
 
 dependencies {
+    implementation("org.testcontainers:testcontainers-bom:$testContainerVersion")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
@@ -74,7 +79,9 @@ dependencies {
     }
     testImplementation("com.ninja-squad:springmockk:4.+")
     testImplementation("io.mockk:mockk:1.+")
-    testImplementation("org.testcontainers:postgresql:1.19.+")
+    testImplementation("org.testcontainers:testcontainers")
+    testImplementation("org.testcontainers:postgresql")
+    testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testImplementation("org.awaitility:awaitility-kotlin:4.+")
@@ -105,6 +112,15 @@ tasks.withType<Test> {
     environment.putAll(
         props.entries.associate { it.key.toString() to it.value.toString() }
     )
+    testLogging {
+        showStandardStreams = true
+        events = setOf(
+            org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
+            org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED,
+            org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
+        )
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+    }
 }
 
 tasks.jacocoTestReport {

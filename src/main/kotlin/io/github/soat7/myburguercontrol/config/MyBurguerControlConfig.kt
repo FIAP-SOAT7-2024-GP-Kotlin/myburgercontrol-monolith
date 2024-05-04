@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
+import org.springframework.web.client.RestTemplate
 import org.springframework.web.servlet.config.annotation.EnableWebMvc
 
 @Configuration
@@ -30,5 +31,5 @@ class MyBurguerControlConfig {
     fun objectMapper() = objectMapperBuilder().build<ObjectMapper>()
 
     @Bean
-    fun restTemplate(builder: RestTemplateBuilder) = builder.build()
+    fun restTemplate(builder: RestTemplateBuilder): RestTemplate = builder.build()
 }

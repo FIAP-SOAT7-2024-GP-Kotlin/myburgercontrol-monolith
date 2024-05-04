@@ -24,6 +24,7 @@ services:
       DATABASE_USER: "myburguer"
       DATABASE_PASSWORD: "mb"
       LOG_LEVEL: "DEBUG"
+      JWT_KEY: "lkjhaskljdajkdlsfjklsdgjklssdljkgff"
 
 volumes:
   pgdata:
@@ -31,3 +32,4 @@ volumes:
 networks:
   myburger:
     driver: bridge
+

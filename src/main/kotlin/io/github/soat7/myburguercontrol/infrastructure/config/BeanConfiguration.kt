@@ -1,6 +1,6 @@
-package io.github.soat7.myburguercontrol.config
+package io.github.soat7.myburguercontrol.infrastructure.config
 
-import io.github.soat7.myburguercontrol.domain.ports.CustomerDatabasePort
+import io.github.soat7.myburguercontrol.application.ports.outbound.CustomerDatabasePort
 import io.github.soat7.myburguercontrol.domain.service.CustomerService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

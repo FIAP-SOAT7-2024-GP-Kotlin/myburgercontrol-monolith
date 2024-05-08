@@ -12,6 +12,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
   myburguer:
+    platform: linux/amd64
     build:
       context: .
       dockerfile: ./Dockerfile

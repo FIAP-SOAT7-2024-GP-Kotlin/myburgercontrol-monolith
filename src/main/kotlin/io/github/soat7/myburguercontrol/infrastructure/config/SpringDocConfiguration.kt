@@ -1,4 +1,4 @@
-package io.github.soat7.myburguercontrol.config
+package io.github.soat7.myburguercontrol.infrastructure.config
 
 import org.springframework.context.annotation.Configuration
 

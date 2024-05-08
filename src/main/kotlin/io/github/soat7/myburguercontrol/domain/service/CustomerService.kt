@@ -1,30 +1,29 @@
 package io.github.soat7.myburguercontrol.domain.service
 
-import io.github.soat7.myburguercontrol.domain.entity.CustomerEntity
-import io.github.soat7.myburguercontrol.domain.ports.CustomerDatabasePort
-import io.github.soat7.myburguercontrol.domain.ports.CustomerServicePort
+import io.github.soat7.myburguercontrol.application.ports.inbound.CustomerServicePort
+import io.github.soat7.myburguercontrol.application.ports.outbound.CustomerDatabasePort
+import io.github.soat7.myburguercontrol.domain.model.Customer
 import mu.KLogging
-import org.springframework.data.repository.findByIdOrNull
 import java.util.UUID
 
 class CustomerService(
-    private val repository: CustomerDatabasePort
+    private val databasePort: CustomerDatabasePort
 ) : CustomerServicePort {
 
     companion object : KLogging()
 
-    override fun create(entity: CustomerEntity): CustomerEntity {
-        logger.info { "Creating new customer with cpf: [${entity.cpf}]" }
-        return repository.save(entity)
+    override fun create(customer: Customer): Customer {
+        logger.info { "Creating new customer with cpf: [${customer.cpf}]" }
+        return databasePort.create(customer)
     }
 
-    override fun findCustomerById(id: UUID): CustomerEntity? {
+    override fun findCustomerById(id: UUID): Customer? {
         logger.info { "Finding customer with id: [$id]" }
-        return repository.findByIdOrNull(id)
+        return databasePort.findCustomerById(id)
     }
 
-    override fun findCustomerByCpf(cpf: String): CustomerEntity? {
+    override fun findCustomerByCpf(cpf: String): Customer? {
         logger.info { "Finding customer with cpf: [$cpf]" }
-        return repository.findByCpf(cpf)
+        return databasePort.findCustomerByCpf(cpf)
     }
 }

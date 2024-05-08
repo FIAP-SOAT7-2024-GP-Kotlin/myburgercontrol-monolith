@@ -1,8 +1,7 @@
 package io.github.soat7.myburguercontrol.fixtures
 
-import io.github.soat7.myburguercontrol.domain.api.CustomerCreationRequest
-import io.github.soat7.myburguercontrol.domain.api.CustomerResponse
-import io.github.soat7.myburguercontrol.domain.entity.CustomerEntity
+import io.github.soat7.myburguercontrol.infrastructure.persistence.customer.entity.CustomerEntity
+import io.github.soat7.myburguercontrol.infrastructure.rest.api.CustomerCreationRequest
 import java.util.UUID
 
 object CustomerFixtures {
@@ -24,12 +23,5 @@ object CustomerFixtures {
         cpf = cpf,
         name = "TEST_NAME",
         email = "test@test.com"
-    )
-
-    fun mockCustomerResponse(id: UUID, cpf: String, name: String, email: String) = CustomerResponse(
-        id = id,
-        cpf = cpf,
-        name = name,
-        email = email
     )
 }

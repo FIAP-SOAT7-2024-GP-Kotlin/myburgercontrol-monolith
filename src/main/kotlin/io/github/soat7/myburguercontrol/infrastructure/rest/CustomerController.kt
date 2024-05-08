@@ -1,10 +1,10 @@
-package io.github.soat7.myburguercontrol.application.rest
+package io.github.soat7.myburguercontrol.infrastructure.rest
 
-import io.github.soat7.myburguercontrol.domain.api.CustomerCreationRequest
-import io.github.soat7.myburguercontrol.domain.api.CustomerResponse
-import io.github.soat7.myburguercontrol.domain.mapper.toCustomerResponse
+import io.github.soat7.myburguercontrol.application.ports.inbound.CustomerServicePort
 import io.github.soat7.myburguercontrol.domain.mapper.toDomain
-import io.github.soat7.myburguercontrol.domain.ports.CustomerServicePort
+import io.github.soat7.myburguercontrol.domain.mapper.toResponse
+import io.github.soat7.myburguercontrol.infrastructure.rest.api.CustomerCreationRequest
+import io.github.soat7.myburguercontrol.infrastructure.rest.api.CustomerResponse
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -30,7 +30,7 @@ class CustomerController(
     )
     fun createCustomer(@RequestBody request: CustomerCreationRequest): ResponseEntity<CustomerResponse> = run {
         val resp = service.create(request.toDomain())
-        ResponseEntity.ok(resp.toCustomerResponse())
+        ResponseEntity.ok(resp.toResponse())
     }
 
     @GetMapping(
@@ -39,7 +39,7 @@ class CustomerController(
     )
     fun findCustomerById(@PathVariable("id") id: UUID): ResponseEntity<CustomerResponse> = run {
         service.findCustomerById(id)?.let {
-            ResponseEntity.ok().body(it.toCustomerResponse())
+            ResponseEntity.ok().body(it.toResponse())
         } ?: ResponseEntity.notFound().build()
     }
 
@@ -48,7 +48,7 @@ class CustomerController(
     )
     fun findCustomerByCpf(@RequestParam("cpf") cpf: String): ResponseEntity<CustomerResponse> = run {
         service.findCustomerByCpf(cpf)?.let {
-            ResponseEntity.ok(it.toCustomerResponse())
+            ResponseEntity.ok(it.toResponse())
         } ?: ResponseEntity.notFound().build()
     }
 }

@@ -6,7 +6,7 @@ COPY .editorconfig /source/
 WORKDIR /source/
 
 RUN cp .env.example .env
-RUN sh gradlew build --no-daemon -x test
+RUN ./gradlew clean build --no-daemon -x test
 
 FROM eclipse-temurin:21-jdk-alpine
 
@@ -17,4 +17,4 @@ RUN env
 
 COPY --from=build /source/build/libs/*.jar /app/spring-boot-application.jar
 
-ENTRYPOINT ["java", "-jar","/app/spring-boot-application.jar"]
+ENTRYPOINT ["java", "-Xms256m", "-Xmx512m", "-jar","/app/spring-boot-application.jar"]

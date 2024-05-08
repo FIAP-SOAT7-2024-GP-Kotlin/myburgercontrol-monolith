@@ -1,9 +1,9 @@
 package io.github.soat7.myburguercontrol.application.rest
 
 import io.github.soat7.myburguercontrol.base.BaseIntegrationTest
-import io.github.soat7.myburguercontrol.domain.api.CustomerResponse
-import io.github.soat7.myburguercontrol.domain.ports.CustomerDatabasePort
 import io.github.soat7.myburguercontrol.fixtures.CustomerFixtures
+import io.github.soat7.myburguercontrol.infrastructure.persistence.customer.repository.CustomerRepository
+import io.github.soat7.myburguercontrol.infrastructure.rest.api.CustomerResponse
 import org.junit.jupiter.api.Assertions.assertAll
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
@@ -20,7 +20,7 @@ import kotlin.test.assertTrue
 class CustomerIT : BaseIntegrationTest() {
 
     @Autowired
-    private lateinit var customerDatabasePort: CustomerDatabasePort
+    private lateinit var customerRepository: CustomerRepository
 
     @Test
     fun `should successfully create a new customer`() {
@@ -34,7 +34,7 @@ class CustomerIT : BaseIntegrationTest() {
             Executable { assertNotNull(response.body) },
             Executable { assertEquals(cpf, response.body!!.cpf) }
         )
-        val savedCustomer = customerDatabasePort.findByIdOrNull(response.body!!.id)
+        val savedCustomer = customerRepository.findByIdOrNull(response.body!!.id)
 
         assertAll(
             Executable { assertNotNull(savedCustomer) },
@@ -46,7 +46,7 @@ class CustomerIT : BaseIntegrationTest() {
     @Test
     fun `should successfully find a customer by id`() {
         val cpf = "45661450001"
-        val customer = customerDatabasePort.save(CustomerFixtures.mockCustomerEntity(cpf = cpf))
+        val customer = customerRepository.save(CustomerFixtures.mockCustomerEntity(cpf = cpf))
 
         val response = restTemplate.getForEntity<CustomerResponse>(
             url = "/customer/{id}",
@@ -80,7 +80,7 @@ class CustomerIT : BaseIntegrationTest() {
     fun `should successfully find a customer by cpf`() {
         val cpf = "79569068060"
 
-        val customer = customerDatabasePort.save(CustomerFixtures.mockCustomerEntity(cpf = cpf))
+        val customer = customerRepository.save(CustomerFixtures.mockCustomerEntity(cpf = cpf))
 
         val response = restTemplate.getForEntity<CustomerResponse>(
             url = "/customer?cpf={cpf}",

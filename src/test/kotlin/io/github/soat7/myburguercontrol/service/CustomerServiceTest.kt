@@ -1,9 +1,9 @@
 package io.github.soat7.myburguercontrol.service
 
-import io.github.soat7.myburguercontrol.domain.entity.CustomerEntity
-import io.github.soat7.myburguercontrol.domain.ports.CustomerDatabasePort
+import io.github.soat7.myburguercontrol.domain.model.CustomerEntity
 import io.github.soat7.myburguercontrol.domain.service.CustomerService
 import io.github.soat7.myburguercontrol.fixtures.CustomerFixtures
+import io.github.soat7.myburguercontrol.infrastructure.persistence.customer.repository.CustomerRepository
 import io.mockk.clearMocks
 import io.mockk.every
 import io.mockk.mockk
@@ -24,7 +24,7 @@ import kotlin.test.assertNotNull
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class CustomerServiceTest {
 
-    private val repository = mockk<CustomerDatabasePort>()
+    private val repository = mockk<CustomerRepository>()
     private val service = CustomerService(repository)
 
     @BeforeTest

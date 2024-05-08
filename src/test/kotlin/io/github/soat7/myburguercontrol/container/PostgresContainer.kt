@@ -14,10 +14,12 @@ class PostgresContainer : BeforeAllCallback {
         private const val DB_USERNAME = "it_user"
         private const val DB_PASSWORD = "123"
         private val container = PostgreSQLContainer(DockerImageName.parse("postgres:15-alpine"))
-            .apply { withDatabaseName(DATABASE_NAME) }
-            .apply { withUsername(DB_USERNAME) }
-            .apply { withPassword(DB_PASSWORD) }
-            .apply { withExposedPorts(5432) }
+            .apply {
+                withDatabaseName(DATABASE_NAME)
+                withUsername(DB_USERNAME)
+                withPassword(DB_PASSWORD)
+                withExposedPorts(5432)
+            }
 
         private val log: Logger = LoggerFactory.getLogger(this::class.java)
     }

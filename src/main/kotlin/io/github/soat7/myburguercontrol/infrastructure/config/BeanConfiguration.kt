@@ -9,7 +9,5 @@ import org.springframework.context.annotation.Configuration
 class BeanConfiguration {
 
     @Bean
-    fun customerService(customerDatabasePort: CustomerDatabasePort): CustomerService {
-        return CustomerService(customerDatabasePort)
-    }
+    fun customerService(customerDatabasePort: CustomerDatabasePort) = CustomerService(customerDatabasePort)
 }

@@ -6,7 +6,7 @@ COPY .editorconfig /source/
 WORKDIR /source/
 
 RUN cp .env.example .env
-RUN sh gradlew build --no-daemon -x test
+RUN ./gradlew clean build --no-daemon -x test
 
 FROM eclipse-temurin:21-jdk-alpine
 

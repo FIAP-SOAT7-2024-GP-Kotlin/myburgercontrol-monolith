@@ -27,8 +27,8 @@ data class CustomerEntity(
     var cpf: String,
 
     @Column(name = "name", length = 255)
-    var name: String,
+    var name: String? = null,
 
     @Column(name = "email", length = 255)
-    var email: String
+    var email: String? = null
 )

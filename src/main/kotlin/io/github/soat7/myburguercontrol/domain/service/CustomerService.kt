@@ -10,7 +10,7 @@ class CustomerService(
     private val databasePort: CustomerDatabasePort
 ) : CustomerServicePort {
 
-    companion object : KLogging()
+    private companion object : KLogging()
 
     override fun create(customer: Customer): Customer {
         logger.info { "Creating new customer with cpf: [${customer.cpf}]" }

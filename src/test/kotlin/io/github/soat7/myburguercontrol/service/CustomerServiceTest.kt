@@ -1,9 +1,9 @@
 package io.github.soat7.myburguercontrol.service
 
-import io.github.soat7.myburguercontrol.domain.model.CustomerEntity
+import io.github.soat7.myburguercontrol.application.ports.outbound.CustomerDatabasePort
+import io.github.soat7.myburguercontrol.domain.model.Customer
 import io.github.soat7.myburguercontrol.domain.service.CustomerService
 import io.github.soat7.myburguercontrol.fixtures.CustomerFixtures
-import io.github.soat7.myburguercontrol.infrastructure.persistence.customer.repository.CustomerRepository
 import io.mockk.clearMocks
 import io.mockk.every
 import io.mockk.mockk
@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.TestMethodOrder
 import org.junit.jupiter.api.assertDoesNotThrow
-import org.springframework.data.repository.findByIdOrNull
 import java.util.UUID
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -24,12 +23,12 @@ import kotlin.test.assertNotNull
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class CustomerServiceTest {
 
-    private val repository = mockk<CustomerRepository>()
-    private val service = CustomerService(repository)
+    private val customerDatabasePort = mockk<CustomerDatabasePort>()
+    private val service = CustomerService(customerDatabasePort)
 
     @BeforeTest
     fun setUp() {
-        clearMocks(repository)
+        clearMocks(customerDatabasePort)
     }
 
     @Test
@@ -37,10 +36,12 @@ class CustomerServiceTest {
     fun `should create a customer using CPF`() {
         val cpf = "48024771802"
         val id = UUID.randomUUID()
-        val customer = CustomerFixtures.mockCustomerEntity(id = id, cpf = cpf)
+        val customer = CustomerFixtures.mockCustomer(id = id, cpf = cpf)
+
+        CustomerFixtures.mockCustomerEntity(id = id, cpf = cpf)
 
         every {
-            repository.save(any<CustomerEntity>())
+            customerDatabasePort.create(any<Customer>())
         } returns customer
 
         val response = assertDoesNotThrow {
@@ -50,7 +51,7 @@ class CustomerServiceTest {
         assertEquals(cpf, response.cpf)
         assertEquals(id, response.id)
 
-        verify(exactly = 1) { repository.save(any<CustomerEntity>()) }
+        verify(exactly = 1) { customerDatabasePort.create(any<Customer>()) }
     }
 
     @Test
@@ -58,9 +59,9 @@ class CustomerServiceTest {
     fun `should get a customer using CPF`() {
         val cpf = "48024771802"
         val id = UUID.randomUUID()
-        val customer = CustomerFixtures.mockCustomerEntity(id = id, cpf = cpf)
+        val customer = CustomerFixtures.mockCustomer(id = id, cpf = cpf)
 
-        every { repository.findByIdOrNull(any()) } returns customer
+        every { customerDatabasePort.findCustomerById(any()) } returns customer
 
         val response = assertDoesNotThrow {
             service.findCustomerById(id)
@@ -70,6 +71,6 @@ class CustomerServiceTest {
         assertEquals(id, response.id)
         assertEquals(cpf, response.cpf)
 
-        verify(exactly = 1) { repository.findById(any()) }
+        verify(exactly = 1) { customerDatabasePort.findCustomerById(any()) }
     }
 }

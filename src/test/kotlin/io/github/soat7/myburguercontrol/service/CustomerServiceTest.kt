@@ -38,8 +38,6 @@ class CustomerServiceTest {
         val id = UUID.randomUUID()
         val customer = CustomerFixtures.mockCustomer(id = id, cpf = cpf)
 
-        CustomerFixtures.mockCustomerEntity(id = id, cpf = cpf)
-
         every {
             customerDatabasePort.create(any<Customer>())
         } returns customer

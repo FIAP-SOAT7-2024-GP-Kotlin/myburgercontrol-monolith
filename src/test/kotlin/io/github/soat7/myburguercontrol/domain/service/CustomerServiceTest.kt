@@ -1,8 +1,7 @@
-package io.github.soat7.myburguercontrol.service
+package io.github.soat7.myburguercontrol.domain.service
 
 import io.github.soat7.myburguercontrol.application.ports.outbound.CustomerDatabasePort
 import io.github.soat7.myburguercontrol.domain.model.Customer
-import io.github.soat7.myburguercontrol.domain.service.CustomerService
 import io.github.soat7.myburguercontrol.fixtures.CustomerFixtures
 import io.mockk.clearMocks
 import io.mockk.every
@@ -36,7 +35,7 @@ class CustomerServiceTest {
     fun `should create a customer using CPF`() {
         val cpf = "48024771802"
         val id = UUID.randomUUID()
-        val customer = CustomerFixtures.mockCustomer(id = id, cpf = cpf)
+        val customer = CustomerFixtures.mockDomainCustomer(id = id, cpf = cpf)
 
         every {
             customerDatabasePort.create(any<Customer>())
@@ -57,7 +56,7 @@ class CustomerServiceTest {
     fun `should get a customer using CPF`() {
         val cpf = "48024771802"
         val id = UUID.randomUUID()
-        val customer = CustomerFixtures.mockCustomer(id = id, cpf = cpf)
+        val customer = CustomerFixtures.mockDomainCustomer(id = id, cpf = cpf)
 
         every { customerDatabasePort.findCustomerById(any()) } returns customer
 

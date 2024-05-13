@@ -1,6 +1,6 @@
-package io.github.soat7.myburguercontrol.infrastructure.persistence.customer.repository
+package io.github.soat7.myburguercontrol.infrastructure.outbound.customer.repository
 
-import io.github.soat7.myburguercontrol.infrastructure.persistence.customer.entity.CustomerEntity
+import io.github.soat7.myburguercontrol.infrastructure.outbound.customer.entity.CustomerEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import java.util.UUID
 

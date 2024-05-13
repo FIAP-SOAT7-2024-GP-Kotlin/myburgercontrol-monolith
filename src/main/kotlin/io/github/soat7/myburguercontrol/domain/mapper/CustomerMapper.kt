@@ -1,9 +1,9 @@
 package io.github.soat7.myburguercontrol.domain.mapper
 
 import io.github.soat7.myburguercontrol.domain.model.Customer
-import io.github.soat7.myburguercontrol.infrastructure.persistence.customer.entity.CustomerEntity
-import io.github.soat7.myburguercontrol.infrastructure.rest.api.CustomerCreationRequest
-import io.github.soat7.myburguercontrol.infrastructure.rest.api.CustomerResponse
+import io.github.soat7.myburguercontrol.infrastructure.outbound.customer.entity.CustomerEntity
+import io.github.soat7.myburguercontrol.infrastructure.inbound.rest.api.CustomerCreationRequest
+import io.github.soat7.myburguercontrol.infrastructure.inbound.rest.api.CustomerResponse
 import java.util.UUID
 
 fun CustomerCreationRequest.toDomain() = Customer(

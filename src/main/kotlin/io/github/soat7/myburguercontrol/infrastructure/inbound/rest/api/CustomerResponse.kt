@@ -1,4 +1,4 @@
-package io.github.soat7.myburguercontrol.infrastructure.rest.api
+package io.github.soat7.myburguercontrol.infrastructure.inbound.rest.api
 
 import java.util.UUID
 

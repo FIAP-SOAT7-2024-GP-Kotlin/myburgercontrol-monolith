@@ -3,7 +3,8 @@ package io.github.soat7.myburguercontrol.service
 import io.github.soat7.myburguercontrol.domain.model.CustomerEntity
 import io.github.soat7.myburguercontrol.domain.service.CustomerService
 import io.github.soat7.myburguercontrol.fixtures.CustomerFixtures
-import io.github.soat7.myburguercontrol.infrastructure.persistence.customer.repository.CustomerRepository
+import io.github.soat7.myburguercontrol.infrastructure.outbound.customer.entity.CustomerEntity
+import io.github.soat7.myburguercontrol.infrastructure.outbound.customer.repository.CustomerRepository
 import io.mockk.clearMocks
 import io.mockk.every
 import io.mockk.mockk

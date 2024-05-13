@@ -1,10 +1,10 @@
-package io.github.soat7.myburguercontrol.infrastructure.rest
+package io.github.soat7.myburguercontrol.infrastructure.inbound.rest
 
 import io.github.soat7.myburguercontrol.application.ports.inbound.CustomerServicePort
 import io.github.soat7.myburguercontrol.domain.mapper.toDomain
 import io.github.soat7.myburguercontrol.domain.mapper.toResponse
-import io.github.soat7.myburguercontrol.infrastructure.rest.api.CustomerCreationRequest
-import io.github.soat7.myburguercontrol.infrastructure.rest.api.CustomerResponse
+import io.github.soat7.myburguercontrol.infrastructure.inbound.rest.api.CustomerCreationRequest
+import io.github.soat7.myburguercontrol.infrastructure.inbound.rest.api.CustomerResponse
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CrossOrigin

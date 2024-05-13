@@ -1,10 +1,10 @@
-package io.github.soat7.myburguercontrol.infrastructure.persistence.customer
+package io.github.soat7.myburguercontrol.infrastructure.outbound.customer
 
 import io.github.soat7.myburguercontrol.application.ports.outbound.CustomerDatabasePort
 import io.github.soat7.myburguercontrol.domain.mapper.toDomain
 import io.github.soat7.myburguercontrol.domain.mapper.toPersistence
 import io.github.soat7.myburguercontrol.domain.model.Customer
-import io.github.soat7.myburguercontrol.infrastructure.persistence.customer.repository.CustomerRepository
+import io.github.soat7.myburguercontrol.infrastructure.outbound.customer.repository.CustomerRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import java.util.UUID

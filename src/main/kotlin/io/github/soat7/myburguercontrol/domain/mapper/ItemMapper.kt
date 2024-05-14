@@ -1,5 +1,6 @@
 package io.github.soat7.myburguercontrol.domain.mapper
 
+import io.github.soat7.myburguercontrol.domain.enum.ItemType
 import io.github.soat7.myburguercontrol.domain.model.Item
 import io.github.soat7.myburguercontrol.domain.model.ItemType
 import io.github.soat7.myburguercontrol.infrastructure.persistence.item.entity.ItemEntity

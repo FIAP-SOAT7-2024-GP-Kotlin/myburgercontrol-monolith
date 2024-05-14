@@ -1,7 +1,7 @@
 package io.github.soat7.myburguercontrol.infrastructure.rest
 
 import io.github.soat7.myburguercontrol.base.BaseIntegrationTest
-import io.github.soat7.myburguercontrol.domain.model.ItemType
+import io.github.soat7.myburguercontrol.domain.enum.ItemType
 import io.github.soat7.myburguercontrol.fixtures.ItemFixtures
 import io.github.soat7.myburguercontrol.infrastructure.persistence.item.repository.ItemRepository
 import io.github.soat7.myburguercontrol.infrastructure.rest.common.PaginatedResponse

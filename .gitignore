@@ -36,8 +36,3 @@ out/
 
 ### VS Code ###
 .vscode/
-
-### Local dev config files
-**/application-local-dev.properties
-**/application-local.yaml
-/.env-local

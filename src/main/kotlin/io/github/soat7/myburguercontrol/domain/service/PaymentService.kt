@@ -14,8 +14,7 @@ class PaymentService(
 
         logger.info { "Starting to request payment integration with id: [${payment.id}]" }
 
-        if (paymentIntegrationPort.requestPayment(payment))
-            payment.status = Payment.Status.APPROVED else Payment.Status.DENIED
+        payment.status = if (paymentIntegrationPort.requestPayment(payment)) Payment.Status.APPROVED else Payment.Status.DENIED
 
         logger.info { "Successfully integrated with status return: [${payment.status.name}]" }
 

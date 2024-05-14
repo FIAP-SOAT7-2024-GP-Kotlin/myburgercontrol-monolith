@@ -1,7 +1,7 @@
 package io.github.soat7.myburguercontrol.infrastructure.rest
 
 import io.github.soat7.myburguercontrol.base.BaseIntegrationTest
-import io.github.soat7.myburguercontrol.domain.model.Item
+import io.github.soat7.myburguercontrol.domain.model.ItemType
 import io.github.soat7.myburguercontrol.fixtures.ItemFixtures
 import io.github.soat7.myburguercontrol.infrastructure.persistence.item.repository.ItemRepository
 import io.github.soat7.myburguercontrol.infrastructure.rest.common.PaginatedResponse
@@ -29,7 +29,7 @@ class ItemIT : BaseIntegrationTest() {
         val inputItemData = ItemFixtures.mockItemCreationRequest()
 
         val response = restTemplate.postForEntity<ItemResponse>(
-            "/api/v1/items",
+            "/items",
             inputItemData
         )
 
@@ -54,7 +54,7 @@ class ItemIT : BaseIntegrationTest() {
         val item = itemRepository.save(ItemFixtures.mockItemEntity(id))
 
         val response = restTemplate.getForEntity<ItemResponse>(
-            "/api/v1/items/{id}",
+            "/items/{id}",
             uriVariables = mapOf(
                 "id" to item.id
             )
@@ -75,7 +75,7 @@ class ItemIT : BaseIntegrationTest() {
         val randomId = UUID.randomUUID()
 
         val response = restTemplate.getForEntity<ItemResponse>(
-            url = "/api/v1/items/{id}",
+            url = "/items/{id}",
             uriVariables = mapOf(
                 "id" to randomId.toString()
             )
@@ -85,7 +85,7 @@ class ItemIT : BaseIntegrationTest() {
 
     @Test
     fun `should return an empty Page of Item when no item is found`() {
-        val response = restTemplate.getForEntity<PaginatedResponse<ItemResponse>>(url = "/api/v1/items")
+        val response = restTemplate.getForEntity<PaginatedResponse<ItemResponse>>(url = "/items")
 
         println(response)
         assertAll(
@@ -99,13 +99,13 @@ class ItemIT : BaseIntegrationTest() {
     fun `should return a Paginated response of Item`() {
         run {
             itemRepository.save(ItemFixtures.mockItemEntity())
-            itemRepository.save(ItemFixtures.mockItemEntity(type = Item.ItemType.DRINK))
-            itemRepository.save(ItemFixtures.mockItemEntity(type = Item.ItemType.APPETIZER))
-            itemRepository.save(ItemFixtures.mockItemEntity(type = Item.ItemType.DESSERT))
-            itemRepository.save(ItemFixtures.mockItemEntity(type = Item.ItemType.OTHER))
+            itemRepository.save(ItemFixtures.mockItemEntity(type = ItemType.DRINK))
+            itemRepository.save(ItemFixtures.mockItemEntity(type = ItemType.APPETIZER))
+            itemRepository.save(ItemFixtures.mockItemEntity(type = ItemType.DESSERT))
+            itemRepository.save(ItemFixtures.mockItemEntity(type = ItemType.OTHER))
         }
 
-        val response = restTemplate.getForEntity<PaginatedResponse<ItemResponse>>(url = "/api/v1/items")
+        val response = restTemplate.getForEntity<PaginatedResponse<ItemResponse>>(url = "/items")
 
         assertAll(
             Executable { assertTrue(response.statusCode.is2xxSuccessful) },

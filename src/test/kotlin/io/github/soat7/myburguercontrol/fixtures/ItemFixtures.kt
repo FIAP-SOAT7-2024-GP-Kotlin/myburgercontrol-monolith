@@ -1,7 +1,7 @@
 package io.github.soat7.myburguercontrol.fixtures
 
 import io.github.soat7.myburguercontrol.domain.model.Item
-import io.github.soat7.myburguercontrol.domain.model.Item.ItemType
+import io.github.soat7.myburguercontrol.domain.model.ItemType
 import io.github.soat7.myburguercontrol.infrastructure.persistence.item.entity.ItemEntity
 import io.github.soat7.myburguercontrol.infrastructure.rest.item.api.ItemCreationRequest
 import java.math.BigDecimal

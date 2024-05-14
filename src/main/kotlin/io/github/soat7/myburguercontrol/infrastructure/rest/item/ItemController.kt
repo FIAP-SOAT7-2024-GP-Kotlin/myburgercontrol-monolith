@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
 @RestController("item-controller")
-@RequestMapping("/api/v1/items")
+@RequestMapping("items")
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 class ItemController(
     private val service: ItemServicePort

@@ -27,7 +27,7 @@ class CustomerIT : BaseIntegrationTest() {
         val cpf = "48024771802"
         val inputCustomerData = CustomerFixtures.mockCustomerCreationRequest(cpf)
 
-        val response = restTemplate.postForEntity<CustomerResponse>("/api/v1/customers", inputCustomerData)
+        val response = restTemplate.postForEntity<CustomerResponse>("/customers", inputCustomerData)
 
         assertAll(
             Executable { assertTrue(response.statusCode.is2xxSuccessful) },
@@ -49,7 +49,7 @@ class CustomerIT : BaseIntegrationTest() {
         val customer = customerRepository.save(CustomerFixtures.mockCustomerEntity(cpf = cpf))
 
         val response = restTemplate.getForEntity<CustomerResponse>(
-            url = "/api/v1/customers/{id}",
+            url = "/customers/{id}",
             uriVariables = mapOf(
                 "id" to customer.id
             )
@@ -68,7 +68,7 @@ class CustomerIT : BaseIntegrationTest() {
         val randomId = UUID.randomUUID()
 
         val response = restTemplate.getForEntity<CustomerResponse>(
-            url = "/api/v1/customers/{id}",
+            url = "/customers/{id}",
             uriVariables = mapOf(
                 "id" to randomId.toString()
             )
@@ -83,7 +83,7 @@ class CustomerIT : BaseIntegrationTest() {
         val customer = customerRepository.save(CustomerFixtures.mockCustomerEntity(cpf = cpf))
 
         val response = restTemplate.getForEntity<CustomerResponse>(
-            url = "/api/v1/customers?cpf={cpf}",
+            url = "/customers?cpf={cpf}",
             uriVariables = mapOf(
                 "cpf" to cpf
             )
@@ -102,7 +102,7 @@ class CustomerIT : BaseIntegrationTest() {
         val cpf = "10974990060"
 
         val response = restTemplate.getForEntity<CustomerResponse>(
-            url = "/api/v1/customers?cpf={cpf}",
+            url = "/customers?cpf={cpf}",
             uriVariables = mapOf(
                 "cpf" to cpf
             )

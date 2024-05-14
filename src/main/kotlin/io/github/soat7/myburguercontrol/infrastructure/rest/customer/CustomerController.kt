@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
 @RestController("customer-controller")
-@RequestMapping(path = ["/api/v1/customers"])
+@RequestMapping(path = ["customers"])
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 class CustomerController(
     private val service: CustomerServicePort

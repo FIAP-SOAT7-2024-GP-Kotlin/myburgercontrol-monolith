@@ -1,6 +1,7 @@
 package io.github.soat7.myburguercontrol.domain.mapper
 
 import io.github.soat7.myburguercontrol.domain.model.Item
+import io.github.soat7.myburguercontrol.domain.model.ItemType
 import io.github.soat7.myburguercontrol.infrastructure.persistence.item.entity.ItemEntity
 import io.github.soat7.myburguercontrol.infrastructure.rest.item.api.ItemCreationRequest
 import io.github.soat7.myburguercontrol.infrastructure.rest.item.api.ItemResponse
@@ -27,12 +28,12 @@ fun ItemCreationRequest.toDomain() = Item(
     id = UUID.randomUUID(),
     description = this.description,
     price = this.price,
-    type = Item.ItemType.valueOf(this.type.name)
+    type = ItemType.valueOf(this.type.name)
 )
 
 fun ItemEntity.toDomain() = Item(
     id = this.id!!,
     description = this.description,
     price = this.price,
-    type = Item.ItemType.from(this.type)
+    type = ItemType.from(this.type)
 )

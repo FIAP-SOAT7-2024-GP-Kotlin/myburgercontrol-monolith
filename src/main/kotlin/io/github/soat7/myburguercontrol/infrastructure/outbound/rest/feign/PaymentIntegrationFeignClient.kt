@@ -13,6 +13,3 @@ interface PaymentIntegrationFeignClient {
         @RequestBody paymentIntegrationRequest: PaymentIntegrationRequest
     ): ResponseEntity<PaymentIntegrationResponse>
 }
-
-
-

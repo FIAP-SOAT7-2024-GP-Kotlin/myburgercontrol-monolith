@@ -1,4 +1,4 @@
-package io.github.soat7.myburguercontrol.infrastructure.outbound.customer.entity
+package io.github.soat7.myburguercontrol.infrastructure.persistence.customer.entity
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

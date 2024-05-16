@@ -11,7 +11,6 @@ class PaymentService(
 
     companion object : KLogging()
     override fun requestPayment(payment: Payment): Payment {
-
         logger.info { "Starting to request payment integration with id: [${payment.id}]" }
 
         payment.status = if (paymentIntegrationPort.requestPayment(payment)) Payment.Status.APPROVED else Payment.Status.DENIED

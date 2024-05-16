@@ -6,8 +6,8 @@ import io.github.soat7.myburguercontrol.domain.mapper.toRequest
 import io.github.soat7.myburguercontrol.domain.model.Payment
 import io.github.soat7.myburguercontrol.domain.service.PaymentService
 import io.github.soat7.myburguercontrol.fixtures.PaymentFixtures.mockPayment
-import io.github.soat7.myburguercontrol.infrastructure.outbound.rest.feign.PaymentIntegrationFeignClient
-import io.github.soat7.myburguercontrol.infrastructure.outbound.rest.feign.PaymentIntegrationResponse
+import io.github.soat7.myburguercontrol.infrastructure.external.feign.PaymentIntegrationFeignClient
+import io.github.soat7.myburguercontrol.infrastructure.external.feign.PaymentIntegrationResponse
 import io.mockk.clearMocks
 import io.mockk.every
 import io.mockk.mockk

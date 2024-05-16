@@ -1,11 +1,11 @@
-package io.github.soat7.myburguercontrol.infrastructure.rest.item.api
+package io.github.soat7.myburguercontrol.infrastructure.rest.product.api
 
-import io.github.soat7.myburguercontrol.domain.enum.ItemType
+import io.github.soat7.myburguercontrol.domain.enum.ProductType
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import java.math.BigDecimal
 
-data class ItemCreationRequest(
+data class ProductCreationRequest(
     @NotBlank
     val description: String,
 
@@ -13,5 +13,5 @@ data class ItemCreationRequest(
     val price: BigDecimal,
 
     @NotBlank
-    val type: ItemType
+    val type: ProductType
 )

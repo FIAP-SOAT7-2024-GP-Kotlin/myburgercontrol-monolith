@@ -1,8 +1,8 @@
 package io.github.soat7.myburguercontrol.domain.service
 
-import io.github.soat7.myburguercontrol.application.ports.outbound.ItemDatabasePort
-import io.github.soat7.myburguercontrol.domain.model.Item
-import io.github.soat7.myburguercontrol.fixtures.ItemFixtures.mockDomainItem
+import io.github.soat7.myburguercontrol.application.ports.outbound.ProductDatabasePort
+import io.github.soat7.myburguercontrol.domain.model.Product
+import io.github.soat7.myburguercontrol.fixtures.ProductFixtures.mockDomainProduct
 import io.mockk.clearMocks
 import io.mockk.every
 import io.mockk.mockk
@@ -21,10 +21,10 @@ import kotlin.test.BeforeTest
 import kotlin.test.assertNull
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class ItemServiceTest {
+class ProductServiceTest {
 
-    private val databasePort = mockk<ItemDatabasePort>()
-    private val service = ItemService(databasePort)
+    private val databasePort = mockk<ProductDatabasePort>()
+    private val service = ProductService(databasePort)
 
     @BeforeTest
     fun setUp() {
@@ -32,40 +32,40 @@ class ItemServiceTest {
     }
 
     @Test
-    fun `should successfully create an item`() {
-        val item = mockDomainItem(id = UUID.randomUUID(), description = "Item")
+    fun `should successfully create an product`() {
+        val product = mockDomainProduct(id = UUID.randomUUID(), description = "Product")
 
-        every { databasePort.create(any<Item>()) } returns item
+        every { databasePort.create(any<Product>()) } returns product
 
         val result = assertDoesNotThrow {
-            service.create(item)
+            service.create(product)
         }
 
         assertNotNull(result)
-        assertEquals(item, result)
+        assertEquals(product, result)
 
-        verify(exactly = 1) { databasePort.create(any<Item>()) }
+        verify(exactly = 1) { databasePort.create(any<Product>()) }
     }
 
     @Test
-    fun `should find an item by id`() {
+    fun `should find a product by id`() {
         val id = UUID.randomUUID()
-        val item = mockDomainItem(id = id, description = "Item")
+        val product = mockDomainProduct(id = id, description = "Product")
 
-        every { databasePort.findById(any()) } returns item
+        every { databasePort.findById(any()) } returns product
 
         val result = assertDoesNotThrow {
             service.findById(id)
         }
 
         assertNotNull(result)
-        assertEquals(item, result)
+        assertEquals(product, result)
 
         verify(exactly = 1) { databasePort.findById(any()) }
     }
 
     @Test
-    fun `should return null when no Item is found by given id`() {
+    fun `should return null when no product is found by given id`() {
         val id = UUID.randomUUID()
 
         every { databasePort.findById(any()) } returns null
@@ -80,14 +80,14 @@ class ItemServiceTest {
     }
 
     @Test
-    fun `should find all items`() {
+    fun `should find all products`() {
         val pageable = Pageable.unpaged()
-        val items = listOf(
-            mockDomainItem(id = UUID.randomUUID(), description = "Item 1"),
-            mockDomainItem(id = UUID.randomUUID(), description = "Item 2")
+        val products = listOf(
+            mockDomainProduct(id = UUID.randomUUID(), description = "Product 1"),
+            mockDomainProduct(id = UUID.randomUUID(), description = "Product 2")
         )
 
-        val page = PageImpl(items, pageable, items.size.toLong())
+        val page = PageImpl(products, pageable, products.size.toLong())
         every { databasePort.findAll(any()) } returns page
 
         val result = assertDoesNotThrow {
@@ -101,7 +101,7 @@ class ItemServiceTest {
     }
 
     @Test
-    fun `should return empty page when no items are found`() {
+    fun `should return empty page when no products are found`() {
         val pageable = Pageable.unpaged()
 
         every { databasePort.findAll(any()) } returns Page.empty()

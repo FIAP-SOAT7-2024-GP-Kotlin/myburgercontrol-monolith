@@ -1,10 +1,9 @@
-package io.github.soat7.myburguercontrol.infrastructure.outbound.rest.feign
+package io.github.soat7.myburguercontrol.infrastructure.external.feign
 
 import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
-
 
 @FeignClient(name = "PaymentIntegrationFeignClient", url = "\${spring.feign.payment_integration_url}")
 interface PaymentIntegrationFeignClient {

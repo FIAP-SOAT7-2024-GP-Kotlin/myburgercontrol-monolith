@@ -1,5 +1,4 @@
-package io.github.soat7.myburguercontrol.service;
-
+package io.github.soat7.myburguercontrol.service
 
 import io.github.soat7.myburguercontrol.application.ports.outbound.PaymentIntegrationPort
 import io.github.soat7.myburguercontrol.domain.mapper.toRequest
@@ -22,8 +21,6 @@ import org.springframework.http.ResponseEntity
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertNotEquals
-
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
@@ -31,7 +28,7 @@ public class PaymentServiceTest {
 
     private val paymentIntegrationPort = mockk<PaymentIntegrationPort>()
     private val service = PaymentService(paymentIntegrationPort)
-    private val feignClient =  mockk<PaymentIntegrationFeignClient>()
+    private val feignClient = mockk<PaymentIntegrationFeignClient>()
 
     @BeforeTest
     fun setUp() {
@@ -40,10 +37,10 @@ public class PaymentServiceTest {
 
     @Test
     @Order(1)
-    fun `should try to pay successfully using an external service`(){
+    fun `should try to pay successfully using an external service`() {
         val payment = mockPayment()
 
-        val paymentIntegrationResponse = PaymentIntegrationResponse(
+        val paymentIntegrationResponse = PaymentIntegrationResponse (
             message = "Payment processed successfully"
         )
 
@@ -70,7 +67,7 @@ public class PaymentServiceTest {
 
     @Test
     @Order(1)
-    fun `should try to pay denied using an external service`(){
+    fun `should try to pay denied using an external service`() {
         val payment = mockPayment()
 
         val paymentIntegrationResponse = PaymentIntegrationResponse(
@@ -95,7 +92,5 @@ public class PaymentServiceTest {
         }
 
         assertEquals(payment.status, response.status)
-
     }
-
 }

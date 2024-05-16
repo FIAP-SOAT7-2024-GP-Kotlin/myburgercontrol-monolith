@@ -1,7 +1,7 @@
 package io.github.soat7.myburguercontrol.fixtures
 
+import io.github.soat7.myburguercontrol.domain.enum.ItemType
 import io.github.soat7.myburguercontrol.domain.model.Item
-import io.github.soat7.myburguercontrol.domain.model.ItemType
 import io.github.soat7.myburguercontrol.infrastructure.persistence.item.entity.ItemEntity
 import io.github.soat7.myburguercontrol.infrastructure.rest.item.api.ItemCreationRequest
 import java.math.BigDecimal
@@ -13,7 +13,7 @@ object ItemFixtures {
     fun mockItemCreationRequest() = ItemCreationRequest(
         description = "ITEM",
         price = BigDecimal("1.00"),
-        type = ItemCreationRequest.ItemType.FOOD
+        type = ItemType.FOOD
     )
 
     fun mockItemEntity(id: UUID = UUID.randomUUID(), type: ItemType = ItemType.FOOD) = ItemEntity(

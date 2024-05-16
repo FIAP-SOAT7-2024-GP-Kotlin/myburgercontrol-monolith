@@ -22,4 +22,11 @@ class UserDatabaseAdapter(
     override fun findUserByCpf(cpf: String): User? = repository.findByCpf(cpf)?.toDomain()
 
     override fun findUserById(id: UUID): User? = repository.findByIdOrNull(id)?.toDomain()
+
+    override fun findByAll(): List<User> = repository.findAll().map { it.toDomain() }
+
+    override fun deleteByUUID(uuid: UUID): Boolean {
+        repository.deleteById(uuid)
+        return true
+    }
 }

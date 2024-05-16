@@ -10,4 +10,8 @@ interface UserServicePort {
     fun findUserById(id: UUID): User?
 
     fun findUserByCpf(cpf: String): User?
+
+    fun findByAll(): List<User>
+
+    fun deleteByUUID(uuid: UUID): Boolean
 }

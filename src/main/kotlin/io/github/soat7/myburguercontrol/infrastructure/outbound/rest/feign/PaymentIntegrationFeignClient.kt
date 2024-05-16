@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 
-
 @FeignClient(name = "PaymentIntegrationFeignClient", url = "\${spring.feign.payment_integration_url}")
 interface PaymentIntegrationFeignClient {
     @PostMapping("/pagamento/mercadopago")

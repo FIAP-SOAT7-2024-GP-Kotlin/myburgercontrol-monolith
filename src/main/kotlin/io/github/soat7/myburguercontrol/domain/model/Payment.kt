@@ -8,11 +8,9 @@ data class Payment(
     var status: Status = Status.REQUESTED,
     val value: BigDecimal
 ) {
-    enum class Status(){
+    enum class Status() {
         REQUESTED,
         APPROVED,
         DENIED
     }
 }
-
-

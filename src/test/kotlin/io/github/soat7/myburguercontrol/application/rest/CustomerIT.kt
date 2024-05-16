@@ -2,8 +2,8 @@ package io.github.soat7.myburguercontrol.application.rest
 
 import io.github.soat7.myburguercontrol.base.BaseIntegrationTest
 import io.github.soat7.myburguercontrol.fixtures.CustomerFixtures
-import io.github.soat7.myburguercontrol.infrastructure.outbound.customer.repository.CustomerRepository
-import io.github.soat7.myburguercontrol.infrastructure.inbound.rest.api.CustomerResponse
+import io.github.soat7.myburguercontrol.infrastructure.persistence.customer.repository.CustomerRepository
+import io.github.soat7.myburguercontrol.infrastructure.rest.api.CustomerResponse
 import org.junit.jupiter.api.Assertions.assertAll
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test

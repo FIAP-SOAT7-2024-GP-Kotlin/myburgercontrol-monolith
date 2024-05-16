@@ -13,16 +13,13 @@ class PaymentIntegrationService(
 ) : PaymentIntegrationPort {
 
     override fun requestPayment(payment: Payment): Boolean {
-
         try {
             val integrationResponse = feignClient.requestPaymentIntegration(payment.toRequest())
             return integrationResponse.statusCode == HttpStatusCode.valueOf(200)
-
         } catch (ex: FeignException) {
             if (ex.status() == 404) throw NotFoundException()
             if (ex.status() in 400..499) throw ex
             return false
         }
     }
-
 }

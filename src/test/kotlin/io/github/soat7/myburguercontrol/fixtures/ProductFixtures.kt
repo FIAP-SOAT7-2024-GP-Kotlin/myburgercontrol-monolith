@@ -4,6 +4,7 @@ import io.github.soat7.myburguercontrol.domain.enum.ProductType
 import io.github.soat7.myburguercontrol.domain.model.Product
 import io.github.soat7.myburguercontrol.infrastructure.persistence.product.entity.ProductEntity
 import io.github.soat7.myburguercontrol.infrastructure.rest.product.api.ProductCreationRequest
+import java.math.BigDecimal
 import java.time.Instant
 import java.util.UUID
 
@@ -24,11 +25,16 @@ object ProductFixtures {
         updatedAt = Instant.now()
     )
 
-    fun mockDomainProduct(id: UUID = UUID.randomUUID(), description: String, type: ProductType = ProductType.FOOD) =
+    fun mockDomainProduct(
+        id: UUID = UUID.randomUUID(),
+        description: String,
+        type: ProductType = ProductType.FOOD,
+        price: BigDecimal = 1.0.toBigDecimal().setScale(2)
+    ) =
         Product(
             id = id,
             description = description,
-            price = 1.0.toBigDecimal().setScale(2),
+            price = price,
             type = type
         )
 }

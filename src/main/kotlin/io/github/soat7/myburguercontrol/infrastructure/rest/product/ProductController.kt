@@ -1,11 +1,11 @@
-package io.github.soat7.myburguercontrol.infrastructure.rest.item
+package io.github.soat7.myburguercontrol.infrastructure.rest.product
 
-import io.github.soat7.myburguercontrol.application.ports.inbound.ItemServicePort
+import io.github.soat7.myburguercontrol.application.ports.inbound.ProductServicePort
 import io.github.soat7.myburguercontrol.domain.mapper.toDomain
 import io.github.soat7.myburguercontrol.domain.mapper.toResponse
 import io.github.soat7.myburguercontrol.infrastructure.rest.common.PaginatedResponse
-import io.github.soat7.myburguercontrol.infrastructure.rest.item.api.ItemCreationRequest
-import io.github.soat7.myburguercontrol.infrastructure.rest.item.api.ItemResponse
+import io.github.soat7.myburguercontrol.infrastructure.rest.product.api.ProductCreationRequest
+import io.github.soat7.myburguercontrol.infrastructure.rest.product.api.ProductResponse
 import mu.KLogging
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.MediaType
@@ -20,11 +20,11 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
-@RestController("item-controller")
-@RequestMapping("items")
+@RestController("product-controller")
+@RequestMapping("products")
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
-class ItemController(
-    private val service: ItemServicePort
+class ProductController(
+    private val service: ProductServicePort
 ) {
 
     private companion object : KLogging()
@@ -33,8 +33,8 @@ class ItemController(
         consumes = [MediaType.APPLICATION_JSON_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
-    fun createItem(@RequestBody request: ItemCreationRequest): ResponseEntity<ItemResponse> = run {
-        logger.info { "Creating item" }
+    fun createProduct(@RequestBody request: ProductCreationRequest): ResponseEntity<ProductResponse> = run {
+        logger.info { "Creating product" }
         val response = service.create(request.toDomain())
 
         ResponseEntity.ok(response.toResponse())
@@ -44,8 +44,8 @@ class ItemController(
         path = ["/{id}"],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
-    fun getItemById(@PathVariable("id") id: UUID) = run {
-        logger.info { "Getting item by id: [$id]" }
+    fun getProductById(@PathVariable("id") id: UUID) = run {
+        logger.info { "Getting product by id: [$id]" }
         service.findById(id)?.let {
             ResponseEntity.ok(it)
         } ?: ResponseEntity.notFound().build()
@@ -55,8 +55,8 @@ class ItemController(
     fun findAll(
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "10") size: Int
-    ): ResponseEntity<PaginatedResponse<ItemResponse>> = run {
-        logger.info { "Listing all items" }
+    ): ResponseEntity<PaginatedResponse<ProductResponse>> = run {
+        logger.info { "Listing all products" }
         val pageable = PageRequest.of(page, size)
 
         val response = service.findAll(pageable)

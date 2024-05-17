@@ -4,8 +4,8 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="2024-05-12-item-add-datetime-columns" author="luizfernando.calazans8@gmail.com">
-        <addColumn tableName="item">
+    <changeSet id="2024-05-12-product-add-datetime-columns" author="luizfernando.calazans8@gmail.com">
+        <addColumn tableName="product">
             <column name="created_at" type="TIMESTAMP">
                 <constraints nullable="false"/>
             </column>

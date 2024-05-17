@@ -1,22 +1,21 @@
 package io.github.soat7.myburguercontrol.domain.mapper
 
-import io.github.soat7.myburguercontrol.domain.enum.ItemType
-import io.github.soat7.myburguercontrol.domain.model.Item
-import io.github.soat7.myburguercontrol.domain.model.ItemType
-import io.github.soat7.myburguercontrol.infrastructure.persistence.item.entity.ItemEntity
-import io.github.soat7.myburguercontrol.infrastructure.rest.item.api.ItemCreationRequest
-import io.github.soat7.myburguercontrol.infrastructure.rest.item.api.ItemResponse
+import io.github.soat7.myburguercontrol.domain.enum.ProductType
+import io.github.soat7.myburguercontrol.domain.model.Product
+import io.github.soat7.myburguercontrol.infrastructure.persistence.product.entity.ProductEntity
+import io.github.soat7.myburguercontrol.infrastructure.rest.product.api.ProductCreationRequest
+import io.github.soat7.myburguercontrol.infrastructure.rest.product.api.ProductResponse
 import java.time.Instant
 import java.util.UUID
 
-fun Item.toResponse() = ItemResponse(
+fun Product.toResponse() = ProductResponse(
     id = this.id,
     description = this.description,
     price = this.price,
     type = this.type.name
 )
 
-fun Item.toPersistence() = ItemEntity(
+fun Product.toPersistence() = ProductEntity(
     id = this.id,
     description = this.description,
     price = this.price,
@@ -25,16 +24,16 @@ fun Item.toPersistence() = ItemEntity(
     updatedAt = Instant.now()
 )
 
-fun ItemCreationRequest.toDomain() = Item(
+fun ProductCreationRequest.toDomain() = Product(
     id = UUID.randomUUID(),
     description = this.description,
     price = this.price,
-    type = ItemType.valueOf(this.type.name)
+    type = ProductType.valueOf(this.type.name)
 )
 
-fun ItemEntity.toDomain() = Item(
+fun ProductEntity.toDomain() = Product(
     id = this.id!!,
     description = this.description,
     price = this.price,
-    type = ItemType.from(this.type)
+    type = ProductType.from(this.type)
 )

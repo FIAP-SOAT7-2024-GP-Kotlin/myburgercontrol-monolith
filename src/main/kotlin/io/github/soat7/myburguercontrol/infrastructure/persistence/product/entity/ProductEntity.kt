@@ -1,4 +1,4 @@
-package io.github.soat7.myburguercontrol.infrastructure.persistence.item.entity
+package io.github.soat7.myburguercontrol.infrastructure.persistence.product.entity
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -12,10 +12,10 @@ import java.util.UUID
 
 @Entity
 @Table(
-    name = "item",
+    name = "product",
     schema = "myburguer"
 )
-data class ItemEntity(
+data class ProductEntity(
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

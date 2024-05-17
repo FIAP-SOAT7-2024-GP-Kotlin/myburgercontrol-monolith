@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
+import jakarta.persistence.SequenceGenerator
 import jakarta.persistence.Table
 
 @Entity
@@ -17,11 +18,21 @@ import jakarta.persistence.Table
     name = "order_item",
     schema = "myburguer"
 )
+@SequenceGenerator(
+    name = "sq_order_item_id",
+    sequenceName = "sq_order_item_id",
+    schema = "myburguer",
+    allocationSize = 1
+)
 class OrderItemEntity(
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sq_order_item_id")
     @Column(name = "id", nullable = false)
     var id: Long? = null,
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "order_id", foreignKey = ForeignKey(name = "fk_order"))
+    var order: OrderEntity,
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id", foreignKey = ForeignKey(name = "fk_product"), nullable = false)

@@ -33,14 +33,17 @@ fun Order.toPersistence(customerEntity: CustomerEntity, productFinder: (productI
         customer = customerEntity,
         status = this.status.name,
         createdAt = this.createdAt,
-        items = this.items.map { it.toPersistence(productFinder) }
-    )
+    ).apply {
+        this.items = this@toPersistence.items.map { it.toPersistence(this, productFinder) }
+    }
 
-fun OrderItem.toPersistence(productFinder: (productId: UUID) -> ProductEntity) = OrderItemEntity(
-    id = this.id,
-    product = productFinder.invoke(this.product.id),
-    quantity = this.quantity
-)
+fun OrderItem.toPersistence(orderEntity: OrderEntity, productFinder: (productId: UUID) -> ProductEntity) =
+    OrderItemEntity(
+        id = this.id,
+        order = orderEntity,
+        product = productFinder.invoke(this.product.id),
+        quantity = this.quantity
+    )
 
 fun OrderEntity.toDomain() = Order(
     id = this.id ?: UUID.fromString(""),

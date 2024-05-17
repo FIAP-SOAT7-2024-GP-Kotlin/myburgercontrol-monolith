@@ -1,5 +1,6 @@
 package io.github.soat7.myburguercontrol.domain.service
 
+import io.github.soat7.myburguercontrol.application.ports.inbound.OrderServicePort
 import io.github.soat7.myburguercontrol.application.ports.outbound.CustomerDatabasePort
 import io.github.soat7.myburguercontrol.application.ports.outbound.OrderDatabasePort
 import io.github.soat7.myburguercontrol.domain.model.Customer
@@ -11,10 +12,10 @@ import java.util.UUID
 class OrderService(
     private val orderDatabasePort: OrderDatabasePort,
     private val customerDatabasePort: CustomerDatabasePort
-) {
+) : OrderServicePort {
     private companion object : KLogging()
 
-    fun newOrder(cpf: String): Order {
+    override fun newOrder(cpf: String): Order {
         logger.info { "Order.newOrder(cpf = $cpf)" }
         val customer = customerDatabasePort.findCustomerByCpf(cpf)
             ?: throw CustomerNotFoundException(Customer(id = UUID.fromString(""), cpf = cpf))
@@ -22,7 +23,7 @@ class OrderService(
         return newOrder(customer)
     }
 
-    fun newOrder(customerId: UUID): Order {
+    override fun newOrder(customerId: UUID): Order {
         logger.info { "Order.newOrder(customerId = $customerId)" }
         val customer = customerDatabasePort.findCustomerById(customerId)
             ?: throw CustomerNotFoundException(Customer(id = customerId, cpf = ""))
@@ -40,7 +41,7 @@ class OrderService(
         return orderDatabasePort.create(order)
     }
 
-    fun findOrders(cpf: String) = run {
+    override fun findOrders(cpf: String) = run {
         logger.info { "Order.findOrders(cpf = $cpf)" }
         val customer = customerDatabasePort.findCustomerByCpf(cpf)
             ?: throw CustomerNotFoundException(Customer(id = UUID.fromString(""), cpf = cpf))
@@ -48,7 +49,7 @@ class OrderService(
         findOrders(customer)
     }
 
-    fun findOrders(customerId: UUID) = run {
+    override fun findOrders(customerId: UUID) = run {
         logger.info { "Order.findOrders(customerId = $customerId)" }
         val customer = customerDatabasePort.findCustomerById(customerId)
             ?: throw CustomerNotFoundException(Customer(id = customerId, cpf = ""))

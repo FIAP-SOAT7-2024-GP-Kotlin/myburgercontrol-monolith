@@ -1,8 +1,10 @@
 package io.github.soat7.myburguercontrol.infrastructure.config
 
 import io.github.soat7.myburguercontrol.application.ports.outbound.CustomerDatabasePort
+import io.github.soat7.myburguercontrol.application.ports.outbound.OrderDatabasePort
 import io.github.soat7.myburguercontrol.application.ports.outbound.ProductDatabasePort
 import io.github.soat7.myburguercontrol.domain.service.CustomerService
+import io.github.soat7.myburguercontrol.domain.service.OrderService
 import io.github.soat7.myburguercontrol.domain.service.ProductService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -15,4 +17,8 @@ class BeanConfiguration {
 
     @Bean
     fun productService(productDatabasePort: ProductDatabasePort) = ProductService(productDatabasePort)
+
+    @Bean
+    fun orderService(orderDatabasePort: OrderDatabasePort, customerDatabasePort: CustomerDatabasePort) =
+        OrderService(orderDatabasePort, customerDatabasePort)
 }

@@ -11,6 +11,9 @@ import io.github.soat7.myburguercontrol.domain.service.TokenService
 import io.github.soat7.myburguercontrol.domain.service.UserService
 import io.github.soat7.myburguercontrol.infrastructure.persistence.user.repository.UserRepository
 import io.github.soat7.myburguercontrol.domain.service.CustomUserDetailsService
+import io.github.soat7.myburguercontrol.application.ports.outbound.ProductDatabasePort
+import io.github.soat7.myburguercontrol.domain.service.CustomerService
+import io.github.soat7.myburguercontrol.domain.service.ProductService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -48,4 +51,7 @@ class BeanConfiguration(
     fun tokenService(): TokenServicePort {
         return TokenService(jwtProperties)
     }
+
+    @Bean
+    fun productService(productDatabasePort: ProductDatabasePort) = ProductService(productDatabasePort)
 }

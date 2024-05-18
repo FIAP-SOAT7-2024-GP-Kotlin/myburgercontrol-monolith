@@ -2,8 +2,9 @@ package io.github.soat7.myburguercontrol.domain.mapper
 
 import io.github.soat7.myburguercontrol.domain.model.Customer
 import io.github.soat7.myburguercontrol.infrastructure.persistence.customer.entity.CustomerEntity
-import io.github.soat7.myburguercontrol.infrastructure.rest.api.CustomerCreationRequest
-import io.github.soat7.myburguercontrol.infrastructure.rest.api.CustomerResponse
+import io.github.soat7.myburguercontrol.infrastructure.rest.customer.api.request.CustomerCreationRequest
+import io.github.soat7.myburguercontrol.infrastructure.rest.customer.api.response.CustomerResponse
+import java.time.Instant
 import java.util.UUID
 
 fun CustomerCreationRequest.toDomain() = Customer(
@@ -24,7 +25,9 @@ fun Customer.toPersistence() = CustomerEntity(
     id = this.id,
     cpf = this.cpf,
     name = this.name,
-    email = this.email
+    email = this.email,
+    createdAt = Instant.now(),
+    updatedAt = Instant.now()
 )
 
 fun Customer.toResponse() = CustomerResponse(

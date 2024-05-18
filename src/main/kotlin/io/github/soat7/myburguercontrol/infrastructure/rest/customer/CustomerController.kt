@@ -1,10 +1,10 @@
-package io.github.soat7.myburguercontrol.infrastructure.rest
+package io.github.soat7.myburguercontrol.infrastructure.rest.customer
 
 import io.github.soat7.myburguercontrol.application.ports.inbound.CustomerServicePort
 import io.github.soat7.myburguercontrol.domain.mapper.toDomain
 import io.github.soat7.myburguercontrol.domain.mapper.toResponse
-import io.github.soat7.myburguercontrol.infrastructure.rest.api.CustomerCreationRequest
-import io.github.soat7.myburguercontrol.infrastructure.rest.api.CustomerResponse
+import io.github.soat7.myburguercontrol.infrastructure.rest.customer.api.request.CustomerCreationRequest
+import io.github.soat7.myburguercontrol.infrastructure.rest.customer.api.response.CustomerResponse
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
 @RestController("customer-controller")
-@RequestMapping(path = ["/customer"])
+@RequestMapping(path = ["customers"])
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 class CustomerController(
     private val service: CustomerServicePort

@@ -2,7 +2,8 @@ package io.github.soat7.myburguercontrol.fixtures
 
 import io.github.soat7.myburguercontrol.domain.model.Customer
 import io.github.soat7.myburguercontrol.infrastructure.persistence.customer.entity.CustomerEntity
-import io.github.soat7.myburguercontrol.infrastructure.rest.api.CustomerCreationRequest
+import io.github.soat7.myburguercontrol.infrastructure.rest.customer.api.request.CustomerCreationRequest
+import java.time.Instant
 import java.util.UUID
 
 object CustomerFixtures {
@@ -17,7 +18,9 @@ object CustomerFixtures {
             id = id,
             cpf = cpf,
             name = name,
-            email = email
+            email = email,
+            createdAt = Instant.now(),
+            updatedAt = Instant.now()
         )
 
     fun mockCustomerCreationRequest(cpf: String) = CustomerCreationRequest(
@@ -26,7 +29,7 @@ object CustomerFixtures {
         email = "test@test.com"
     )
 
-    fun mockCustomer(id: UUID = UUID.randomUUID(), cpf: String): Customer {
+    fun mockDomainCustomer(id: UUID = UUID.randomUUID(), cpf: String): Customer {
         val entity = mockCustomerEntity(id = id, cpf = cpf)
 
         return Customer(

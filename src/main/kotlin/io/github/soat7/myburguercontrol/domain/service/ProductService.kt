@@ -2,6 +2,8 @@ package io.github.soat7.myburguercontrol.domain.service
 
 import io.github.soat7.myburguercontrol.application.ports.inbound.ProductServicePort
 import io.github.soat7.myburguercontrol.application.ports.outbound.ProductDatabasePort
+import io.github.soat7.myburguercontrol.domain.exception.ReasonCode
+import io.github.soat7.myburguercontrol.domain.exception.ReasonCodeException
 import io.github.soat7.myburguercontrol.domain.model.Product
 import mu.KLogging
 import org.springframework.data.domain.Page
@@ -14,18 +16,27 @@ class ProductService(
 
     private companion object : KLogging()
 
-    override fun create(product: Product): Product {
+    override fun create(product: Product): Product = try {
         logger.debug { "Saving new product $product" }
-        return databasePort.create(product)
+        databasePort.create(product)
+    } catch (ex: Exception) {
+        logger.error(ex) { "Error while creating product" }
+        throw ReasonCodeException(ReasonCode.UNEXPECTED_ERROR, ex)
     }
 
-    override fun findAll(pageable: Pageable): Page<Product> {
+    override fun findAll(pageable: Pageable): Page<Product> = try {
         logger.debug { "Finding all products" }
-        return databasePort.findAll(pageable)
+        databasePort.findAll(pageable)
+    } catch (ex: Exception) {
+        logger.error(ex) { "Error while listing products" }
+        throw ReasonCodeException(ReasonCode.UNEXPECTED_ERROR, ex)
     }
 
-    override fun findById(id: UUID): Product? {
+    override fun findById(id: UUID): Product? = try {
         logger.debug { "Finding product with id $id" }
-        return databasePort.findById(id)
+        databasePort.findById(id)
+    } catch (ex: Exception) {
+        logger.error(ex) { "Error while finding product by id" }
+        throw ReasonCodeException(ReasonCode.UNEXPECTED_ERROR, ex)
     }
 }

@@ -24,10 +24,13 @@ class CustomerIT : BaseIntegrationTest() {
 
     @Test
     fun `should successfully create a new customer`() {
-        val cpf = "48024771802"
+        val cpf = "58737317059"
         val inputCustomerData = CustomerFixtures.mockCustomerCreationRequest(cpf)
 
-        val response = restTemplate.postForEntity<CustomerResponse>("/customers", inputCustomerData)
+        val response = restTemplate.postForEntity<CustomerResponse>(
+            "/customers",
+            inputCustomerData
+        )
 
         assertAll(
             Executable { assertTrue(response.statusCode.is2xxSuccessful) },
@@ -41,6 +44,20 @@ class CustomerIT : BaseIntegrationTest() {
             Executable { assertEquals(cpf, savedCustomer!!.cpf) },
             Executable { assertEquals(response.body!!.id, savedCustomer!!.id) }
         )
+    }
+
+    @Test
+    fun `should return BAD_REQUEST when trying to create a new customer with a cpf that is already registered`() {
+        val cpf = "82709425025"
+        val inputCustomerData = CustomerFixtures.mockCustomerCreationRequest(cpf)
+        customerRepository.save(CustomerFixtures.mockCustomerEntity(UUID.randomUUID(), cpf))
+
+        val response = restTemplate.postForEntity<Any>(
+            "/customers",
+            inputCustomerData
+        )
+
+        assertTrue(response.statusCode.is4xxClientError)
     }
 
     @Test

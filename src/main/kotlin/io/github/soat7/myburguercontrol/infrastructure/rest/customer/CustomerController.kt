@@ -29,8 +29,8 @@ class CustomerController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     fun createCustomer(@RequestBody request: CustomerCreationRequest): ResponseEntity<CustomerResponse> = run {
-        val resp = service.create(request.toDomain())
-        ResponseEntity.ok(resp.toResponse())
+        val customer = service.create(request.toDomain())
+        ResponseEntity.ok(customer.toResponse())
     }
 
     @GetMapping(
@@ -48,7 +48,7 @@ class CustomerController(
     )
     fun findCustomerByCpf(@RequestParam("cpf") cpf: String): ResponseEntity<CustomerResponse> = run {
         service.findCustomerByCpf(cpf)?.let {
-            ResponseEntity.ok(it.toResponse())
+            ResponseEntity.ok().body(it.toResponse())
         } ?: ResponseEntity.notFound().build()
     }
 }

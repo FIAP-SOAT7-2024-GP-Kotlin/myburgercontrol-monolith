@@ -34,7 +34,7 @@ class ProductController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     fun createProduct(@RequestBody request: ProductCreationRequest): ResponseEntity<ProductResponse> = run {
-        logger.info { "Creating product" }
+        logger.debug { "Creating product" }
         val response = service.create(request.toDomain())
 
         ResponseEntity.ok(response.toResponse())
@@ -44,10 +44,10 @@ class ProductController(
         path = ["/{id}"],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
-    fun getProductById(@PathVariable("id") id: UUID) = run {
-        logger.info { "Getting product by id: [$id]" }
+    fun getProductById(@PathVariable("id") id: UUID): ResponseEntity<ProductResponse> = run {
+        logger.debug { "Getting product by id: [$id]" }
         service.findById(id)?.let {
-            ResponseEntity.ok(it)
+            ResponseEntity.ok(it.toResponse())
         } ?: ResponseEntity.notFound().build()
     }
 
@@ -56,7 +56,7 @@ class ProductController(
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "10") size: Int
     ): ResponseEntity<PaginatedResponse<ProductResponse>> = run {
-        logger.info { "Listing all products" }
+        logger.debug { "Listing all products" }
         val pageable = PageRequest.of(page, size)
 
         val response = service.findAll(pageable)

@@ -2,24 +2,32 @@ package io.github.soat7.myburguercontrol.infrastructure.external
 
 import feign.FeignException
 import io.github.soat7.myburguercontrol.application.ports.outbound.PaymentIntegrationPort
+import io.github.soat7.myburguercontrol.domain.dto.PaymentResult
+import io.github.soat7.myburguercontrol.domain.mapper.toDto
 import io.github.soat7.myburguercontrol.domain.mapper.toRequest
 import io.github.soat7.myburguercontrol.domain.model.Payment
 import io.github.soat7.myburguercontrol.infrastructure.external.feign.PaymentIntegrationFeignClient
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
-import org.springframework.http.HttpStatusCode
+import mu.KLogging
 
 class PaymentIntegrationService(
     private val feignClient: PaymentIntegrationFeignClient
 ) : PaymentIntegrationPort {
 
-    override fun requestPayment(payment: Payment): Boolean {
+    companion object : KLogging()
+
+    override fun requestPayment(payment: Payment): PaymentResult {
         try {
-            val integrationResponse = feignClient.requestPaymentIntegration(payment.toRequest())
-            return integrationResponse.statusCode == HttpStatusCode.valueOf(200)
+            logger.info { "Starting to integrate with payment provider with id=[${payment.id}]" }
+            val response = feignClient.requestPaymentIntegration(payment.toRequest())
+            return response.toDto(approved = true)
         } catch (ex: FeignException) {
-            if (ex.status() == 404) throw NotFoundException()
-            if (ex.status() in 400..499) throw ex
-            return false
+            when (ex.status()) {
+                402 -> return PaymentResult(null, false)
+                else -> {
+                    logger.error { "Integration error at payment provider operationId=[${payment.id}]" }
+                    throw ex
+                }
+            }
         }
     }
 }

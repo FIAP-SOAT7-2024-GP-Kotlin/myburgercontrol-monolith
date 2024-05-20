@@ -7,7 +7,9 @@
   "response" : {
     "status" : 200,
     "jsonBody" : {
-      "message" : "Pagamento autorizado"
+      "message" : "Pagamento autorizado",
+      "cpf" : "{{jsonPath request.body '$.cpf'}}",
+      "authorization_id": "{{randomValue type='UUID'}}"
     },
     "headers" : {
       "Content-Type" : "application/json"

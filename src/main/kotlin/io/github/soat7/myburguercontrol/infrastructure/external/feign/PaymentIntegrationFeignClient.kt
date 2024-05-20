@@ -1,7 +1,6 @@
 package io.github.soat7.myburguercontrol.infrastructure.external.feign
 
 import org.springframework.cloud.openfeign.FeignClient
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 
@@ -10,5 +9,5 @@ interface PaymentIntegrationFeignClient {
     @PostMapping("/pagamento/mercadopago")
     fun requestPaymentIntegration(
         @RequestBody paymentIntegrationRequest: PaymentIntegrationRequest
-    ): ResponseEntity<PaymentIntegrationResponse>
+    ): PaymentIntegrationResponse
 }

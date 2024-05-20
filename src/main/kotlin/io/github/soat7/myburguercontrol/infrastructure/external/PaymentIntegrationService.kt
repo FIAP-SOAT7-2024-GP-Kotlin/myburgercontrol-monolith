@@ -6,13 +6,16 @@ import io.github.soat7.myburguercontrol.domain.mapper.toDto
 import io.github.soat7.myburguercontrol.domain.mapper.toRequest
 import io.github.soat7.myburguercontrol.domain.model.Payment
 import io.github.soat7.myburguercontrol.infrastructure.external.rest.PaymentIntegrationResponse
+import io.github.soat7.myburguercontrol.infrastructure.external.rest.PaymentIntegrationRestTemplate
 import mu.KLogging
 import org.springframework.web.client.RestClientResponseException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
 
 
-class RestTemplateService() : PaymentIntegrationPort {
+class PaymentIntegrationService(
+    val paymentIntegrationRestTemplate: PaymentIntegrationRestTemplate
+) : PaymentIntegrationPort {
 
     private companion object : KLogging()
 
@@ -20,21 +23,8 @@ class RestTemplateService() : PaymentIntegrationPort {
 
         logger.info { "Starting integration with PaymentProvider" }
 
-        val restTemplate = RestTemplate()
-
-        val uri = UriComponentsBuilder.fromUriString("\${spring.feign.payment_integration_url}")
-            .path("/mercadopago/pagamento")
-            .build().toUri()
-
         try {
-            val response = restTemplate.postForEntity(
-                uri,
-                payment.toRequest(),
-                PaymentIntegrationResponse::class.java
-            ).also {
-                logger.info { "Successfully requested integration at {$uri}" }
-
-            }
+            val response = paymentIntegrationRestTemplate.requestPaymentIntegration(payment.toRequest())
 
             if (response.statusCode.is2xxSuccessful)
                 response.body?.let {

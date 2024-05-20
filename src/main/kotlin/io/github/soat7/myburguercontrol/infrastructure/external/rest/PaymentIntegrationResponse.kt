@@ -1,4 +1,4 @@
-package io.github.soat7.myburguercontrol.infrastructure.external.feign
+package io.github.soat7.myburguercontrol.infrastructure.external.rest
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.databind.PropertyNamingStrategies

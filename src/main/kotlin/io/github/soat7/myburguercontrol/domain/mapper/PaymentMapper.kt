@@ -2,8 +2,8 @@ package io.github.soat7.myburguercontrol.domain.mapper
 
 import io.github.soat7.myburguercontrol.domain.dto.PaymentResult
 import io.github.soat7.myburguercontrol.domain.model.Payment
-import io.github.soat7.myburguercontrol.infrastructure.external.feign.PaymentIntegrationRequest
-import io.github.soat7.myburguercontrol.infrastructure.external.feign.PaymentIntegrationResponse
+import io.github.soat7.myburguercontrol.infrastructure.external.rest.PaymentIntegrationRequest
+import io.github.soat7.myburguercontrol.infrastructure.external.rest.PaymentIntegrationResponse
 
 fun Payment.toRequest() = PaymentIntegrationRequest(
     id = this.id.toString(),

@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/auth")
-class AuthController (
+class AuthController(
     private val authenticationService: AuthenticationServicePort
-){
+) {
     @PostMapping
     fun authenticate(@RequestBody authRequest: AuthRequest): AuthResponse =
         authenticationService.authenticate(authRequest)

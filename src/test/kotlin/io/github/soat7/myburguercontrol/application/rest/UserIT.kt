@@ -24,7 +24,7 @@ import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class UserIT: BaseIntegrationTest() {
+class UserIT : BaseIntegrationTest() {
 
     @Autowired
     private lateinit var userRepository: UserRepository
@@ -165,7 +165,7 @@ class UserIT: BaseIntegrationTest() {
         val response = restTemplate.postForEntity<String>("/auth", inputAuthData)
 
         val mapper = jacksonObjectMapper()
-        val responseBody = response.body?: throw RuntimeException("Response for /auth is empty")
+        val responseBody = response.body ?: throw RuntimeException("Response for /auth is empty")
 
         val responseMap: Map<String, String> = mapper.readValue(responseBody)
 

@@ -14,17 +14,24 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 class SecurityConfiguration(
     private val authenticationProvider: AuthenticationProvider,
-){
+) {
     @Bean
     fun securityFilterChain(
         http: HttpSecurity,
         jwtAuthenticationFilter: JwtAuthenticationFilter,
     ): DefaultSecurityFilterChain =
         http
-            .csrf {it.disable()}
+            .csrf { it.disable() }
             .authorizeHttpRequests {
                 it
-                    .requestMatchers("/auth", "/auth/refresh", "/error", "/swagger-ui/**", "/v3/api-docs/**", "/webjars/**")
+                    .requestMatchers(
+                        "/auth",
+                        "/auth/refresh",
+                        "/error",
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**",
+                        "/webjars/**"
+                    )
                     .permitAll()
                     .requestMatchers(HttpMethod.POST, "/user")
                     .permitAll()

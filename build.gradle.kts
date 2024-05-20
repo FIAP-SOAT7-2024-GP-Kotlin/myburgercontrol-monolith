@@ -72,7 +72,6 @@ dependencies {
     implementation("com.google.guava:guava:33.1.0-jre")
 
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.+")
-    implementation("org.springframework.cloud:spring-cloud-starter-openfeign:4.1.1")
 
     // Test
     testImplementation("org.springframework.boot:spring-boot-starter-test") {

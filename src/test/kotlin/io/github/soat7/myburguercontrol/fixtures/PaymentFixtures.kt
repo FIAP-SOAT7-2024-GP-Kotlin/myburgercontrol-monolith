@@ -8,7 +8,6 @@ import java.util.UUID
 
 object PaymentFixtures {
     fun mockPayment(): Payment {
-
         return Payment(
             id = UUID.randomUUID(),
             value = BigDecimal.valueOf(45.90),

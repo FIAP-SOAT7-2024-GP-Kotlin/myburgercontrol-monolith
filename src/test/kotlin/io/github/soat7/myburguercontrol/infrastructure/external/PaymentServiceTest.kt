@@ -44,7 +44,6 @@ class PaymentServiceTest {
         }
 
         assertEquals(payment.id, response.id)
-
     }
 
     @Test

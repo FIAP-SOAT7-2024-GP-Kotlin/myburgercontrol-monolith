@@ -38,7 +38,9 @@ class RestTemplateService() : PaymentIntegrationPort {
 
             if (response.statusCode.is2xxSuccessful)
                 response.body?.let {
-                    return it.toDto(response.statusCode.is2xxSuccessful)
+                    return it.toDto(response.statusCode.is2xxSuccessful).also {
+                        logger.info { "Payment authorized" }
+                    }
                 } ?: run {
                     throw RuntimeException()
                 }
@@ -50,7 +52,7 @@ class RestTemplateService() : PaymentIntegrationPort {
                     logger.info { "Payment not authorized" }
                 }
 
-                else -> logger.warn { "Integration error" }.also { throw ex  }
+                else -> logger.warn { "Integration error" }.also { throw ex }
             }
         }
 

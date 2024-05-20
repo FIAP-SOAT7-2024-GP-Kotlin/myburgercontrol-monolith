@@ -53,3 +53,8 @@ logging:
       github:
         soat7:
           myburguercontrol: ${LOG_LEVEL:DEBUG}
+
+jwt:
+  key: ${JWT_KEY}
+  access-token-expiration: 3600000
+  refresh-token-expiration: 86400000

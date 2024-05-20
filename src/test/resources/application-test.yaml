@@ -19,3 +19,8 @@ spring:
     properties:
       hibernate:
         default_schema: ${spring.datasource.schema}
+
+jwt:
+  key: "hjasdohijohi3987908asklflkklasdf098"
+  access-token-expiration: 3600000
+  refresh-token-expiration: 86400000

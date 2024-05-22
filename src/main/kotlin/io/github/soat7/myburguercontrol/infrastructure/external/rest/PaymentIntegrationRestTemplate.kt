@@ -12,7 +12,7 @@ class PaymentIntegrationRestTemplate {
     fun requestPaymentIntegration(payment: PaymentIntegrationRequest): ResponseEntity<PaymentIntegrationResponse> {
         val restTemplate = RestTemplate()
 
-        val uri = UriComponentsBuilder.fromUriString("\${spring.feign.payment_integration_url}")
+        val uri = UriComponentsBuilder.fromUriString("\${spring.rest.payment_integration_url}")
             .path("/mercadopago/pagamento")
             .build().toUri()
 

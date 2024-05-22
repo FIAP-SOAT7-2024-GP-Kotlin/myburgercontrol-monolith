@@ -72,3 +72,9 @@ dados em execução e a implementação do JPA que consta no código fonte.
 
 **Nota:** É fundamental olhar o arquivo gerado e validar se o mesmo está de acordo. Essa geração de arquivo do liquibase
 costuma não gerar nome de PKs, por exemplo.
+
+
+## Wiremock
+
+Para acessar a interface gráfica do wiremock execute o docker-compose e acesse:
+>http://localhost:9090/__admin/webapp/mappings

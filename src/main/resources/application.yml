@@ -40,6 +40,8 @@ spring:
     change-log: classpath:/db/changelog/master.xml
     enabled: true
     default-schema: ${spring.datasource.schema}
+  rest:
+    payment_integration_url: http://localhost/
 
 springdoc:
   version: '@springdoc.version@'

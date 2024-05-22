@@ -24,6 +24,7 @@ services:
       DATABASE_URL: "postgresql://db:5432/myburguer"
       DATABASE_USER: "myburguer"
       DATABASE_PASSWORD: "mb"
+      JWT_KEY: "lkjhaskljdajkdlsfjklsdgjklssdljkgff"
       LOG_LEVEL: "DEBUG"
 
 volumes:

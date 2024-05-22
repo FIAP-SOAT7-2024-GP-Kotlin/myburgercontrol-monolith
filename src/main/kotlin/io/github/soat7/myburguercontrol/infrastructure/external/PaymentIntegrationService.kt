@@ -16,7 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder
 
 
 class PaymentIntegrationService(
-    val paymentIntegrationRestTemplate: PaymentIntegrationRestTemplate
+    private val paymentIntegrationRestTemplate: PaymentIntegrationRestTemplate
 ) : PaymentIntegrationPort {
 
     private companion object : KLogging()

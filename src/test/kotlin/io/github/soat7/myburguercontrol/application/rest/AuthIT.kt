@@ -15,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class AuthIT: BaseIntegrationTest() {
+class AuthIT : BaseIntegrationTest() {
 
     @Autowired
     private lateinit var userRepository: UserRepository
@@ -26,7 +26,7 @@ class AuthIT: BaseIntegrationTest() {
     @Test
     fun `should successfully authenticate`() {
         val cpf = "29257035859"
-        val  password= "pass123"
+        val password = "pass123"
         userRepository.save(UserFixtures.mockUserEntity(cpf = cpf, password = enconder.encode(password)))
 
         val inputAuthData = AuthFixtures.mockAuthCreationRequest(cpf, password)
@@ -43,7 +43,7 @@ class AuthIT: BaseIntegrationTest() {
     @Test
     fun `should return FORBIDDEN when password is wrong`() {
         val cpf = "29257035859"
-        val  password= "pass123"
+        val password = "pass123"
         userRepository.save(UserFixtures.mockUserEntity(cpf = cpf, password = enconder.encode(password)))
 
         val inputAuthData = AuthFixtures.mockAuthCreationRequest(cpf, "wrongPass")

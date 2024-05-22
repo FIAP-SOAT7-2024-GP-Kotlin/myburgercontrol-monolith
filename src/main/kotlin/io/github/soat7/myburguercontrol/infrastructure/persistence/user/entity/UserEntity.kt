@@ -36,4 +36,3 @@ data class UserEntity(
     @Column(name = "role", length = 20, nullable = false)
     var role: Role
 )
-

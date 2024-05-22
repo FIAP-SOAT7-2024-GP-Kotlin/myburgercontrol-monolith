@@ -8,5 +8,4 @@ object AuthFixtures {
         cpf = cpf,
         password = password
     )
-
 }

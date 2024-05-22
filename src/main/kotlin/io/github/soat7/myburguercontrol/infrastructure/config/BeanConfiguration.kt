@@ -4,20 +4,19 @@ import io.github.soat7.myburguercontrol.application.ports.inbound.Authentication
 import io.github.soat7.myburguercontrol.application.ports.inbound.CustomUserDetailsServicePort
 import io.github.soat7.myburguercontrol.application.ports.inbound.TokenServicePort
 import io.github.soat7.myburguercontrol.application.ports.outbound.CustomerDatabasePort
+import io.github.soat7.myburguercontrol.application.ports.outbound.ProductDatabasePort
 import io.github.soat7.myburguercontrol.application.ports.outbound.UserDatabasePort
 import io.github.soat7.myburguercontrol.domain.service.AuthenticationService
+import io.github.soat7.myburguercontrol.domain.service.CustomUserDetailsService
 import io.github.soat7.myburguercontrol.domain.service.CustomerService
+import io.github.soat7.myburguercontrol.domain.service.ProductService
 import io.github.soat7.myburguercontrol.domain.service.TokenService
 import io.github.soat7.myburguercontrol.domain.service.UserService
 import io.github.soat7.myburguercontrol.infrastructure.persistence.user.repository.UserRepository
-import io.github.soat7.myburguercontrol.domain.service.CustomUserDetailsService
-import io.github.soat7.myburguercontrol.application.ports.outbound.ProductDatabasePort
-import io.github.soat7.myburguercontrol.domain.service.CustomerService
-import io.github.soat7.myburguercontrol.domain.service.ProductService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.crypto.password.PasswordEncoder
 
 @Configuration
 class BeanConfiguration(
@@ -30,9 +29,7 @@ class BeanConfiguration(
     fun customerService(customerDatabasePort: CustomerDatabasePort) = CustomerService(customerDatabasePort)
 
     @Bean
-    fun userService(userDatabasePort: UserDatabasePort,
-                    encoder: PasswordEncoder
-    ) = UserService(userDatabasePort, encoder)
+    fun userService(userDatabasePort: UserDatabasePort, encoder: PasswordEncoder) = UserService(userDatabasePort, encoder)
 
     @Bean
     fun authenticationService(

@@ -10,7 +10,7 @@ class PaymentService(
     private val paymentIntegrationPort: PaymentIntegrationPort
 ) : PaymentServicePort {
 
-    companion object : KLogging()
+    private companion object : KLogging()
 
     override fun requestPayment(payment: Payment): Payment {
         logger.info { "Starting to request payment integration with id: [${payment.id}]" }

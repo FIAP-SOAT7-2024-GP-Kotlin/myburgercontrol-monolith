@@ -2,6 +2,8 @@ package io.github.soat7.myburguercontrol.infrastructure.external
 
 import io.github.soat7.myburguercontrol.application.ports.outbound.PaymentIntegrationPort
 import io.github.soat7.myburguercontrol.domain.dto.PaymentResult
+import io.github.soat7.myburguercontrol.domain.exception.ReasonCode
+import io.github.soat7.myburguercontrol.domain.exception.ReasonCodeException
 import io.github.soat7.myburguercontrol.domain.mapper.toDto
 import io.github.soat7.myburguercontrol.domain.mapper.toRequest
 import io.github.soat7.myburguercontrol.domain.model.Payment
@@ -32,9 +34,9 @@ class PaymentIntegrationService(
                         logger.info { "Payment authorized" }
                     }
                 } ?: run {
-                    throw RuntimeException()
+                    throw ReasonCodeException(ReasonCode.PAYMENT_INTEGRATION_ERROR)
                 }
-            else throw RuntimeException()
+            else throw ReasonCodeException(ReasonCode.UNEXPECTED_ERROR)
 
         } catch (ex: RestClientResponseException) {
             when (ex.statusCode.value()) {

@@ -1,11 +1,10 @@
-package io.github.soat7.myburguercontrol.domain.model
+package io.github.soat7.myburguercontrol.infrastructure.rest.auth.api
 
 import io.github.soat7.myburguercontrol.domain.enum.UserRole
 import java.util.UUID
 
-data class User(
+data class UserResponse(
     val id: UUID,
     val cpf: String,
-    var password: String,
     val role: UserRole
 )

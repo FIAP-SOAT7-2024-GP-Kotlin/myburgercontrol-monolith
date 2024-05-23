@@ -2,73 +2,99 @@ package io.github.soat7.myburguercontrol.infrastructure.rest
 
 import io.github.soat7.myburguercontrol.base.BaseIntegrationTest
 import io.github.soat7.myburguercontrol.domain.enum.OrderStatus
-import io.github.soat7.myburguercontrol.fixtures.CustomerFixtures.mockCustomerEntity
-import io.github.soat7.myburguercontrol.infrastructure.persistence.customer.repository.CustomerRepository
-import io.github.soat7.myburguercontrol.infrastructure.persistence.order.repository.OrderRepository
-import io.github.soat7.myburguercontrol.infrastructure.rest.customer.api.request.OrderCreationRequest
-import io.github.soat7.myburguercontrol.infrastructure.rest.customer.api.response.OrderResponse
+import io.github.soat7.myburguercontrol.fixtures.CustomerFixtures.mockDomainCustomer
+import io.github.soat7.myburguercontrol.infrastructure.rest.order.api.request.OrderCreationRequest
+import io.github.soat7.myburguercontrol.infrastructure.rest.order.api.response.OrderResponse
 import io.github.soat7.myburguercontrol.util.toBigDecimal
-import org.springframework.beans.factory.annotation.Autowired
+import org.junit.jupiter.api.Assertions.assertAll
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.function.Executable
 import org.springframework.boot.test.web.client.getForEntity
 import org.springframework.boot.test.web.client.postForEntity
+import org.springframework.http.HttpStatus
 import kotlin.jvm.optionals.getOrNull
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
-import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
 
 class OrderIT : BaseIntegrationTest() {
 
-    @Autowired
-    private lateinit var customerRepository: CustomerRepository
-
-    @Autowired
-    private lateinit var orderRepository: OrderRepository
-
     @Test
     fun `should create a new order using cpf`() {
-        // Given
         val cpf = "23282711034"
-        val customer = customerRepository.save(mockCustomerEntity(cpf = cpf))
-        val inputOrderData = OrderCreationRequest(cpf = customer.cpf)
+        val customer = insertCustomerData(mockDomainCustomer(cpf = cpf))
+        val items = insertProducts().map {
+            OrderCreationRequest.OrderItem(
+                productId = it,
+                quantity = 1
+            )
+        }
 
-        // When
-        val orderResponse = restTemplate.postForEntity<OrderResponse>("/orders", inputOrderData).body
+        val inputOrderData = OrderCreationRequest(customerCpf = customer.cpf, items)
 
-        // Then
-        assertNotNull(orderResponse)
+        val orderResponse = restTemplate.postForEntity<OrderResponse>(
+            "/orders",
+            inputOrderData
+        )
 
-        val order = orderRepository.findById(orderResponse.id).getOrNull()
+        assertAll(
+            Executable { assertTrue(orderResponse.statusCode.is2xxSuccessful) },
+            Executable { assertNotNull(orderResponse.body) }
+        )
 
-        assertNotNull(order)
+        val order = orderRepository.findById(orderResponse.body!!.id).getOrNull()
 
-        assertEquals(cpf, order.customer.cpf)
-        assertEquals(OrderStatus.NEW.name, order.status)
-        assertTrue(order.items.isEmpty())
+        assertAll(
+            Executable { assertNotNull(order) },
+            Executable { assertEquals(cpf, order!!.customer.cpf) },
+            Executable { assertEquals(OrderStatus.NEW.name, order!!.status) },
+            Executable { assertTrue(order!!.items.isEmpty()) }
+        )
     }
 
     @Test
     fun `should get orders using cpf`() {
-        // Given
         val cpf = "23282711034"
 
-        // When
         val orders = restTemplate.getForEntity<List<OrderResponse>>(
-            "/orders?cpf={cpf}", uriVariables = mapOf(
+            "/orders?cpf={cpf}",
+            uriVariables = mapOf(
                 "cpf" to cpf
             )
-        ).body!!
+        )
 
-        // Then
-        assertFalse(orders.isEmpty())
+        assertAll(
+            Executable { assertNotNull(orders.body) },
+            Executable { assertFalse(orders.body!!.isEmpty()) }
+        )
 
-        val order = orders.first()
+        val order = orders.body!!.first()
+        assertAll(
+            Executable { assertNotNull(order.id) },
+            Executable { assertEquals(cpf, order.customer.cpf) },
+            Executable { assertEquals(OrderStatus.NEW, order.status) },
+            Executable { assertTrue(order.items.isEmpty()) },
+            Executable { assertEquals(0.0.toBigDecimal(), order.total) }
+        )
+    }
 
-        assertNotNull(order.id)
-        assertEquals(cpf, order.customer.cpf)
-        assertEquals(OrderStatus.NEW, order.status)
-        assertTrue(order.items.isEmpty())
-        assertEquals(0.0.toBigDecimal(), order.total)
+    @Test
+    fun `should return BAD_REQUEST when trying to create an order for a customer that was not found`() {
+        val cpf = "44527073001"
+        val items = insertProducts().map {
+            OrderCreationRequest.OrderItem(
+                productId = it,
+                quantity = 1
+            )
+        }
+        val inputOrderData = OrderCreationRequest(customerCpf = cpf, items)
+
+        val response = restTemplate.postForEntity<OrderResponse>(
+            url = "/orders",
+            inputOrderData
+        )
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.statusCode)
     }
 }

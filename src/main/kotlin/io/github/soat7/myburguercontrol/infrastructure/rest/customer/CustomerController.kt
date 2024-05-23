@@ -18,34 +18,30 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
 @RestController("customer-controller")
-@RequestMapping(path = ["customers"])
+@RequestMapping(
+    path = ["customers"],
+    consumes = [MediaType.APPLICATION_JSON_VALUE],
+    produces = [MediaType.APPLICATION_JSON_VALUE]
+)
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 class CustomerController(
     private val service: CustomerServicePort
 ) {
 
-    @PostMapping(
-        consumes = [MediaType.APPLICATION_JSON_VALUE],
-        produces = [MediaType.APPLICATION_JSON_VALUE]
-    )
+    @PostMapping
     fun createCustomer(@RequestBody request: CustomerCreationRequest): ResponseEntity<CustomerResponse> = run {
         val customer = service.create(request.toDomain())
         ResponseEntity.ok(customer.toResponse())
     }
 
-    @GetMapping(
-        path = ["/{id}"],
-        produces = [MediaType.APPLICATION_JSON_VALUE]
-    )
+    @GetMapping("/{id}")
     fun findCustomerById(@PathVariable("id") id: UUID): ResponseEntity<CustomerResponse> = run {
         service.findCustomerById(id)?.let {
             ResponseEntity.ok().body(it.toResponse())
         } ?: ResponseEntity.notFound().build()
     }
 
-    @GetMapping(
-        produces = [MediaType.APPLICATION_JSON_VALUE]
-    )
+    @GetMapping
     fun findCustomerByCpf(@RequestParam("cpf") cpf: String): ResponseEntity<CustomerResponse> = run {
         service.findCustomerByCpf(cpf)?.let {
             ResponseEntity.ok().body(it.toResponse())

@@ -11,6 +11,7 @@ import java.util.UUID
 object ProductFixtures {
 
     fun mockProductCreationRequest() = ProductCreationRequest(
+        name = "PRODUCT_NAME",
         description = "PRODUCT",
         price = 1.0.toBigDecimal().setScale(2),
         type = ProductType.FOOD
@@ -18,6 +19,7 @@ object ProductFixtures {
 
     fun mockProductEntity(id: UUID = UUID.randomUUID(), type: ProductType = ProductType.FOOD) = ProductEntity(
         id = id,
+        name = "PRODUCT_NAME",
         description = "PRODUCT",
         price = 1.0.toBigDecimal().setScale(2),
         type = type.name,
@@ -27,12 +29,13 @@ object ProductFixtures {
 
     fun mockDomainProduct(
         id: UUID = UUID.randomUUID(),
-        description: String,
+        description: String = "PRODUCT_DESCRIPTION",
         type: ProductType = ProductType.FOOD,
         price: BigDecimal = 1.0.toBigDecimal().setScale(2)
     ) =
         Product(
             id = id,
+            name = "PRODUCT_NAME",
             description = description,
             price = price,
             type = type

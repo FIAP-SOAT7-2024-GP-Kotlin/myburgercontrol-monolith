@@ -2,8 +2,8 @@ package io.github.soat7.myburguercontrol.domain.mapper
 
 import io.github.soat7.myburguercontrol.domain.model.User
 import io.github.soat7.myburguercontrol.infrastructure.persistence.user.entity.UserEntity
-import io.github.soat7.myburguercontrol.infrastructure.rest.api.UserCreationRequest
-import io.github.soat7.myburguercontrol.infrastructure.rest.api.UserResponse
+import io.github.soat7.myburguercontrol.infrastructure.rest.auth.api.UserCreationRequest
+import io.github.soat7.myburguercontrol.infrastructure.rest.auth.api.UserResponse
 import java.util.UUID
 
 fun UserCreationRequest.toDomain() = User(
@@ -30,5 +30,5 @@ fun User.toPersistence() = UserEntity(
 fun User.toResponse() = UserResponse(
     id = this.id,
     cpf = this.cpf,
-    role = this.role,
+    role = this.role
 )

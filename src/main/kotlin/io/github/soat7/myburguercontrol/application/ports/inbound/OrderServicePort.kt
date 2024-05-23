@@ -1,12 +1,13 @@
 package io.github.soat7.myburguercontrol.application.ports.inbound
 
 import io.github.soat7.myburguercontrol.domain.model.Order
-import java.util.UUID
+import io.github.soat7.myburguercontrol.domain.model.OrderDetail
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 
 interface OrderServicePort {
 
-    fun newOrder(cpf: String): Order
-    fun newOrder(customerId: UUID): Order
-    fun findOrders(cpf: String): List<Order>
-    fun findOrders(customerId: UUID): List<Order>
+    fun createOrder(orderDetail: OrderDetail): Order
+    fun findOrdersByCustomerCpf(cpf: String): List<Order>
+    fun findQueueOrders(pageable: Pageable): Page<Order>
 }

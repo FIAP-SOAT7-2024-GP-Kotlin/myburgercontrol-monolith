@@ -13,12 +13,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 class SecurityConfiguration(
-    private val authenticationProvider: AuthenticationProvider,
+    private val authenticationProvider: AuthenticationProvider
 ) {
     @Bean
     fun securityFilterChain(
         http: HttpSecurity,
-        jwtAuthenticationFilter: JwtAuthenticationFilter,
+        jwtAuthenticationFilter: JwtAuthenticationFilter
     ): DefaultSecurityFilterChain =
         http
             .csrf { it.disable() }
@@ -33,7 +33,7 @@ class SecurityConfiguration(
                         "/webjars/**"
                     )
                     .permitAll()
-                    .requestMatchers(HttpMethod.POST, "/user")
+                    .requestMatchers(HttpMethod.POST, "/users")
                     .permitAll()
                     .requestMatchers("/user**")
                     .hasRole("USER")
@@ -41,7 +41,7 @@ class SecurityConfiguration(
                     .fullyAuthenticated()
             }
             .sessionManagement {
-                it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)  // para não usar "lembrar de mim"
+                it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             }
             .authenticationProvider(authenticationProvider)
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)

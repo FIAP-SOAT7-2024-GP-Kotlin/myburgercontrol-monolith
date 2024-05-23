@@ -10,7 +10,7 @@ import java.util.UUID
 data class Order(
     val id: UUID,
     val customer: Customer,
-    val items: MutableList<OrderItem> = mutableListOf(),
+    val items: List<OrderItem> = listOf(),
     val status: OrderStatus = OrderStatus.NEW,
     val createdAt: Instant = Instant.now()
 ) {

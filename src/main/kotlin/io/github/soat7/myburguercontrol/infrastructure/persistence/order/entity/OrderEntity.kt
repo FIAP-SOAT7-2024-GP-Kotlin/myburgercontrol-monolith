@@ -27,7 +27,7 @@ class OrderEntity(
     @Column(name = "id", nullable = false)
     var id: UUID? = null,
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", foreignKey = ForeignKey(name = "fk_customer"), nullable = false)
     var customer: CustomerEntity,
 
@@ -38,11 +38,10 @@ class OrderEntity(
     val createdAt: Instant,
 
     @OneToMany(
-        fetch = FetchType.EAGER,
+        fetch = FetchType.LAZY,
         cascade = [CascadeType.ALL],
         mappedBy = "order",
         targetEntity = OrderItemEntity::class
     )
-    var items: List<OrderItemEntity> = mutableListOf()
-
+    var items: List<OrderItemEntity> = mutableListOf(),
 )

@@ -1,51 +1,45 @@
-package io.github.soat7.myburguercontrol.application.rest
+package io.github.soat7.myburguercontrol.infrastructure.rest
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import io.github.soat7.myburguercontrol.base.BaseIntegrationTest
-import io.github.soat7.myburguercontrol.domain.model.Role
+import io.github.soat7.myburguercontrol.domain.enum.UserRole
 import io.github.soat7.myburguercontrol.fixtures.AuthFixtures
 import io.github.soat7.myburguercontrol.fixtures.UserFixtures
-import io.github.soat7.myburguercontrol.infrastructure.persistence.user.repository.UserRepository
-import io.github.soat7.myburguercontrol.infrastructure.rest.api.UserResponse
+import io.github.soat7.myburguercontrol.infrastructure.rest.auth.api.UserResponse
 import org.junit.jupiter.api.Assertions.assertAll
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.function.Executable
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.web.client.postForEntity
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
-import org.springframework.security.crypto.password.PasswordEncoder
 import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class UserIT : BaseIntegrationTest() {
 
-    @Autowired
-    private lateinit var userRepository: UserRepository
-
-    @Autowired
-    private lateinit var enconder: PasswordEncoder
-
     @Test
     fun `should successfully create a user`() {
         val cpf = "29257035859"
         val password = "pass123"
-        val role = Role.USER
-        val inputUserData = UserFixtures.mockUserCreationRequest(cpf, password, role)
+        val userRole = UserRole.USER
+        val inputUserData = UserFixtures.mockUserCreationRequest(cpf, password, userRole)
 
-        val response = restTemplate.postForEntity<UserResponse>("/user", inputUserData)
+        val response = restTemplate.postForEntity<UserResponse>(
+            "/user",
+            inputUserData
+        )
 
         assertAll(
             Executable { assertTrue(response.statusCode.is2xxSuccessful) },
             Executable { assertNotNull(response.body?.id ?: String) },
             Executable { assertEquals(cpf, response.body!!.cpf) },
-            Executable { assertEquals(role, response.body!!.role) }
+            Executable { assertEquals(userRole, response.body!!.role) }
         )
 
         val savedUser = userRepository.findByIdOrNull(response.body!!.id)
@@ -55,14 +49,14 @@ class UserIT : BaseIntegrationTest() {
             Executable { assertEquals(cpf, savedUser!!.cpf) },
             Executable { assertEquals(response.body!!.id, savedUser!!.id) }
         )
-
     }
 
     @Test
     fun `should successfully find a user by id`() {
         val cpf = "12345678901"
         val password = "pass123"
-        val user = userRepository.save(UserFixtures.mockUserEntity(cpf = cpf, password = enconder.encode(password)))
+        val user =
+            userRepository.save(UserFixtures.mockUserEntity(cpf = cpf, password = passwordEncoder.encode(password)))
 
         val token = getToken(cpf, password) ?: return
         val headers = HttpHeaders()
@@ -89,7 +83,7 @@ class UserIT : BaseIntegrationTest() {
         val cpf = "12345678901"
         val password = "pass123"
         val randomId = UUID.randomUUID()
-        userRepository.save(UserFixtures.mockUserEntity(cpf = cpf, password = enconder.encode(password)))
+        userRepository.save(UserFixtures.mockUserEntity(cpf = cpf, password = passwordEncoder.encode(password)))
 
         val token = getToken(cpf, "1234") ?: return
         val headers = HttpHeaders()
@@ -112,7 +106,7 @@ class UserIT : BaseIntegrationTest() {
         val cpf = "12345678901"
         val password = "pass123"
         val randomId = UUID.randomUUID()
-        userRepository.save(UserFixtures.mockUserEntity(cpf = cpf, password = enconder.encode(password)))
+        userRepository.save(UserFixtures.mockUserEntity(cpf = cpf, password = passwordEncoder.encode(password)))
 
         val token = getToken(cpf, password) ?: return
         val headers = HttpHeaders()
@@ -134,7 +128,7 @@ class UserIT : BaseIntegrationTest() {
     fun `should successfully find a user by cpf`() {
         val cpf = "12345678901"
         val password = "pass123"
-        userRepository.save(UserFixtures.mockUserEntity(cpf = cpf, password = enconder.encode(password)))
+        userRepository.save(UserFixtures.mockUserEntity(cpf = cpf, password = passwordEncoder.encode(password)))
 
         val user = userRepository.save(UserFixtures.mockUserEntity(cpf = cpf))
 

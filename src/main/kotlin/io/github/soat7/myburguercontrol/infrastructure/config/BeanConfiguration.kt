@@ -2,6 +2,8 @@ package io.github.soat7.myburguercontrol.infrastructure.config
 
 import io.github.soat7.myburguercontrol.application.ports.inbound.AuthenticationServicePort
 import io.github.soat7.myburguercontrol.application.ports.inbound.CustomUserDetailsServicePort
+import io.github.soat7.myburguercontrol.application.ports.inbound.CustomerServicePort
+import io.github.soat7.myburguercontrol.application.ports.inbound.ProductServicePort
 import io.github.soat7.myburguercontrol.application.ports.inbound.TokenServicePort
 import io.github.soat7.myburguercontrol.application.ports.outbound.CustomerDatabasePort
 import io.github.soat7.myburguercontrol.application.ports.outbound.OrderDatabasePort
@@ -23,12 +25,12 @@ import org.springframework.security.crypto.password.PasswordEncoder
 @Configuration
 class BeanConfiguration(
     private val authManager: AuthenticationManager,
-    private val jwtProperties: JwtProperties,
-    private val userRepository: UserRepository
+    private val jwtProperties: JwtProperties
 ) {
 
     @Bean
-    fun customerService(customerDatabasePort: CustomerDatabasePort) = CustomerService(customerDatabasePort)
+    fun customerService(customerDatabasePort: CustomerDatabasePort) =
+        CustomerService(customerDatabasePort)
 
     @Bean
     fun userService(
@@ -45,7 +47,7 @@ class BeanConfiguration(
     }
 
     @Bean
-    fun customUserDetailsService(): CustomUserDetailsServicePort {
+    fun customUserDetailsService(userRepository: UserRepository): CustomUserDetailsServicePort {
         return CustomUserDetailsService(userRepository)
     }
 
@@ -58,6 +60,10 @@ class BeanConfiguration(
     fun productService(productDatabasePort: ProductDatabasePort) = ProductService(productDatabasePort)
 
     @Bean
-    fun orderService(orderDatabasePort: OrderDatabasePort, customerDatabasePort: CustomerDatabasePort) =
-        OrderService(orderDatabasePort, customerDatabasePort)
+    fun orderService(
+        orderDatabasePort: OrderDatabasePort,
+        customerServicePort: CustomerServicePort,
+        productServicePort: ProductServicePort
+    ) =
+        OrderService(orderDatabasePort, customerServicePort, productServicePort)
 }

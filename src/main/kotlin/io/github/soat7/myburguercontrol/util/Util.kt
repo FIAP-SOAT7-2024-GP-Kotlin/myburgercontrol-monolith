@@ -2,7 +2,7 @@ package io.github.soat7.myburguercontrol.util
 
 import java.math.BigDecimal
 
-val DEFAULT_BIG_DECIMAL_SCALE = 2
+const val DEFAULT_BIG_DECIMAL_SCALE = 2
 
 fun Double.toBigDecimal(): BigDecimal = BigDecimal(this.toString()).setScale(DEFAULT_BIG_DECIMAL_SCALE)
 fun Long.toBigDecimal(): BigDecimal = BigDecimal(this.toString()).setScale(DEFAULT_BIG_DECIMAL_SCALE)

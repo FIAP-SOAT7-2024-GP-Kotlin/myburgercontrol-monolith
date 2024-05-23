@@ -9,20 +9,17 @@ import java.util.UUID
 object OrderFixtures {
 
     fun mockOrder(
-        customer: Customer,
-        numItems: Int = 1,
+        customer: Customer
     ) = Order(
         id = UUID.randomUUID(),
         customer = customer
     ).apply {
-        repeat(numItems) {
-            val productId = (1L..1000L).random()
-            this.items.add(
-                OrderItem(
-                    id = productId,
-                    product = mockDomainProduct(description = "Product $productId"),
-                    quantity = 1,
-                )
+        val productId = UUID.randomUUID()
+        this.items.map {
+            OrderItem(
+                id = productId,
+                product = mockDomainProduct(description = "Product $productId"),
+                quantity = 1
             )
         }
     }

@@ -3,8 +3,6 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
     <changeSet id="20240517-order-order-item-table-creation" author="rafaeljpc@gmail.com">
-        <createSequence incrementBy="1" sequenceName="sq_order_item_id" startValue="1" schemaName="myburguer"/>
-
         <createTable tableName="order" schemaName="myburguer">
             <column name="id" type="UUID">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_order"/>
@@ -21,7 +19,7 @@
         </createTable>
 
         <createTable tableName="order_item" schemaName="myburguer">
-            <column name="id" type="BIGINT">
+            <column name="id" type="UUID">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_order_item"/>
             </column>
             <column name="quantity" type="INTEGER">

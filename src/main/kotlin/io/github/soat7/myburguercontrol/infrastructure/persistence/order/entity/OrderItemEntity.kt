@@ -10,34 +10,31 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
-import jakarta.persistence.SequenceGenerator
 import jakarta.persistence.Table
+import java.util.UUID
 
 @Entity
 @Table(
     name = "order_item",
     schema = "myburguer"
 )
-@SequenceGenerator(
-    name = "sq_order_item_id",
-    sequenceName = "sq_order_item_id",
-    schema = "myburguer",
-    allocationSize = 1
-)
 class OrderItemEntity(
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sq_order_item_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
-    var id: Long? = null,
+    var id: UUID? = null,
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", foreignKey = ForeignKey(name = "fk_order"))
     var order: OrderEntity,
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", foreignKey = ForeignKey(name = "fk_product"), nullable = false)
     var product: ProductEntity,
 
     @Column(name = "quantity", length = 4, nullable = false)
-    var quantity: Int
+    var quantity: Int,
+
+    @Column(name = "comment", length = 1000)
+    var comment: String? = null
 )

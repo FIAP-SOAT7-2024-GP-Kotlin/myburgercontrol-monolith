@@ -22,6 +22,9 @@ data class ProductEntity(
     @Column(name = "id", nullable = false)
     val id: UUID? = null,
 
+    @Column(name = "name", nullable = false, length = 255)
+    val name: String,
+
     @Column(name = "description", nullable = false, length = 255)
     val description: String,
 

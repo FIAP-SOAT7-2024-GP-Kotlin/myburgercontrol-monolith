@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 
 typealias ApplicationUser = io.github.soat7.myburguercontrol.infrastructure.persistence.user.entity.UserEntity
 
-class CustomUserDetailsService (
+class CustomUserDetailsService(
     private val userRepository: UserRepository
 ) : CustomUserDetailsServicePort {
 

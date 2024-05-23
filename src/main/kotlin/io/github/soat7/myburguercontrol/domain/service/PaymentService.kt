@@ -20,7 +20,6 @@ class PaymentService(
         payment.apply {
             this.authorizationId = paymentResult.authorizationId
             this.status = checkApproval(paymentResult.approved)
-
         }
 
         logger.info { "Successfully integrated with status return: [${payment.status.name}]" }

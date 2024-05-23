@@ -1,7 +1,7 @@
 package io.github.soat7.myburguercontrol.infrastructure.config
 
-import io.github.soat7.myburguercontrol.infrastructure.persistence.user.repository.UserRepository
 import io.github.soat7.myburguercontrol.domain.service.CustomUserDetailsService
+import io.github.soat7.myburguercontrol.infrastructure.persistence.user.repository.UserRepository
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

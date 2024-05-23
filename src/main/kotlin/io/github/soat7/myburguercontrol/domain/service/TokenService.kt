@@ -12,7 +12,7 @@ class TokenService(
     jwtProperties: JwtProperties
 ) : TokenServicePort {
     private val secretKey = Keys.hmacShaKeyFor(
-        jwtProperties.key.toByteArray(),
+        jwtProperties.key.toByteArray()
     )
 
     /*  Função recebera 3 argumentos: user details, data de expiração e declarações adicionais
@@ -24,9 +24,9 @@ class TokenService(
         expirationDate: Date,
         additionalClaims: Map<String, Any>
     ): String =
-        Jwts.builder()                                //invoca builder
+        Jwts.builder() // invoca builder
             .claims()
-            .subject(userDetails.username)            //para saber quem é o dono
+            .subject(userDetails.username) // para saber quem é o dono
             .issuedAt(Date(System.currentTimeMillis()))
             .expiration(expirationDate)
             .add(additionalClaims)

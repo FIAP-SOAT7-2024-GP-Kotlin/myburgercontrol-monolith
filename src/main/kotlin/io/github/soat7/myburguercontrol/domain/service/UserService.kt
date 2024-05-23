@@ -6,7 +6,7 @@ import io.github.soat7.myburguercontrol.domain.model.User
 import org.springframework.security.crypto.password.PasswordEncoder
 import java.util.UUID
 
-class UserService (
+class UserService(
     private val dataBasePort: UserDatabasePort,
     private val enconder: PasswordEncoder
 ) : UserServicePort {
@@ -32,9 +32,8 @@ class UserService (
         if (founded != null) {
             dataBasePort.deleteByUUID(uuid)
             return true
-        }else {
+        } else {
             return false
         }
     }
-
 }

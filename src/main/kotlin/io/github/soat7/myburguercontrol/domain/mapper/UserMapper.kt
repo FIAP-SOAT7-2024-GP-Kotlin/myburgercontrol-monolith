@@ -30,5 +30,5 @@ fun User.toPersistence() = UserEntity(
 fun User.toResponse() = UserResponse(
     id = this.id,
     cpf = this.cpf,
-    role = this.role,
+    role = this.role
 )

@@ -44,6 +44,8 @@ spring:
 third-party:
   payment-integration:
     url: http://localhost/mercadopago/pagamento
+    connectionTimeout: 5000
+    readTimeout: 5000
 
 springdoc:
   version: '@springdoc.version@'

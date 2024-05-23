@@ -1,0 +1,21 @@
+{
+  "id" : "b019a4d0-b5ff-4033-88a0-d60092f0ba03",
+  "request" : {
+    "url" : "/mercadopago/pagamento",
+    "method" : "POST"
+  },
+  "response" : {
+    "status" : 200,
+    "jsonBody" : {
+      "message" : "Pagamento autorizado",
+      "cpf" : "{{jsonPath request.body '$.cpf'}}",
+      "authorization_id": "{{randomValue type='UUID'}}"
+    },
+    "headers" : {
+      "Content-Type" : "application/json"
+    }
+  },
+  "uuid" : "b019a4d0-b5ff-4033-88a0-d60092f0ba03",
+  "persistent" : true,
+  "insertionIndex" : 3
+}

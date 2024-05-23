@@ -26,6 +26,13 @@ services:
       DATABASE_PASSWORD: "mb"
       JWT_KEY: "lkjhaskljdajkdlsfjklsdgjklssdljkgff"
       LOG_LEVEL: "DEBUG"
+  wiremock:
+    image: holomekc/wiremock-gui:3.5.7-alpine
+    ports:
+      - "9090:8080"
+    volumes:
+      - ./mappings:/home/wiremock/mappings
+    entrypoint: ["/docker-entrypoint.sh", "--global-response-templating", "--disable-gzip", "--verbose"]
 
 volumes:
   pgdata:

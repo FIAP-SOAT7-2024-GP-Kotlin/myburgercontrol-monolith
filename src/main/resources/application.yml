@@ -42,7 +42,8 @@ spring:
     default-schema: ${spring.datasource.schema}
 
 third-party:
-  payment_integration_url: http://localhost/mercadopago/pagamento
+  payment-integration:
+    url: http://localhost/mercadopago/pagamento
 
 springdoc:
   version: '@springdoc.version@'

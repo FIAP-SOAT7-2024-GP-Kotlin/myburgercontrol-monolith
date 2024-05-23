@@ -16,7 +16,7 @@ import org.springframework.web.client.RestTemplate
 
 @Component
 class PaymentIntegrationClient(
-    @Value("\${third-party.payment-service.url}") private val paymentServiceUrl: String,
+    @Value("\${third-party.payment-integration.url}") private val paymentServiceUrl: String,
     private val paymentRestTemplate: RestTemplate
 ) : PaymentIntegrationPort {
 

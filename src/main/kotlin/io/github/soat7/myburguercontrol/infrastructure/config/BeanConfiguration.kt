@@ -8,8 +8,6 @@ import io.github.soat7.myburguercontrol.application.ports.inbound.TokenServicePo
 import io.github.soat7.myburguercontrol.application.ports.outbound.CustomerDatabasePort
 import io.github.soat7.myburguercontrol.application.ports.outbound.OrderDatabasePort
 import io.github.soat7.myburguercontrol.application.ports.outbound.ProductDatabasePort
-import io.github.soat7.myburguercontrol.application.ports.outbound.PaymentIntegrationPort
-import io.github.soat7.myburguercontrol.application.ports.outbound.ItemDatabasePort
 import io.github.soat7.myburguercontrol.application.ports.outbound.UserDatabasePort
 import io.github.soat7.myburguercontrol.domain.service.AuthenticationService
 import io.github.soat7.myburguercontrol.domain.service.CustomUserDetailsService

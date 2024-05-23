@@ -34,7 +34,7 @@ class SecurityConfiguration(
                     .fullyAuthenticated()
             }
             .sessionManagement {
-                it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // para não usar "lembrar de mim"
+                it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             }
             .authenticationProvider(authenticationProvider)
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)

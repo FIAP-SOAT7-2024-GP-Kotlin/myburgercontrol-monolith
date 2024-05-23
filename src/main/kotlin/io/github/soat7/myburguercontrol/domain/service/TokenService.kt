@@ -24,9 +24,9 @@ class TokenService(
         expirationDate: Date,
         additionalClaims: Map<String, Any>
     ): String =
-        Jwts.builder() // invoca builder
+        Jwts.builder()
             .claims()
-            .subject(userDetails.username) // para saber quem é o dono
+            .subject(userDetails.username)
             .issuedAt(Date(System.currentTimeMillis()))
             .expiration(expirationDate)
             .add(additionalClaims)

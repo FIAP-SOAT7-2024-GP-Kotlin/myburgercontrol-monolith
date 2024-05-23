@@ -11,9 +11,10 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.function.Executable
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.web.client.getForEntity
-import org.springframework.boot.test.web.client.postForEntity
+import org.springframework.boot.test.web.client.exchange
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import java.util.UUID
 
@@ -27,9 +28,10 @@ class CustomerIT : BaseIntegrationTest() {
         val cpf = "58737317059"
         val inputCustomerData = CustomerFixtures.mockCustomerCreationRequest(cpf)
 
-        val response = restTemplate.postForEntity<CustomerResponse>(
-            "/customers",
-            inputCustomerData
+        val response = restTemplate.exchange<CustomerResponse>(
+            url = "/customers",
+            method = HttpMethod.POST,
+            requestEntity = HttpEntity(inputCustomerData, authenticationHeader)
         )
 
         assertAll(
@@ -52,12 +54,13 @@ class CustomerIT : BaseIntegrationTest() {
         val inputCustomerData = CustomerFixtures.mockCustomerCreationRequest(cpf)
         customerRepository.save(CustomerFixtures.mockCustomerEntity(UUID.randomUUID(), cpf))
 
-        val response = restTemplate.postForEntity<Any>(
-            "/customers",
-            inputCustomerData
+        val response = restTemplate.exchange<Any>(
+            url = "/customers",
+            method = HttpMethod.POST,
+            requestEntity = HttpEntity(inputCustomerData, authenticationHeader)
         )
 
-        assertTrue(response.statusCode.is4xxClientError)
+        assertEquals(HttpStatus.BAD_REQUEST, response.statusCode)
     }
 
     @Test
@@ -65,8 +68,10 @@ class CustomerIT : BaseIntegrationTest() {
         val cpf = "45661450001"
         val customer = customerRepository.save(CustomerFixtures.mockCustomerEntity(cpf = cpf))
 
-        val response = restTemplate.getForEntity<CustomerResponse>(
+        val response = restTemplate.exchange<CustomerResponse>(
             url = "/customers/{id}",
+            method = HttpMethod.GET,
+            requestEntity = HttpEntity(null, authenticationHeader),
             uriVariables = mapOf(
                 "id" to customer.id
             )
@@ -84,8 +89,10 @@ class CustomerIT : BaseIntegrationTest() {
     fun `should return NOT_FOUND when no customer is found for the given Id`() {
         val randomId = UUID.randomUUID()
 
-        val response = restTemplate.getForEntity<CustomerResponse>(
+        val response = restTemplate.exchange<CustomerResponse>(
             url = "/customers/{id}",
+            method = HttpMethod.GET,
+            requestEntity = HttpEntity(null, authenticationHeader),
             uriVariables = mapOf(
                 "id" to randomId.toString()
             )
@@ -99,8 +106,10 @@ class CustomerIT : BaseIntegrationTest() {
 
         val customer = customerRepository.save(CustomerFixtures.mockCustomerEntity(cpf = cpf))
 
-        val response = restTemplate.getForEntity<CustomerResponse>(
+        val response = restTemplate.exchange<CustomerResponse>(
             url = "/customers?cpf={cpf}",
+            method = HttpMethod.GET,
+            requestEntity = HttpEntity(null, authenticationHeader),
             uriVariables = mapOf(
                 "cpf" to cpf
             )
@@ -118,8 +127,10 @@ class CustomerIT : BaseIntegrationTest() {
     fun `should return NOT_FOUND when no customer is found for the given`() {
         val cpf = "10974990060"
 
-        val response = restTemplate.getForEntity<CustomerResponse>(
+        val response = restTemplate.exchange<CustomerResponse>(
             url = "/customers?cpf={cpf}",
+            method = HttpMethod.GET,
+            requestEntity = HttpEntity(null, authenticationHeader),
             uriVariables = mapOf(
                 "cpf" to cpf
             )

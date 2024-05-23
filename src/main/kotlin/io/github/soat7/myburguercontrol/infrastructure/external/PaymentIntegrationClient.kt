@@ -7,12 +7,17 @@ import io.github.soat7.myburguercontrol.domain.exception.ReasonCodeException
 import io.github.soat7.myburguercontrol.domain.mapper.toDto
 import io.github.soat7.myburguercontrol.domain.mapper.toRequest
 import io.github.soat7.myburguercontrol.domain.model.Payment
-import io.github.soat7.myburguercontrol.infrastructure.external.rest.PaymentIntegrationRestTemplate
+import io.github.soat7.myburguercontrol.infrastructure.external.rest.PaymentIntegrationResponse
 import mu.KLogging
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.stereotype.Component
 import org.springframework.web.client.RestClientResponseException
+import org.springframework.web.client.RestTemplate
 
-class PaymentIntegrationService(
-    private val paymentIntegrationRestTemplate: PaymentIntegrationRestTemplate
+@Component
+class PaymentIntegrationClient(
+    @Value("\${third-party.payment-integration.url}") private val paymentServiceUrl: String,
+    private val paymentRestTemplate: RestTemplate
 ) : PaymentIntegrationPort {
 
     private companion object : KLogging()
@@ -21,7 +26,11 @@ class PaymentIntegrationService(
         logger.info { "Starting integration with PaymentProvider" }
 
         try {
-            val response = paymentIntegrationRestTemplate.requestPaymentIntegration(payment.toRequest())
+            val response = paymentRestTemplate.postForEntity(
+                paymentServiceUrl,
+                payment.toRequest(),
+                PaymentIntegrationResponse::class.java
+            )
 
             if (response.statusCode.is2xxSuccessful) {
                 response.body?.let {

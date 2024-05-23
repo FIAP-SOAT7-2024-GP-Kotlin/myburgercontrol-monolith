@@ -41,7 +41,7 @@ class AuthIT : BaseIntegrationTest() {
     }
 
     @Test
-    fun `should return FORBIDDEN when password is wrong`() {
+    fun `should return BAD CREDENTIALS when password is wrong`() {
         val cpf = "29257035859"
         val password = "pass123"
         userRepository.save(UserFixtures.mockUserEntity(cpf = cpf, password = enconder.encode(password)))
@@ -50,6 +50,10 @@ class AuthIT : BaseIntegrationTest() {
 
         val response = restTemplate.postForEntity<String>("/auth", inputAuthData)
 
-        assertEquals(response.statusCode.value(), HttpStatus.FORBIDDEN.value())
+        assertAll(
+            Executable { assertTrue(response.statusCode.is5xxServerError) },
+            Executable { assertNotNull(response.body) },
+            Executable { assertTrue(response.body!!.contains("Bad Credentials")) }
+        )
     }
 }

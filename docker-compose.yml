@@ -24,6 +24,7 @@ services:
       DATABASE_URL: "postgresql://db:5432/myburguer"
       DATABASE_USER: "myburguer"
       DATABASE_PASSWORD: "mb"
+      JWT_KEY: "lkjhaskljdajkdlsfjklsdgjklssdljkgff"
       LOG_LEVEL: "DEBUG"
   wiremock:
     image: holomekc/wiremock-gui:3.5.7-alpine

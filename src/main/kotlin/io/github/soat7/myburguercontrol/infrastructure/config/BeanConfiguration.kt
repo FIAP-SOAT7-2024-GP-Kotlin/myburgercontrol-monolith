@@ -19,12 +19,6 @@ import io.github.soat7.myburguercontrol.domain.service.ProductService
 import io.github.soat7.myburguercontrol.domain.service.TokenService
 import io.github.soat7.myburguercontrol.domain.service.UserService
 import io.github.soat7.myburguercontrol.infrastructure.persistence.user.repository.UserRepository
-import io.github.soat7.myburguercontrol.domain.service.CustomUserDetailsService
-import io.github.soat7.myburguercontrol.application.ports.outbound.ProductDatabasePort
-import io.github.soat7.myburguercontrol.domain.service.CustomerService
-import io.github.soat7.myburguercontrol.domain.service.PaymentService
-import io.github.soat7.myburguercontrol.domain.service.ItemService
-import io.github.soat7.myburguercontrol.domain.service.ProductService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
@@ -40,8 +34,10 @@ class BeanConfiguration(
     fun customerService(customerDatabasePort: CustomerDatabasePort) =
         CustomerService(customerDatabasePort)
 
+/*
     @Bean
     fun paymentService(paymentIntegrationPort: PaymentIntegrationPort) = PaymentService(paymentIntegrationPort)
+*/
 
     @Bean
     fun userService(userDatabasePort: UserDatabasePort,

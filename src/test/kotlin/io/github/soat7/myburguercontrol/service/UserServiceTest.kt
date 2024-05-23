@@ -22,7 +22,6 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
-
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class UserServiceTest {
@@ -84,7 +83,7 @@ class UserServiceTest {
 
     @Test
     @Order(3)
-    fun `should get a user using CPF`(): Unit {
+    fun `should get a user using CPF`() {
         val cpf = "48024771802"
         val id = UUID.randomUUID()
         val password = "pass123"
@@ -104,4 +103,3 @@ class UserServiceTest {
         verify(exactly = 1) { userDatabasePort.findUserByCpf(any()) }
     }
 }
-

@@ -12,7 +12,7 @@ object UserFixtures {
         id: UUID = UUID.randomUUID(),
         cpf: String,
         password: String = "pass123",
-        role: Role = Role.USER,
+        role: Role = Role.USER
     ) =
         UserEntity(
             id = id,
@@ -36,6 +36,5 @@ object UserFixtures {
             password = entity.password,
             role = entity.role
         )
-
     }
 }

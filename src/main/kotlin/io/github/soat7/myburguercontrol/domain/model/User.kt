@@ -6,5 +6,5 @@ data class User(
     val id: UUID,
     val cpf: String,
     var password: String,
-    val role : Role
+    val role: Role
 )

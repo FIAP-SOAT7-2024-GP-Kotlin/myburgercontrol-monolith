@@ -50,5 +50,4 @@ class UserController(
             ResponseEntity.ok(it.toResponse())
         } ?: ResponseEntity.notFound().build()
     }
-
 }

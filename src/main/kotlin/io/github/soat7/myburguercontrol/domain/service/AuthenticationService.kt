@@ -3,9 +3,9 @@ package io.github.soat7.myburguercontrol.domain.service
 import io.github.soat7.myburguercontrol.application.ports.inbound.AuthenticationServicePort
 import io.github.soat7.myburguercontrol.application.ports.inbound.CustomUserDetailsServicePort
 import io.github.soat7.myburguercontrol.application.ports.inbound.TokenServicePort
+import io.github.soat7.myburguercontrol.infrastructure.config.JwtProperties
 import io.github.soat7.myburguercontrol.infrastructure.rest.api.AuthRequest
 import io.github.soat7.myburguercontrol.infrastructure.rest.api.AuthResponse
-import io.github.soat7.myburguercontrol.infrastructure.config.JwtProperties
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import java.util.Date
@@ -38,4 +38,3 @@ class AuthenticationService(
         return AuthResponse(accessToken)
     }
 }
-

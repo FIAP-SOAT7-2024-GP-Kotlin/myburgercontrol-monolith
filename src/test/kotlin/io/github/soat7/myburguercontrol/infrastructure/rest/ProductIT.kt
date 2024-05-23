@@ -13,9 +13,10 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.function.Executable
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.web.client.getForEntity
-import org.springframework.boot.test.web.client.postForEntity
+import org.springframework.boot.test.web.client.exchange
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import java.util.UUID
 
@@ -28,9 +29,10 @@ class ProductIT : BaseIntegrationTest() {
     fun `should successfully create a new product`() {
         val inputProductData = ProductFixtures.mockProductCreationRequest()
 
-        val response = restTemplate.postForEntity<ProductResponse>(
-            "/products",
-            inputProductData
+        val response = restTemplate.exchange<ProductResponse>(
+            url = "/products",
+            method = HttpMethod.POST,
+            requestEntity = HttpEntity(inputProductData, authenticationHeader)
         )
 
         assertAll(
@@ -49,15 +51,15 @@ class ProductIT : BaseIntegrationTest() {
     }
 
     @Test
-    fun `should successfully find an product by id`() {
+    fun `should successfully find a product by id`() {
         val id = UUID.randomUUID()
         val product = productRepository.save(ProductFixtures.mockProductEntity(id))
 
-        val response = restTemplate.getForEntity<ProductResponse>(
-            "/products/{id}",
-            uriVariables = mapOf(
-                "id" to product.id
-            )
+        val response = restTemplate.exchange<ProductResponse>(
+            url = "/products/{id}",
+            method = HttpMethod.GET,
+            requestEntity = HttpEntity(null, authenticationHeader),
+            uriVariables = mapOf("id" to product.id)
         )
 
         assertAll(
@@ -74,8 +76,10 @@ class ProductIT : BaseIntegrationTest() {
     fun `should return NOT_FOUND when no product is found for the given Id`() {
         val randomId = UUID.randomUUID()
 
-        val response = restTemplate.getForEntity<ProductResponse>(
+        val response = restTemplate.exchange<ProductResponse>(
             url = "/products/{id}",
+            method = HttpMethod.GET,
+            requestEntity = HttpEntity(null, authenticationHeader),
             uriVariables = mapOf(
                 "id" to randomId.toString()
             )
@@ -85,9 +89,13 @@ class ProductIT : BaseIntegrationTest() {
 
     @Test
     fun `should return an empty Page of Product when no product is found`() {
-        val response = restTemplate.getForEntity<PaginatedResponse<ProductResponse>>(url = "/products")
+        val response =
+            restTemplate.exchange<PaginatedResponse<ProductResponse>>(
+                url = "/products",
+                method = HttpMethod.GET,
+                requestEntity = HttpEntity(null, authenticationHeader)
+            )
 
-        println(response)
         assertAll(
             Executable { assertTrue(response.statusCode.is2xxSuccessful) },
             Executable { assertThat(response.body).isNotNull },
@@ -105,7 +113,11 @@ class ProductIT : BaseIntegrationTest() {
             productRepository.save(ProductFixtures.mockProductEntity(type = ProductType.OTHER))
         }
 
-        val response = restTemplate.getForEntity<PaginatedResponse<ProductResponse>>(url = "/products")
+        val response = restTemplate.exchange<PaginatedResponse<ProductResponse>>(
+            url = "/products",
+            method = HttpMethod.GET,
+            requestEntity = HttpEntity(null, authenticationHeader)
+        )
 
         assertAll(
             Executable { assertTrue(response.statusCode.is2xxSuccessful) },

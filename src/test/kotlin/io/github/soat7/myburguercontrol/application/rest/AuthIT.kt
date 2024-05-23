@@ -10,9 +10,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.function.Executable
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.web.client.postForEntity
-import org.springframework.http.HttpStatus
 import org.springframework.security.crypto.password.PasswordEncoder
-import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class AuthIT : BaseIntegrationTest() {

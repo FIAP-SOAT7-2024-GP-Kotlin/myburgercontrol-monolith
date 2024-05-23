@@ -32,7 +32,7 @@ class UserService(
         if (found != null) {
             dataBase.deleteByUUID(uuid)
             return true
-        }else {
+        } else {
             return false
         }
     }

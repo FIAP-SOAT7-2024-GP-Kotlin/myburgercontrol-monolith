@@ -32,7 +32,7 @@ class SecurityConfiguration(
                         "/auth",
                         "/auth/refresh",
                         "/customers",
-                        "products",
+                        "/products",
                         )
                     .permitAll()
                     .requestMatchers(HttpMethod.POST, "/user")

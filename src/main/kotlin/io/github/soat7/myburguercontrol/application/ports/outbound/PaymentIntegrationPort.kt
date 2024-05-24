@@ -6,5 +6,4 @@ import io.github.soat7.myburguercontrol.domain.model.Payment
 interface PaymentIntegrationPort {
 
     fun requestPayment(payment: Payment): PaymentResult
-
 }

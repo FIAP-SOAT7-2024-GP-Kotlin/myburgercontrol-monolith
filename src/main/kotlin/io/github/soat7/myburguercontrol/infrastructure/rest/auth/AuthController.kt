@@ -9,10 +9,15 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping(
+    path = ["/auth"],
+    produces = [MediaType.APPLICATION_JSON_VALUE],
+    consumes = [MediaType.APPLICATION_JSON_VALUE]
+)
 class AuthController(
     private val authenticationService: AuthenticationServicePort
 ) {
+
     @PostMapping
     fun authenticate(@RequestBody authRequest: AuthRequest): AuthResponse =
         authenticationService.authenticate(authRequest)

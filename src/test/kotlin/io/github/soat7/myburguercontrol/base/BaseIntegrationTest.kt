@@ -14,18 +14,12 @@ import io.github.soat7.myburguercontrol.infrastructure.persistence.order.reposit
 import io.github.soat7.myburguercontrol.infrastructure.persistence.product.repository.ProductRepository
 import io.github.soat7.myburguercontrol.infrastructure.persistence.user.repository.UserRepository
 import io.github.soat7.myburguercontrol.infrastructure.rest.auth.api.AuthResponse
-import io.github.soat7.myburguercontrol.domain.model.Role
-import io.github.soat7.myburguercontrol.fixtures.AuthFixtures
-import io.github.soat7.myburguercontrol.fixtures.UserFixtures
-import io.github.soat7.myburguercontrol.infrastructure.persistence.user.repository.UserRepository
-import io.github.soat7.myburguercontrol.infrastructure.rest.api.AuthResponse
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.boot.test.web.client.postForEntity
-import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.http.MediaType
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.test.context.ActiveProfiles
@@ -59,7 +53,14 @@ class BaseIntegrationTest {
     @Autowired
     protected lateinit var passwordEncoder: PasswordEncoder
 
-    protected lateinit var authentication: MultiValueMap<String, String>
+    protected lateinit var authenticationHeader: MultiValueMap<String, String>
+
+    @BeforeEach
+    fun setUpAuthentication() {
+        println("Cleaning User database...")
+        userRepository.deleteAll()
+        authenticationHeader = buildAuthentication()
+    }
 
     protected fun insertProducts(): List<UUID> {
         productRepository.save(ProductFixtures.mockProductEntity())
@@ -70,28 +71,17 @@ class BaseIntegrationTest {
 
     protected fun insertCustomerData(customer: Customer): CustomerEntity {
         return customerRepository.save(customer.toPersistence())
-    @LocalServerPort
-    private var port: Int = 0
-
-    protected lateinit var authenticationHeader: MultiValueMap<String, String>
-
-    @BeforeEach
-    fun setUpAuthentication() {
-        println("Cleaning User database...")
-        userRepository.deleteAll()
-        authenticationHeader = buildAuthentication()
     }
 
     protected fun buildAuthentication(): MultiValueMap<String, String> {
         val cpf = "15666127055"
         val password = UUID.randomUUID().toString()
         val userRole = UserRole.ADMIN
-        val userRole = Role.ADMIN
         userRepository.save(
             UserFixtures.mockUserEntity(
                 cpf = cpf,
                 password = passwordEncoder.encode(password),
-                role = userRole
+                userRole = userRole
             )
         )
 

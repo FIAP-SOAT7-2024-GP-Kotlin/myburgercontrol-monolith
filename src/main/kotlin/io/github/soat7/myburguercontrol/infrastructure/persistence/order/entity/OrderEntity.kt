@@ -43,5 +43,5 @@ class OrderEntity(
         mappedBy = "order",
         targetEntity = OrderItemEntity::class
     )
-    var items: List<OrderItemEntity> = mutableListOf(),
+    var items: List<OrderItemEntity> = mutableListOf()
 )

@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.function.Executable
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.web.client.exchange
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpEntity

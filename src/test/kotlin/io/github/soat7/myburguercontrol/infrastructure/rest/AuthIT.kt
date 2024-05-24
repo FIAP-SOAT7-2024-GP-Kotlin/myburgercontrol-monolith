@@ -51,7 +51,7 @@ class AuthIT : BaseIntegrationTest() {
         assertAll(
             Executable { assertTrue(response.statusCode.is5xxServerError) },
             Executable { assertNotNull(response.body) },
-            Executable { assertTrue(response.body!!.contains("Bad Credentials")) }
+            Executable { assertTrue(response.body!!.contains("Bad credentials")) }
         )
     }
 }

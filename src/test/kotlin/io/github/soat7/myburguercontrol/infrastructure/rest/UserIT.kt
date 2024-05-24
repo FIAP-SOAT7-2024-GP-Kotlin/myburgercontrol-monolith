@@ -1,4 +1,4 @@
-package io.github.soat7.myburguercontrol.application.rest
+package io.github.soat7.myburguercontrol.infrastructure.rest
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -7,7 +7,7 @@ import io.github.soat7.myburguercontrol.domain.model.Role
 import io.github.soat7.myburguercontrol.fixtures.AuthFixtures
 import io.github.soat7.myburguercontrol.fixtures.UserFixtures
 import io.github.soat7.myburguercontrol.infrastructure.persistence.user.repository.UserRepository
-import io.github.soat7.myburguercontrol.infrastructure.rest.api.UserResponse
+import io.github.soat7.myburguercontrol.infrastructure.rest.user.api.UserResponse
 import org.junit.jupiter.api.Assertions.assertAll
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test

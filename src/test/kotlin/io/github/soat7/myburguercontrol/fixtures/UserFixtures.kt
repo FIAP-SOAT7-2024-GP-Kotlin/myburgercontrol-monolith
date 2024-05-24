@@ -3,7 +3,7 @@ package io.github.soat7.myburguercontrol.fixtures
 import io.github.soat7.myburguercontrol.domain.model.Role
 import io.github.soat7.myburguercontrol.domain.model.User
 import io.github.soat7.myburguercontrol.infrastructure.persistence.user.entity.UserEntity
-import io.github.soat7.myburguercontrol.infrastructure.rest.api.UserCreationRequest
+import io.github.soat7.myburguercontrol.infrastructure.rest.user.api.UserCreationRequest
 import java.util.UUID
 
 object UserFixtures {

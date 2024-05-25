@@ -32,8 +32,10 @@ class SecurityConfiguration(
                         "/auth",
                         "/auth/refresh",
                         "/customers",
+                        "/customers/**",
                         "/products",
-                        )
+                        "/products/**"
+                    )
                     .permitAll()
                     .requestMatchers(HttpMethod.POST, "/user")
                     .permitAll()

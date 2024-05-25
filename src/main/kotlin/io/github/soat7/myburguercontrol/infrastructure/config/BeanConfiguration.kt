@@ -34,8 +34,9 @@ class BeanConfiguration(
 */
 
     @Bean
-    fun userService(userDatabasePort: UserDatabasePort,
-                    encoder: PasswordEncoder
+    fun userService(
+        userDatabasePort: UserDatabasePort,
+        encoder: PasswordEncoder
     ) = UserService(userDatabasePort, encoder)
 
     @Bean

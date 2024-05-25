@@ -11,6 +11,7 @@ import io.github.soat7.myburguercontrol.fixtures.UserFixtures
 import io.github.soat7.myburguercontrol.infrastructure.persistence.customer.entity.CustomerEntity
 import io.github.soat7.myburguercontrol.infrastructure.persistence.customer.repository.CustomerRepository
 import io.github.soat7.myburguercontrol.infrastructure.persistence.order.repository.OrderRepository
+import io.github.soat7.myburguercontrol.infrastructure.persistence.product.entity.ProductEntity
 import io.github.soat7.myburguercontrol.infrastructure.persistence.product.repository.ProductRepository
 import io.github.soat7.myburguercontrol.infrastructure.persistence.user.repository.UserRepository
 import io.github.soat7.myburguercontrol.infrastructure.rest.auth.api.AuthResponse
@@ -62,11 +63,11 @@ class BaseIntegrationTest {
         authenticationHeader = buildAuthentication()
     }
 
-    protected fun insertProducts(): List<UUID> {
+    protected fun insertProducts(): List<ProductEntity> {
         productRepository.save(ProductFixtures.mockProductEntity())
         productRepository.save(ProductFixtures.mockProductEntity())
 
-        return productRepository.findAll().map { it.id!! }
+        return productRepository.findAll()
     }
 
     protected fun insertCustomerData(customer: Customer): CustomerEntity {

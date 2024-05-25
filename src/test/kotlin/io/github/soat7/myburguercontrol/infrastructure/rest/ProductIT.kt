@@ -113,7 +113,7 @@ class ProductIT : BaseIntegrationTest() {
             Executable { assertTrue(response.statusCode.is2xxSuccessful) },
             Executable { assertThat(response.body).isNotNull },
             Executable { assertThat(response.body!!.content.isNotEmpty()) },
-            Executable { assertEquals(1, response.body!!.totalPages) }
+            Executable { assertEquals(2, response.body!!.totalPages) }
         )
     }
 

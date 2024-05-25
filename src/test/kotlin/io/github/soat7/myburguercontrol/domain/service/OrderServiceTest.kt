@@ -6,6 +6,7 @@ import io.github.soat7.myburguercontrol.application.ports.outbound.OrderDatabase
 import io.github.soat7.myburguercontrol.domain.enum.OrderStatus
 import io.github.soat7.myburguercontrol.fixtures.CustomerFixtures.mockDomainCustomer
 import io.github.soat7.myburguercontrol.fixtures.OrderDetailFixtures
+import io.github.soat7.myburguercontrol.fixtures.ProductFixtures
 import io.github.soat7.myburguercontrol.util.toBigDecimal
 import io.mockk.clearMocks
 import io.mockk.every
@@ -19,8 +20,8 @@ import java.util.UUID
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
 import io.github.soat7.myburguercontrol.domain.model.Order as OrderModel
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -43,13 +44,15 @@ class OrderServiceTest {
     fun `should create a new order using cpf`() {
         val cpf = "23282711034"
         val customer = mockDomainCustomer(cpf = cpf)
+        val product = ProductFixtures.mockDomainProduct()
 
         every { customerServicePort.findCustomerByCpf(cpf) } returns customer
         every { orderDatabasePort.create(any<OrderModel>()) } answers {
             (this.firstArg() as OrderModel).copy(id = UUID.randomUUID())
         }
+        every { productServicePort.findById(any()) } returns product
 
-        val order = service.createOrder(OrderDetailFixtures.mockOrderDetail(cpf = cpf))
+        val order = service.createOrder(OrderDetailFixtures.mockOrderDetail(cpf = cpf, product = product))
 
         verify(exactly = 1) { customerServicePort.findCustomerByCpf(any()) }
         verify(exactly = 1) { orderDatabasePort.create(any()) }
@@ -57,7 +60,7 @@ class OrderServiceTest {
         assertNotNull(order.id)
         assertEquals(cpf, order.customer.cpf)
         assertEquals(OrderStatus.NEW, order.status)
-        assertTrue(order.items.isEmpty())
-        assertEquals(0.0.toBigDecimal(), order.total)
+        assertFalse(order.items.isEmpty())
+        assertEquals(1.0.toBigDecimal(), order.total)
     }
 }

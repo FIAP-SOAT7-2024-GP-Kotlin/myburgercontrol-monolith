@@ -24,7 +24,7 @@ class OrderItemEntity(
     @Column(name = "id", nullable = false)
     var id: UUID? = null,
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id", foreignKey = ForeignKey(name = "fk_order"))
     var order: OrderEntity,
 

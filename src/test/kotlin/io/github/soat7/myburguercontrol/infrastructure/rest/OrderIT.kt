@@ -3,39 +3,42 @@ package io.github.soat7.myburguercontrol.infrastructure.rest
 import io.github.soat7.myburguercontrol.base.BaseIntegrationTest
 import io.github.soat7.myburguercontrol.domain.enum.OrderStatus
 import io.github.soat7.myburguercontrol.fixtures.CustomerFixtures.mockDomainCustomer
+import io.github.soat7.myburguercontrol.fixtures.OrderFixtures
 import io.github.soat7.myburguercontrol.infrastructure.rest.order.api.request.OrderCreationRequest
 import io.github.soat7.myburguercontrol.infrastructure.rest.order.api.response.OrderResponse
 import io.github.soat7.myburguercontrol.util.toBigDecimal
 import org.junit.jupiter.api.Assertions.assertAll
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.function.Executable
-import org.springframework.boot.test.web.client.getForEntity
-import org.springframework.boot.test.web.client.postForEntity
+import org.springframework.boot.test.web.client.exchange
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import kotlin.jvm.optionals.getOrNull
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
 
 class OrderIT : BaseIntegrationTest() {
 
     @Test
-    fun `should create a new order using cpf`() {
+    fun `should create a new order`() {
         val cpf = "23282711034"
         val customer = insertCustomerData(mockDomainCustomer(cpf = cpf))
         val items = insertProducts().map {
             OrderCreationRequest.OrderItem(
-                productId = it,
+                productId = it.id!!,
                 quantity = 1
             )
         }
 
         val inputOrderData = OrderCreationRequest(customerCpf = customer.cpf, items)
 
-        val orderResponse = restTemplate.postForEntity<OrderResponse>(
-            "/orders",
-            inputOrderData
+        val orderResponse = restTemplate.exchange<OrderResponse>(
+            url = "/orders",
+            method = HttpMethod.POST,
+            requestEntity = HttpEntity(inputOrderData, authenticationHeader)
         )
 
         assertAll(
@@ -49,16 +52,24 @@ class OrderIT : BaseIntegrationTest() {
             Executable { assertNotNull(order) },
             Executable { assertEquals(cpf, order!!.customer.cpf) },
             Executable { assertEquals(OrderStatus.NEW.name, order!!.status) },
-            Executable { assertTrue(order!!.items.isEmpty()) }
+            Executable { assertFalse(order!!.items.isEmpty()) }
         )
     }
 
     @Test
     fun `should get orders using cpf`() {
-        val cpf = "23282711034"
+        val cpf = "47052551004"
 
-        val orders = restTemplate.getForEntity<List<OrderResponse>>(
-            "/orders?cpf={cpf}",
+        run {
+            val customer = insertCustomerData(mockDomainCustomer(cpf = cpf))
+            val product = insertProducts().first()
+            orderRepository.save(OrderFixtures.mockOrderEntity(customer, product))
+        }
+
+        val orders = restTemplate.exchange<List<OrderResponse>>(
+            url = "/orders?cpf={cpf}",
+            method = HttpMethod.GET,
+            requestEntity = HttpEntity(null, authenticationHeader),
             uriVariables = mapOf(
                 "cpf" to cpf
             )
@@ -70,12 +81,13 @@ class OrderIT : BaseIntegrationTest() {
         )
 
         val order = orders.body!!.first()
+
         assertAll(
             Executable { assertNotNull(order.id) },
             Executable { assertEquals(cpf, order.customer.cpf) },
             Executable { assertEquals(OrderStatus.NEW, order.status) },
-            Executable { assertTrue(order.items.isEmpty()) },
-            Executable { assertEquals(0.0.toBigDecimal(), order.total) }
+            Executable { assertFalse(order.items.isEmpty()) },
+            Executable { assertEquals(1.0.toBigDecimal(), order.total) }
         )
     }
 
@@ -84,15 +96,16 @@ class OrderIT : BaseIntegrationTest() {
         val cpf = "44527073001"
         val items = insertProducts().map {
             OrderCreationRequest.OrderItem(
-                productId = it,
+                productId = it.id!!,
                 quantity = 1
             )
         }
         val inputOrderData = OrderCreationRequest(customerCpf = cpf, items)
 
-        val response = restTemplate.postForEntity<OrderResponse>(
+        val response = restTemplate.exchange<Any>(
             url = "/orders",
-            inputOrderData
+            method = HttpMethod.POST,
+            requestEntity = HttpEntity(inputOrderData, authenticationHeader)
         )
 
         assertEquals(HttpStatus.BAD_REQUEST, response.statusCode)

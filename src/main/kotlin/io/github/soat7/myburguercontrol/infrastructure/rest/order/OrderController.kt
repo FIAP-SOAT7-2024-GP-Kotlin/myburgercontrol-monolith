@@ -45,7 +45,7 @@ class OrderController(
         @RequestParam(defaultValue = "10") size: Int
     ): ResponseEntity<PaginatedResponse<OrderResponse>> = run {
         val pageable = PageRequest.of(page, size)
-        val response = service.findQueueOrders(pageable)
+        val response = service.findQueuedOrders(pageable)
 
         ResponseEntity.ok(
             PaginatedResponse(

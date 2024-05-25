@@ -55,7 +55,7 @@ class OrderService(
         orderDatabasePort.findByCustomerId(customer.id)
     }
 
-    override fun findQueueOrders(pageable: Pageable): Page<Order> {
+    override fun findQueuedOrders(pageable: Pageable): Page<Order> {
         logger.info { "Finding orders with status: [${OrderStatus.NEW}]" }
         return orderDatabasePort.findNewOrders(OrderStatus.NEW.name, pageable)
     }

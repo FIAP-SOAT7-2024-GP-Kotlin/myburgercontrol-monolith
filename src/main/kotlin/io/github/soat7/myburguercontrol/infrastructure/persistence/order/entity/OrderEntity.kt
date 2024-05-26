@@ -47,7 +47,7 @@ class OrderEntity(
     )
     var items: List<OrderItemEntity> = mutableListOf(),
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "payment_id", referencedColumnName = "id")
-    var payment: PaymentEntity
+    var payment: PaymentEntity?
 )

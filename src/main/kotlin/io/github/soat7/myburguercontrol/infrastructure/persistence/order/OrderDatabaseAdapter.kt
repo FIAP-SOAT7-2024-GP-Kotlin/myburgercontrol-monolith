@@ -19,7 +19,7 @@ class OrderDatabaseAdapter(
 
     override fun create(order: Order): Order = run {
         repository.save(
-            order.toPersistence(order.customer.toPersistence(), order.payment.toPersistence()) {
+            order.toPersistence(order.customer.toPersistence(), order.payment?.toPersistence()) {
                 productRepository.findById(it).get()
             }
         ).toDomain()
@@ -31,4 +31,12 @@ class OrderDatabaseAdapter(
     override fun findNewOrders(status: String, pageable: Pageable): Page<Order> =
         repository.findAllByStatusOrderByCreatedAtAsc(status, pageable)
             .map { it.toDomain() }
+
+    override fun update(order: Order): Order {
+        return repository.save(
+            order.toPersistence(order.customer.toPersistence(), order.payment?.toPersistence()) {
+                productRepository.findById(it).get()
+            }
+        ).toDomain()
+    }
 }

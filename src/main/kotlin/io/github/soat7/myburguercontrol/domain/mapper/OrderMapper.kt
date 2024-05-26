@@ -46,7 +46,7 @@ fun Order.toResponse() = OrderResponse(
 
 fun Order.toPersistence(
     customerEntity: CustomerEntity,
-    paymentEntity: PaymentEntity,
+    paymentEntity: PaymentEntity?,
     productFinder: (productId: UUID) -> ProductEntity
 ) = OrderEntity(
     id = this.id,
@@ -68,12 +68,12 @@ fun OrderItem.toPersistence(orderEntity: OrderEntity, productFinder: (productId:
     )
 
 fun OrderEntity.toDomain() = Order(
-    id = this.id ?: UUID.fromString(""),
+    id = this.id ?: UUID.randomUUID(),
     customer = this.customer.toDomain(),
     status = OrderStatus.from(this.status),
     createdAt = this.createdAt,
     items = this.items.map { it.toDomain() },
-    payment = this.payment.toDomain()
+    payment = this.payment?.toDomain()
 )
 
 fun OrderItemEntity.toDomain() = OrderItem(

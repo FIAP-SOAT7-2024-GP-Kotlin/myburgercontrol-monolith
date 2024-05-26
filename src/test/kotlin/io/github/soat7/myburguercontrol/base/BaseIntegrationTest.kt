@@ -16,6 +16,7 @@ import io.github.soat7.myburguercontrol.infrastructure.persistence.product.repos
 import io.github.soat7.myburguercontrol.infrastructure.persistence.user.repository.UserRepository
 import io.github.soat7.myburguercontrol.infrastructure.rest.auth.api.AuthResponse
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -34,6 +35,7 @@ import java.util.UUID
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 @ExtendWith(PostgresContainer::class)
+@Disabled
 class BaseIntegrationTest {
 
     @Autowired

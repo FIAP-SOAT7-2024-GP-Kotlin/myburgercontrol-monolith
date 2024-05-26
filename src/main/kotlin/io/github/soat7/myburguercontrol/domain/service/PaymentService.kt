@@ -4,6 +4,8 @@ import io.github.soat7.myburguercontrol.application.ports.inbound.PaymentService
 import io.github.soat7.myburguercontrol.application.ports.outbound.PaymentDatabasePort
 import io.github.soat7.myburguercontrol.application.ports.outbound.PaymentIntegrationPort
 import io.github.soat7.myburguercontrol.domain.enum.PaymentStatus
+import io.github.soat7.myburguercontrol.domain.exception.ReasonCode
+import io.github.soat7.myburguercontrol.domain.exception.ReasonCodeException
 import io.github.soat7.myburguercontrol.domain.model.Order
 import io.github.soat7.myburguercontrol.domain.model.Payment
 import mu.KLogging
@@ -15,17 +17,27 @@ class PaymentService(
 
     private companion object : KLogging()
 
+    override fun createPayment(): Payment {
+        logger.info { "Creating payment" }
+
+        return paymentDatabasePort.create(Payment())
+    }
+
     override fun requestPayment(order: Order): Payment {
         logger.info { "Starting to request payment integration for order id: [${order.id}]" }
 
+        val payment = order.payment?.let {
+            paymentDatabasePort.findById(it.id)
+        } ?: throw ReasonCodeException(ReasonCode.PAYMENT_NOT_FOUND)
+
         val paymentResult = paymentIntegrationPort.requestPayment(order)
 
-        order.payment.apply {
-            authorizationId = paymentResult.authorizationId
-            status = checkApproval(paymentResult.approved)
-        }
-
-        paymentDatabasePort.create(order.payment)
+        paymentDatabasePort.update(
+            payment.copy(
+                status = checkApproval(paymentResult.approved),
+                authorizationId = paymentResult.authorizationId
+            )
+        )
 
         logger.info { "Successfully integrated with status return: [${order.payment.status.name}]" }
 

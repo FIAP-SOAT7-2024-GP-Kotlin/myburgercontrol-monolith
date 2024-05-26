@@ -6,4 +6,6 @@ import io.github.soat7.myburguercontrol.domain.model.Payment
 interface PaymentServicePort {
 
     fun requestPayment(order: Order): Payment
+
+    fun createPayment(): Payment
 }

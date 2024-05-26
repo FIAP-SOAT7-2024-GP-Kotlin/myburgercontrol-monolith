@@ -9,4 +9,5 @@ interface OrderDatabasePort {
     fun create(order: Order): Order
     fun findByCustomerId(customerId: UUID): List<Order>
     fun findNewOrders(status: String, pageable: Pageable): Page<Order>
+    fun update(order: Order): Order
 }

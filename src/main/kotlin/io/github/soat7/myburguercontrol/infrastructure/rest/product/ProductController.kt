@@ -6,6 +6,8 @@ import io.github.soat7.myburguercontrol.domain.mapper.toResponse
 import io.github.soat7.myburguercontrol.infrastructure.rest.common.PaginatedResponse
 import io.github.soat7.myburguercontrol.infrastructure.rest.product.api.ProductCreationRequest
 import io.github.soat7.myburguercontrol.infrastructure.rest.product.api.ProductResponse
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import mu.KLogging
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.MediaType
@@ -23,6 +25,7 @@ import java.util.UUID
 @RestController("product-controller")
 @RequestMapping("products")
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
+@SecurityRequirement(name = "Bearer Authentication")
 class ProductController(
     private val service: ProductServicePort
 ) {
@@ -32,6 +35,12 @@ class ProductController(
     @PostMapping(
         consumes = [MediaType.APPLICATION_JSON_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    @Operation(
+        tags = ["99 - Comum"],
+        summary = "Utilize esta rota para cadastrar um novo produto",
+        description = "Utilize esta rota para cadastrar um novo produto",
+        operationId = "2"
     )
     fun createProduct(@RequestBody request: ProductCreationRequest): ResponseEntity<ProductResponse> = run {
         logger.debug { "Creating product" }
@@ -44,6 +53,12 @@ class ProductController(
         path = ["/{id}"],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
+    @Operation(
+        tags = ["99 - Comum"],
+        summary = "Utilize esta rota para encontrar um produto utilizando o identificador na base de dados",
+        description = "Utilize esta rota para encontrar um produto utilizando o identificador na base de dados",
+        operationId = "3"
+    )
     fun getProductById(@PathVariable("id") id: UUID): ResponseEntity<ProductResponse> = run {
         logger.debug { "Getting product by id: [$id]" }
         service.findById(id)?.let {
@@ -52,6 +67,12 @@ class ProductController(
     }
 
     @GetMapping
+    @Operation(
+        tags = ["2 - Jornada do Pedido"],
+        summary = "Utilize esta rota para buscar todos os produtos cadastrados",
+        description = "Utilize esta rota para buscar todos os produtos cadastrados",
+        operationId = "1"
+    )
     fun findAll(
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "10") size: Int

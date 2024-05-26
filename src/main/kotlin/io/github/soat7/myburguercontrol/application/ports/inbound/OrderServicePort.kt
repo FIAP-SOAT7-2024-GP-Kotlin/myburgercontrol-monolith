@@ -10,4 +10,5 @@ interface OrderServicePort {
     fun createOrder(orderDetail: OrderDetail): Order
     fun findOrdersByCustomerCpf(cpf: String): List<Order>
     fun findQueuedOrders(pageable: Pageable): Page<Order>
+    fun changeOrderStatus(): Order
 }

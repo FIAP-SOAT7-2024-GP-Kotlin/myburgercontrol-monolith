@@ -6,5 +6,6 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy::class)
 data class PaymentIntegrationRequest(
     val id: String,
-    val cpf: String
+    val cpf: String,
+    val value: String
 )

@@ -1,6 +1,7 @@
 package io.github.soat7.myburguercontrol.infrastructure.persistence.order.entity
 
 import io.github.soat7.myburguercontrol.infrastructure.persistence.customer.entity.CustomerEntity
+import io.github.soat7.myburguercontrol.infrastructure.persistence.payment.entity.PaymentEntity
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -12,6 +13,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
+import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
 import java.time.Instant
 import java.util.UUID
@@ -43,5 +45,9 @@ class OrderEntity(
         mappedBy = "order",
         targetEntity = OrderItemEntity::class
     )
-    var items: List<OrderItemEntity> = mutableListOf()
+    var items: List<OrderItemEntity> = mutableListOf(),
+
+    @OneToOne
+    @JoinColumn(name = "payment_id", referencedColumnName = "id")
+    var payment: PaymentEntity
 )

@@ -18,7 +18,8 @@ import java.util.UUID
 class OrderService(
     private val orderDatabasePort: OrderDatabasePort,
     private val customerService: CustomerServicePort,
-    private val productService: ProductServicePort
+    private val productService: ProductServicePort,
+    private val paymentService: PaymentService
 ) : OrderServicePort {
 
     private companion object : KLogging()
@@ -38,13 +39,13 @@ class OrderService(
             } ?: throw ReasonCodeException(ReasonCode.INVALID_PRODUCT)
         }
 
-        return orderDatabasePort.create(
-            Order(
-                id = UUID.randomUUID(),
-                customer = customer,
-                items = items
-            )
-        )
+        val order = Order(
+            id = UUID.randomUUID(),
+            customer = customer,
+            items = items
+        ).apply { this.payment = paymentService.requestPayment(this) }
+
+        return orderDatabasePort.create(order)
     }
 
     override fun findOrdersByCustomerCpf(cpf: String) = run {
@@ -58,5 +59,9 @@ class OrderService(
     override fun findQueuedOrders(pageable: Pageable): Page<Order> {
         logger.info { "Finding orders with status: [${OrderStatus.NEW}]" }
         return orderDatabasePort.findNewOrders(OrderStatus.NEW.name, pageable)
+    }
+
+    override fun changeOrderStatus(): Order {
+        TODO("Not yet implemented")
     }
 }

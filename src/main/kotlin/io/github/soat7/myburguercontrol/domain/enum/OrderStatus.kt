@@ -3,7 +3,10 @@ package io.github.soat7.myburguercontrol.domain.enum
 import mu.KLogging
 
 enum class OrderStatus {
-    NEW;
+    NEW,
+    IN_PROGRESS,
+    READY,
+    FINISHED;
 
     companion object : KLogging() {
 

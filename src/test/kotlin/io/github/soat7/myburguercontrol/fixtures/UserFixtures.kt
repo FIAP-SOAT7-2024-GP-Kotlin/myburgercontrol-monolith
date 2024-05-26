@@ -1,9 +1,9 @@
 package io.github.soat7.myburguercontrol.fixtures
 
-import io.github.soat7.myburguercontrol.domain.model.Role
+import io.github.soat7.myburguercontrol.domain.enum.UserRole
 import io.github.soat7.myburguercontrol.domain.model.User
 import io.github.soat7.myburguercontrol.infrastructure.persistence.user.entity.UserEntity
-import io.github.soat7.myburguercontrol.infrastructure.rest.api.UserCreationRequest
+import io.github.soat7.myburguercontrol.infrastructure.rest.auth.api.UserCreationRequest
 import java.util.UUID
 
 object UserFixtures {
@@ -12,23 +12,23 @@ object UserFixtures {
         id: UUID = UUID.randomUUID(),
         cpf: String,
         password: String = "pass123",
-        role: Role = Role.USER
+        userRole: UserRole = UserRole.USER
     ) =
         UserEntity(
             id = id,
             cpf = cpf,
             password = password,
-            role = role
+            role = userRole
         )
 
-    fun mockUserCreationRequest(cpf: String, password: String, role: Role) = UserCreationRequest(
+    fun mockUserCreationRequest(cpf: String, password: String, userRole: UserRole) = UserCreationRequest(
         cpf = cpf,
         password = password,
-        role = role
+        role = userRole
     )
 
-    fun mockUser(id: UUID = UUID.randomUUID(), cpf: String, password: String, role: Role): User {
-        val entity = mockUserEntity(id = id, cpf = cpf, password = password, role = role)
+    fun mockUser(id: UUID = UUID.randomUUID(), cpf: String, password: String, userRole: UserRole): User {
+        val entity = mockUserEntity(id = id, cpf = cpf, password = password, userRole = userRole)
 
         return User(
             id = entity.id,

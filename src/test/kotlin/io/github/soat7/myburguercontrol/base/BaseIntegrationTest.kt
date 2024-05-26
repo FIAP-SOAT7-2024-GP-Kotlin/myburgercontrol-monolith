@@ -2,18 +2,25 @@ package io.github.soat7.myburguercontrol.base
 
 import io.github.soat7.myburguercontrol.Application
 import io.github.soat7.myburguercontrol.container.PostgresContainer
-import io.github.soat7.myburguercontrol.domain.model.Role
+import io.github.soat7.myburguercontrol.domain.enum.UserRole
+import io.github.soat7.myburguercontrol.domain.mapper.toPersistence
+import io.github.soat7.myburguercontrol.domain.model.Customer
 import io.github.soat7.myburguercontrol.fixtures.AuthFixtures
+import io.github.soat7.myburguercontrol.fixtures.ProductFixtures
 import io.github.soat7.myburguercontrol.fixtures.UserFixtures
+import io.github.soat7.myburguercontrol.infrastructure.persistence.customer.entity.CustomerEntity
+import io.github.soat7.myburguercontrol.infrastructure.persistence.customer.repository.CustomerRepository
+import io.github.soat7.myburguercontrol.infrastructure.persistence.order.repository.OrderRepository
+import io.github.soat7.myburguercontrol.infrastructure.persistence.product.entity.ProductEntity
+import io.github.soat7.myburguercontrol.infrastructure.persistence.product.repository.ProductRepository
 import io.github.soat7.myburguercontrol.infrastructure.persistence.user.repository.UserRepository
-import io.github.soat7.myburguercontrol.infrastructure.rest.api.AuthResponse
+import io.github.soat7.myburguercontrol.infrastructure.rest.auth.api.AuthResponse
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.boot.test.web.client.postForEntity
-import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.http.MediaType
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.test.context.ActiveProfiles
@@ -33,13 +40,19 @@ class BaseIntegrationTest {
     protected lateinit var restTemplate: TestRestTemplate
 
     @Autowired
+    protected lateinit var productRepository: ProductRepository
+
+    @Autowired
+    protected lateinit var customerRepository: CustomerRepository
+
+    @Autowired
+    protected lateinit var orderRepository: OrderRepository
+
+    @Autowired
     protected lateinit var userRepository: UserRepository
 
     @Autowired
     protected lateinit var passwordEncoder: PasswordEncoder
-
-    @LocalServerPort
-    private var port: Int = 0
 
     protected lateinit var authenticationHeader: MultiValueMap<String, String>
 
@@ -50,15 +63,26 @@ class BaseIntegrationTest {
         authenticationHeader = buildAuthentication()
     }
 
+    protected fun insertProducts(): List<ProductEntity> {
+        productRepository.save(ProductFixtures.mockProductEntity())
+        productRepository.save(ProductFixtures.mockProductEntity())
+
+        return productRepository.findAll()
+    }
+
+    protected fun insertCustomerData(customer: Customer): CustomerEntity {
+        return customerRepository.save(customer.toPersistence())
+    }
+
     protected fun buildAuthentication(): MultiValueMap<String, String> {
         val cpf = "15666127055"
         val password = UUID.randomUUID().toString()
-        val userRole = Role.ADMIN
+        val userRole = UserRole.ADMIN
         userRepository.save(
             UserFixtures.mockUserEntity(
                 cpf = cpf,
                 password = passwordEncoder.encode(password),
-                role = userRole
+                userRole = userRole
             )
         )
 

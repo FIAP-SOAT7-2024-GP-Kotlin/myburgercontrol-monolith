@@ -3,7 +3,7 @@ package io.github.soat7.myburguercontrol.infrastructure.rest
 import io.github.soat7.myburguercontrol.base.BaseIntegrationTest
 import io.github.soat7.myburguercontrol.domain.enum.ProductType
 import io.github.soat7.myburguercontrol.fixtures.ProductFixtures
-import io.github.soat7.myburguercontrol.infrastructure.persistence.product.repository.ProductRepository
+import io.github.soat7.myburguercontrol.infrastructure.persistence.product.entity.ProductEntity
 import io.github.soat7.myburguercontrol.infrastructure.rest.common.PaginatedResponse
 import io.github.soat7.myburguercontrol.infrastructure.rest.product.api.ProductResponse
 import org.assertj.core.api.Assertions.assertThat
@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.function.Executable
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.web.client.exchange
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpEntity
@@ -21,9 +20,6 @@ import org.springframework.http.HttpStatus
 import java.util.UUID
 
 class ProductIT : BaseIntegrationTest() {
-
-    @Autowired
-    private lateinit var productRepository: ProductRepository
 
     @Test
     fun `should successfully create a new product`() {
@@ -105,13 +101,7 @@ class ProductIT : BaseIntegrationTest() {
 
     @Test
     fun `should return a Paginated response of product`() {
-        run {
-            productRepository.save(ProductFixtures.mockProductEntity())
-            productRepository.save(ProductFixtures.mockProductEntity(type = ProductType.DRINK))
-            productRepository.save(ProductFixtures.mockProductEntity(type = ProductType.APPETIZER))
-            productRepository.save(ProductFixtures.mockProductEntity(type = ProductType.DESSERT))
-            productRepository.save(ProductFixtures.mockProductEntity(type = ProductType.OTHER))
-        }
+        insertRandomTypeProducts()
 
         val response = restTemplate.exchange<PaginatedResponse<ProductResponse>>(
             url = "/products",
@@ -123,7 +113,15 @@ class ProductIT : BaseIntegrationTest() {
             Executable { assertTrue(response.statusCode.is2xxSuccessful) },
             Executable { assertThat(response.body).isNotNull },
             Executable { assertThat(response.body!!.content.isNotEmpty()) },
-            Executable { assertEquals(1, response.body!!.totalPages) }
+            Executable { assertEquals(2, response.body!!.totalPages) }
         )
+    }
+
+    private fun insertRandomTypeProducts(): ProductEntity {
+        productRepository.save(ProductFixtures.mockProductEntity())
+        productRepository.save(ProductFixtures.mockProductEntity(type = ProductType.DRINK))
+        productRepository.save(ProductFixtures.mockProductEntity(type = ProductType.APPETIZER))
+        productRepository.save(ProductFixtures.mockProductEntity(type = ProductType.DESSERT))
+        return productRepository.save(ProductFixtures.mockProductEntity(type = ProductType.OTHER))
     }
 }

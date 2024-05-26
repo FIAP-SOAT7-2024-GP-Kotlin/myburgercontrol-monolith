@@ -2,14 +2,18 @@ package io.github.soat7.myburguercontrol.infrastructure.config
 
 import io.github.soat7.myburguercontrol.application.ports.inbound.AuthenticationServicePort
 import io.github.soat7.myburguercontrol.application.ports.inbound.CustomUserDetailsServicePort
+import io.github.soat7.myburguercontrol.application.ports.inbound.CustomerServicePort
+import io.github.soat7.myburguercontrol.application.ports.inbound.ProductServicePort
 import io.github.soat7.myburguercontrol.application.ports.inbound.TokenServicePort
 import io.github.soat7.myburguercontrol.application.ports.outbound.CustomerDatabasePort
+import io.github.soat7.myburguercontrol.application.ports.outbound.OrderDatabasePort
 import io.github.soat7.myburguercontrol.application.ports.outbound.PaymentIntegrationPort
 import io.github.soat7.myburguercontrol.application.ports.outbound.ProductDatabasePort
 import io.github.soat7.myburguercontrol.application.ports.outbound.UserDatabasePort
 import io.github.soat7.myburguercontrol.domain.service.AuthenticationService
 import io.github.soat7.myburguercontrol.domain.service.CustomUserDetailsService
 import io.github.soat7.myburguercontrol.domain.service.CustomerService
+import io.github.soat7.myburguercontrol.domain.service.OrderService
 import io.github.soat7.myburguercontrol.domain.service.PaymentService
 import io.github.soat7.myburguercontrol.domain.service.ProductService
 import io.github.soat7.myburguercontrol.domain.service.TokenService
@@ -23,12 +27,12 @@ import org.springframework.security.crypto.password.PasswordEncoder
 @Configuration
 class BeanConfiguration(
     private val authManager: AuthenticationManager,
-    private val jwtProperties: JwtProperties,
-    private val userRepository: UserRepository
+    private val jwtProperties: JwtProperties
 ) {
 
     @Bean
-    fun customerService(customerDatabasePort: CustomerDatabasePort) = CustomerService(customerDatabasePort)
+    fun customerService(customerDatabasePort: CustomerDatabasePort) =
+        CustomerService(customerDatabasePort)
 
     @Bean
     fun paymentService(paymentIntegrationPort: PaymentIntegrationPort) = PaymentService(paymentIntegrationPort)
@@ -48,7 +52,7 @@ class BeanConfiguration(
     }
 
     @Bean
-    fun customUserDetailsService(): CustomUserDetailsServicePort {
+    fun customUserDetailsService(userRepository: UserRepository): CustomUserDetailsServicePort {
         return CustomUserDetailsService(userRepository)
     }
 
@@ -59,4 +63,12 @@ class BeanConfiguration(
 
     @Bean
     fun productService(productDatabasePort: ProductDatabasePort) = ProductService(productDatabasePort)
+
+    @Bean
+    fun orderService(
+        orderDatabasePort: OrderDatabasePort,
+        customerServicePort: CustomerServicePort,
+        productServicePort: ProductServicePort
+    ) =
+        OrderService(orderDatabasePort, customerServicePort, productServicePort)
 }

@@ -7,30 +7,30 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import java.util.UUID
 
 class UserService(
-    private val dataBase: UserDatabasePort,
+    private val userDatabasePort: UserDatabasePort,
     private val enconder: PasswordEncoder
 ) : UserServicePort {
     override fun create(user: User): User {
         user.password = enconder.encode(user.password)
-        return dataBase.create(user)
+        return userDatabasePort.create(user)
     }
 
     override fun findUserById(id: UUID): User? {
-        return dataBase.findUserById(id)
+        return userDatabasePort.findUserById(id)
     }
 
     override fun findUserByCpf(cpf: String): User? {
-        return dataBase.findUserByCpf(cpf)
+        return userDatabasePort.findUserByCpf(cpf)
     }
 
     override fun findByAll(): List<User> {
-        return dataBase.findByAll()
+        return userDatabasePort.findByAll()
     }
 
     override fun deleteByUUID(uuid: UUID): Boolean {
         val found = findUserById(uuid)
         if (found != null) {
-            dataBase.deleteByUUID(uuid)
+            userDatabasePort.deleteByUUID(uuid)
             return true
         } else {
             return false

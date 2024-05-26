@@ -21,7 +21,11 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
 @RestController("product-controller")
-@RequestMapping("products")
+@RequestMapping(
+    path = ["products"],
+    consumes = [MediaType.APPLICATION_JSON_VALUE],
+    produces = [MediaType.APPLICATION_JSON_VALUE]
+)
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 class ProductController(
     private val service: ProductServicePort
@@ -29,10 +33,7 @@ class ProductController(
 
     private companion object : KLogging()
 
-    @PostMapping(
-        consumes = [MediaType.APPLICATION_JSON_VALUE],
-        produces = [MediaType.APPLICATION_JSON_VALUE]
-    )
+    @PostMapping
     fun createProduct(@RequestBody request: ProductCreationRequest): ResponseEntity<ProductResponse> = run {
         logger.debug { "Creating product" }
         val response = service.create(request.toDomain())
@@ -40,10 +41,7 @@ class ProductController(
         ResponseEntity.ok(response.toResponse())
     }
 
-    @GetMapping(
-        path = ["/{id}"],
-        produces = [MediaType.APPLICATION_JSON_VALUE]
-    )
+    @GetMapping("/{id}")
     fun getProductById(@PathVariable("id") id: UUID): ResponseEntity<ProductResponse> = run {
         logger.debug { "Getting product by id: [$id]" }
         service.findById(id)?.let {

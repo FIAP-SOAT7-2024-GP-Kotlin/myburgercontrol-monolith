@@ -1,7 +1,7 @@
 package io.github.soat7.myburguercontrol.service
 
 import io.github.soat7.myburguercontrol.application.ports.outbound.UserDatabasePort
-import io.github.soat7.myburguercontrol.domain.model.Role
+import io.github.soat7.myburguercontrol.domain.enum.UserRole
 import io.github.soat7.myburguercontrol.domain.model.User
 import io.github.soat7.myburguercontrol.domain.service.UserService
 import io.github.soat7.myburguercontrol.fixtures.UserFixtures
@@ -42,8 +42,8 @@ class UserServiceTest {
         val cpf = "48024771802"
         val id = UUID.randomUUID()
         val password = "pass123"
-        val role = Role.USER
-        val user = UserFixtures.mockUser(id = id, cpf = cpf, password = password, role = role)
+        val userRole = UserRole.USER
+        val user = UserFixtures.mockUser(id = id, cpf = cpf, password = password, userRole = userRole)
 
         every {
             userDatabasePort.create(any<User>())
@@ -65,8 +65,8 @@ class UserServiceTest {
         val cpf = "48024771802"
         val id = UUID.randomUUID()
         val password = "pass123"
-        val role = Role.USER
-        val user = UserFixtures.mockUser(id = id, cpf = cpf, password = password, role = role)
+        val userRole = UserRole.USER
+        val user = UserFixtures.mockUser(id = id, cpf = cpf, password = password, userRole = userRole)
 
         every { userDatabasePort.findUserById(any()) } returns user
 
@@ -87,8 +87,8 @@ class UserServiceTest {
         val cpf = "48024771802"
         val id = UUID.randomUUID()
         val password = "pass123"
-        val role = Role.USER
-        val user = UserFixtures.mockUser(id = id, cpf = cpf, password = password, role = role)
+        val userRole = UserRole.USER
+        val user = UserFixtures.mockUser(id = id, cpf = cpf, password = password, userRole = userRole)
 
         every { userDatabasePort.findUserByCpf(any()) } returns user
 

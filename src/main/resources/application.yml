@@ -4,6 +4,7 @@ server:
   shutdown: graceful
   servlet:
     context-path: /api/v1
+
 spring:
   application.name: myburguercontrol
   config:
@@ -36,6 +37,14 @@ spring:
           use_second_level_cache: false
           use_structured_entries: false
           use_minimal_puts: false
+  jackson:
+    default-property-inclusion: non_null
+    deserialization:
+      fail_on_unknown_properties: false
+    serialization:
+      fail_on_empty_beans: false
+      write_dates_as_timestamps: false
+    property-naming-strategy: SNAKE_CASE
   liquibase:
     change-log: classpath:/db/changelog/master.xml
     enabled: true

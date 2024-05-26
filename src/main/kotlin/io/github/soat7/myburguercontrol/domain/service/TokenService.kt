@@ -15,10 +15,6 @@ class TokenService(
         jwtProperties.key.toByteArray()
     )
 
-    /*  Função recebera 3 argumentos: user details, data de expiração e declarações adicionais
-        Sera para atualiza para acesso e atualização dos tokens
-    */
-
     override fun generate(
         userDetails: UserDetails,
         expirationDate: Date,
@@ -34,8 +30,6 @@ class TokenService(
             .signWith(secretKey)
             .compact()
 
-    /*  Retornar todas Claims (reinvidicações) do nosso token
-    */
     private fun getAllClaims(token: String): Claims {
         val parser = Jwts.parser()
             .verifyWith(secretKey)
@@ -50,13 +44,11 @@ class TokenService(
         getAllClaims(token)
             .subject
 
-    //  Verifica se o token expirou olhando a data atual
     override fun isExpired(token: String): Boolean =
         getAllClaims(token)
             .expiration
             .before(Date(System.currentTimeMillis()))
 
-    //  verifica se o token é valido se: o e-mail está correto e não está expirado
     override fun isValid(token: String, userDetails: UserDetails): Boolean {
         val email = extractEmail(token)
 

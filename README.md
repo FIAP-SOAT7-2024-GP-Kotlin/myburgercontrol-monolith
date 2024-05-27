@@ -2,6 +2,10 @@
 
 Este projeto é um monolito para a FIAP PosTech SOAT 2024.
 
+## Documentação
+
+Acesse o MIRO com o DDD da aplicação por [aqui](https://miro.com/app/board/uXjVKWJ-8T0=/?share_link_id=109211348615)
+
 ## Componentes
 
 Esta aplicação tem basicamente 2 componentes:

@@ -73,7 +73,7 @@ class OrderServiceTest {
 
         assertNotNull(order.id)
         assertEquals(cpf, order.customer.cpf)
-        assertEquals(OrderStatus.NEW, order.status)
+        assertEquals(OrderStatus.RECEIVED, order.status)
         assertFalse(order.items.isEmpty())
         assertEquals(1.0.toBigDecimal(), order.total)
     }

@@ -3,6 +3,7 @@ package io.github.soat7.myburguercontrol.infrastructure.rest
 import io.github.soat7.myburguercontrol.base.BaseIntegrationTest
 import io.github.soat7.myburguercontrol.domain.enum.OrderStatus
 import io.github.soat7.myburguercontrol.fixtures.CustomerFixtures.mockDomainCustomer
+import io.github.soat7.myburguercontrol.fixtures.HttpMockRequest
 import io.github.soat7.myburguercontrol.fixtures.OrderFixtures
 import io.github.soat7.myburguercontrol.fixtures.PaymentFixtures.mockPayment
 import io.github.soat7.myburguercontrol.infrastructure.rest.order.api.request.OrderCreationRequest
@@ -34,6 +35,7 @@ class OrderIT : BaseIntegrationTest() {
             )
         }
 
+        HttpMockRequest.mockApprovedPayment()
         val inputOrderData = OrderCreationRequest(customerCpf = customer.cpf, items)
 
         val orderResponse = restTemplate.exchange<OrderResponse>(
@@ -52,7 +54,7 @@ class OrderIT : BaseIntegrationTest() {
         assertAll(
             Executable { assertNotNull(order) },
             Executable { assertEquals(cpf, order!!.customer.cpf) },
-            Executable { assertEquals(OrderStatus.NEW.name, order!!.status) },
+            Executable { assertEquals(OrderStatus.RECEIVED.name, order!!.status) },
             Executable { assertFalse(order!!.items.isEmpty()) }
         )
     }

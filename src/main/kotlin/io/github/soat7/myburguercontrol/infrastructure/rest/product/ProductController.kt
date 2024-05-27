@@ -23,7 +23,6 @@ import java.util.UUID
 @RestController("product-controller")
 @RequestMapping(
     path = ["products"],
-    consumes = [MediaType.APPLICATION_JSON_VALUE],
     produces = [MediaType.APPLICATION_JSON_VALUE]
 )
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
@@ -47,6 +46,17 @@ class ProductController(
         service.findById(id)?.let {
             ResponseEntity.ok(it.toResponse())
         } ?: ResponseEntity.notFound().build()
+    }
+
+    @GetMapping("/type/{type}")
+    fun getProductByType(@PathVariable type: String): ResponseEntity<List<ProductResponse>> = run {
+        logger.debug { "Getting product by type: [$type]" }
+        val products = service.findByType(type).map { it.toResponse() }
+        if (products.isNotEmpty()) {
+            ResponseEntity.ok(products)
+        } else {
+            ResponseEntity.notFound().build()
+        }
     }
 
     @GetMapping

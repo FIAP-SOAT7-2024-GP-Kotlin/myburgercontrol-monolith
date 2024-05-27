@@ -29,6 +29,9 @@ class ProductDatabaseAdapter(
 
     override fun findById(id: UUID): Product? = repository.findByIdOrNull(id)?.toDomain()
 
+    override fun findByType(type: String): List<Product> = repository.findByType(type)
+        .map { it.toDomain() }
+
     override fun findAll(pageable: Pageable): Page<Product> = repository.findAll(pageable)
         .map { it.toDomain() }
 }

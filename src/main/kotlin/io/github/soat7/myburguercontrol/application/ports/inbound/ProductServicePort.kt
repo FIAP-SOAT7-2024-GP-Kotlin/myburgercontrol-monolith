@@ -12,4 +12,6 @@ interface ProductServicePort {
     fun findAll(pageable: Pageable): Page<Product>
 
     fun findById(id: UUID): Product?
+
+    fun findByType(type: String): List<Product>
 }

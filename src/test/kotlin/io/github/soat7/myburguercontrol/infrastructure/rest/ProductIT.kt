@@ -117,6 +117,46 @@ class ProductIT : BaseIntegrationTest() {
         )
     }
 
+    @Test
+    fun `should successfully find a product by type`() {
+        insertRandomTypeProducts()
+        insertRandomTypeProducts()
+        insertRandomTypeProducts()
+        val type = "DRINK"
+
+        val response = restTemplate.exchange<List<ProductResponse>>(
+            url = "/products/type/{type}",
+            method = HttpMethod.GET,
+            requestEntity = HttpEntity(null, authenticationHeader),
+            uriVariables = mapOf("type" to type)
+        )
+
+        assertAll(
+            Executable { assertTrue(response.statusCode.is2xxSuccessful) },
+            Executable { assertThat(response.body).isNotNull },
+            Executable { assertThat(response.body!!).allSatisfy { it.type == type } }
+        )
+    }
+
+    @Test
+    fun `should NOT_FOUND find a product by type`() {
+        insertRandomTypeProducts()
+        insertRandomTypeProducts()
+        insertRandomTypeProducts()
+        val type = "PIZZA"
+
+        val response = restTemplate.exchange<List<ProductResponse>>(
+            url = "/products/type/{type}",
+            method = HttpMethod.GET,
+            requestEntity = HttpEntity(null, authenticationHeader),
+            uriVariables = mapOf("type" to type)
+        )
+
+        assertAll(
+            Executable { assertEquals(response.statusCode.value(), HttpStatus.NOT_FOUND.value()) },
+            Executable { assertThat(response.body).isEqualTo(null) }
+        )
+    }
     private fun insertRandomTypeProducts(): ProductEntity {
         productRepository.save(ProductFixtures.mockProductEntity())
         productRepository.save(ProductFixtures.mockProductEntity(type = ProductType.DRINK))

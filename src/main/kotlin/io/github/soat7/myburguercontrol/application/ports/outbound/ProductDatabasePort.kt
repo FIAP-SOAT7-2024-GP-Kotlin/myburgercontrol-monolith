@@ -11,5 +11,7 @@ interface ProductDatabasePort {
 
     fun findById(id: UUID): Product?
 
+    fun findByType(type: String): List<Product>
+
     fun findAll(pageable: Pageable): Page<Product>
 }

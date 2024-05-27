@@ -34,6 +34,7 @@ class PaymentIntegrationClient(
 
             if (response.statusCode.is2xxSuccessful) {
                 response.body?.let {
+                    it as PaymentIntegrationResponse
                     return it.toDto(response.statusCode.is2xxSuccessful).also {
                         logger.info { "Payment authorized" }
                     }

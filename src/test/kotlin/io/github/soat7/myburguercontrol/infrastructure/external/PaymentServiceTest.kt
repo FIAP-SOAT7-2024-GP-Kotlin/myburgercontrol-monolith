@@ -40,7 +40,8 @@ class PaymentServiceTest {
         val order = mockOrder(mockDomainCustomer(cpf = "12312312312"))
 
         every { paymentIntegrationPort.requestPayment(any<OrderModel>()) } returns mockPaymentResult(
-            UUID.randomUUID().toString(), approved = true
+            UUID.randomUUID().toString(),
+            approved = true
         )
 
         every { paymentDatabasePort.create(any()) } returns mockPayment()

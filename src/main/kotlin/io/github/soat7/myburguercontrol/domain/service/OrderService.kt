@@ -53,7 +53,10 @@ class OrderService(
     }
 
     override fun changeOrderStatus(status: OrderStatus, orderId: UUID): Order {
-        return orderDatabasePort.findById(orderId) ?: throw ReasonCodeException(ReasonCode.ORDER_NOT_FOUND)
+        return orderDatabasePort.update(
+            orderDatabasePort.findById(orderId)?.copy(status = status)
+                ?: throw ReasonCodeException(ReasonCode.ORDER_NOT_FOUND)
+        )
     }
 
     private fun buildOrderItems(orderDetail: OrderDetail): List<OrderItem> {

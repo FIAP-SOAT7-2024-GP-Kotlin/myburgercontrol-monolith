@@ -36,7 +36,7 @@ class OrderService(
 
         paymentServicePort.requestPayment(order)
 
-        return orderDatabasePort.update(order)
+        return orderDatabasePort.update(order.copy(status = OrderStatus.RECEIVED))
     }
 
     override fun findOrdersByCustomerCpf(cpf: String): List<Order> {

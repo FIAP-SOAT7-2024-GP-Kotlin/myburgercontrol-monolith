@@ -1,16 +1,19 @@
 package io.github.soat7.myburguercontrol.base
 
 import io.github.soat7.myburguercontrol.Application
+import io.github.soat7.myburguercontrol.container.MockServerContainer
 import io.github.soat7.myburguercontrol.container.PostgresContainer
 import io.github.soat7.myburguercontrol.domain.enum.UserRole
 import io.github.soat7.myburguercontrol.domain.mapper.toPersistence
 import io.github.soat7.myburguercontrol.domain.model.Customer
+import io.github.soat7.myburguercontrol.domain.model.Payment
 import io.github.soat7.myburguercontrol.fixtures.AuthFixtures
 import io.github.soat7.myburguercontrol.fixtures.ProductFixtures
 import io.github.soat7.myburguercontrol.fixtures.UserFixtures
 import io.github.soat7.myburguercontrol.infrastructure.persistence.customer.entity.CustomerEntity
 import io.github.soat7.myburguercontrol.infrastructure.persistence.customer.repository.CustomerRepository
 import io.github.soat7.myburguercontrol.infrastructure.persistence.order.repository.OrderRepository
+import io.github.soat7.myburguercontrol.infrastructure.persistence.payment.repository.PaymentRepository
 import io.github.soat7.myburguercontrol.infrastructure.persistence.product.entity.ProductEntity
 import io.github.soat7.myburguercontrol.infrastructure.persistence.product.repository.ProductRepository
 import io.github.soat7.myburguercontrol.infrastructure.persistence.user.repository.UserRepository
@@ -33,7 +36,7 @@ import java.util.UUID
     classes = [Application::class],
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
-@ExtendWith(PostgresContainer::class)
+@ExtendWith(PostgresContainer::class, MockServerContainer::class)
 class BaseIntegrationTest {
 
     @Autowired
@@ -54,6 +57,9 @@ class BaseIntegrationTest {
     @Autowired
     protected lateinit var passwordEncoder: PasswordEncoder
 
+    @Autowired
+    protected lateinit var paymentRepository: PaymentRepository
+
     protected lateinit var authenticationHeader: MultiValueMap<String, String>
 
     @BeforeEach
@@ -73,6 +79,8 @@ class BaseIntegrationTest {
     protected fun insertCustomerData(customer: Customer): CustomerEntity {
         return customerRepository.save(customer.toPersistence())
     }
+
+    protected fun insertPaymentData(payment: Payment) = paymentRepository.save(payment.toPersistence())
 
     protected fun buildAuthentication(): MultiValueMap<String, String> {
         val cpf = "15666127055"

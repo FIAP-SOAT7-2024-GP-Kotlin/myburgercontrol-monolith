@@ -8,6 +8,7 @@ Esta aplicação tem basicamente 2 componentes:
 
 - Banco de dados PostgresSQL versão 16
 - Aplicação `myburgercontrol-monolith`
+- Wiremock
 
 ## Frameworks
 
@@ -29,28 +30,11 @@ Usando o comando:
 
 A aplicação e o banco de dados são executados.
 
-## Acessando a documentação Swagger
+## Executando o projeto
 
 Após subir a aplicação usando `docker compose` podemos acessar a UI do Swagger disponível.
 Acesse:
-> http://localhost:8080/swagger-ui.html
-
-## Verificando a cobertura de Testes
-
-Com o comando:
-> gradle jacocoTestReport
-
-Podemos ver o relatorio de cobertura de teste da aplicação. Algo mais ou menos assim:
-
-```
-Test Coverage:
-- Class Coverage: 75%
-- Method Coverage: 81.1%
-- Branch Coverage: 35.7%
-- Line Coverage: 92%
-- Instruction Coverage: 76.6%
-- Complexity Coverage: 68.2%
-```
+> [http://localhost:8080/swagger-ui.html](http://localhost:8080/api/v1/swagger-ui/index.html#/)
 
 ## Liquibase
 
@@ -73,8 +57,17 @@ dados em execução e a implementação do JPA que consta no código fonte.
 **Nota:** É fundamental olhar o arquivo gerado e validar se o mesmo está de acordo. Essa geração de arquivo do liquibase
 costuma não gerar nome de PKs, por exemplo.
 
-
 ## Wiremock
 
 Para acessar a interface gráfica do wiremock execute o docker-compose e acesse:
 >http://localhost:9090/__admin/webapp/mappings
+
+
+## Contatos
+| Nome | RM |
+|------|----|
+| André Luis dos Santos | RM355299 |
+| Fernando Florencio | RM355268 |
+| Luiz Fernando Calazans | RM354794 |
+| José Carlos dos Santos Rocha| RM355769 |
+| Rafael José Peres Correia | RM355308 |

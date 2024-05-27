@@ -2,6 +2,8 @@ package io.github.soat7.myburguercontrol.infrastructure.external
 
 import io.github.soat7.myburguercontrol.application.ports.outbound.PaymentDatabasePort
 import io.github.soat7.myburguercontrol.application.ports.outbound.PaymentIntegrationPort
+import io.github.soat7.myburguercontrol.domain.enum.PaymentStatus
+import io.github.soat7.myburguercontrol.domain.exception.ReasonCodeException
 import io.github.soat7.myburguercontrol.domain.service.PaymentService
 import io.github.soat7.myburguercontrol.fixtures.CustomerFixtures.mockDomainCustomer
 import io.github.soat7.myburguercontrol.fixtures.OrderFixtures.mockOrder
@@ -15,10 +17,12 @@ import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.TestMethodOrder
 import org.junit.jupiter.api.assertDoesNotThrow
+import org.junit.jupiter.api.assertThrows
 import java.util.UUID
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 import io.github.soat7.myburguercontrol.domain.model.Order as OrderModel
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -43,16 +47,16 @@ class PaymentServiceTest {
             UUID.randomUUID().toString(),
             approved = true
         )
-
-        every { paymentDatabasePort.create(any()) } returns mockPayment()
-
         every { paymentDatabasePort.findById(any()) } returns mockPayment()
+        every { paymentDatabasePort.create(any()) } returns mockPayment()
+        every { paymentDatabasePort.update(any()) } returns mockPayment()
 
         val response = assertDoesNotThrow {
             service.requestPayment(order)
         }
 
-        assertEquals(order.id, response.id)
+        assertNotNull(response)
+        assertEquals(PaymentStatus.APPROVED, response.status)
     }
 
     @Test
@@ -64,10 +68,12 @@ class PaymentServiceTest {
             paymentIntegrationPort.requestPayment(any<OrderModel>())
         } returns mockPaymentResult(null, false)
 
-        val response = assertDoesNotThrow {
+        every { paymentDatabasePort.findById(any()) } returns mockPayment()
+        every { paymentDatabasePort.create(any()) } returns mockPayment()
+        every { paymentDatabasePort.update(any()) } returns mockPayment()
+
+        assertThrows<ReasonCodeException> {
             service.requestPayment(order)
         }
-
-        assertEquals(order.payment?.status, response.status)
     }
 }

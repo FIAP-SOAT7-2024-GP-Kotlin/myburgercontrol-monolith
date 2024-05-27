@@ -36,7 +36,7 @@ class OrderService(
 
         paymentServicePort.requestPayment(order)
 
-        return orderDatabasePort.create(order)
+        return orderDatabasePort.update(order)
     }
 
     override fun findOrdersByCustomerCpf(cpf: String): List<Order> {

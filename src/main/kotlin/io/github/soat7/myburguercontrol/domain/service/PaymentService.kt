@@ -32,18 +32,17 @@ class PaymentService(
 
         val paymentResult = paymentIntegrationPort.requestPayment(order)
 
-        paymentDatabasePort.update(
-            payment.copy(
-                status = checkApproval(paymentResult.approved),
-                authorizationId = paymentResult.authorizationId
-            )
-        ).also {
-            if (it.status == PaymentStatus.DENIED) throw ReasonCodeException(ReasonCode.PAYMENT_INTEGRATION_ERROR)
-        }
+        val updatedPayment = payment.copy(
+            status = checkApproval(paymentResult.approved),
+            authorizationId = paymentResult.authorizationId
+        )
+        paymentDatabasePort.update(updatedPayment)
 
-        logger.info { "Successfully integrated with status return: [${order.payment.status.name}]" }
+        logger.info { "Successfully integrated with status return: [${updatedPayment.status.name}]" }
 
-        return order.payment
+        if (updatedPayment.status == PaymentStatus.DENIED) throw ReasonCodeException(ReasonCode.PAYMENT_INTEGRATION_ERROR)
+
+        return updatedPayment
     }
 
     private fun checkApproval(approved: Boolean): PaymentStatus =

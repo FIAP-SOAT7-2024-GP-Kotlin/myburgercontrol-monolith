@@ -3,20 +3,24 @@ package io.github.soat7.myburguercontrol.infrastructure.rest
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import io.github.soat7.myburguercontrol.base.BaseIntegrationTest
-import io.github.soat7.myburguercontrol.domain.model.Role
+import io.github.soat7.myburguercontrol.domain.enum.UserRole
 import io.github.soat7.myburguercontrol.fixtures.AuthFixtures
 import io.github.soat7.myburguercontrol.fixtures.UserFixtures
-import io.github.soat7.myburguercontrol.infrastructure.rest.api.UserResponse
+import io.github.soat7.myburguercontrol.infrastructure.rest.auth.api.UserResponse
 import org.junit.jupiter.api.Assertions.assertAll
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.function.Executable
+import org.springframework.boot.test.web.client.exchange
 import org.springframework.boot.test.web.client.postForEntity
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
+import org.springframework.util.LinkedMultiValueMap
+import org.springframework.util.MultiValueMap
 import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -27,16 +31,19 @@ class UserIT : BaseIntegrationTest() {
     fun `should successfully create a user`() {
         val cpf = "29257035859"
         val password = "pass123"
-        val role = Role.USER
-        val inputUserData = UserFixtures.mockUserCreationRequest(cpf, password, role)
+        val userRole = UserRole.USER
+        val inputUserData = UserFixtures.mockUserCreationRequest(cpf, password, userRole)
 
-        val response = restTemplate.postForEntity<UserResponse>("/user", inputUserData)
+        val response = restTemplate.postForEntity<UserResponse>(
+            "/users",
+            inputUserData
+        )
 
         assertAll(
             Executable { assertTrue(response.statusCode.is2xxSuccessful) },
             Executable { assertNotNull(response.body?.id ?: String) },
             Executable { assertEquals(cpf, response.body!!.cpf) },
-            Executable { assertEquals(role, response.body!!.role) }
+            Executable { assertEquals(userRole, response.body!!.role) }
         )
 
         val savedUser = userRepository.findByIdOrNull(response.body!!.id)
@@ -56,16 +63,15 @@ class UserIT : BaseIntegrationTest() {
             userRepository.save(UserFixtures.mockUserEntity(cpf = cpf, password = passwordEncoder.encode(password)))
 
         val token = getToken(cpf, password) ?: return
-        val headers = HttpHeaders()
-        headers.setBearerAuth(token)
-        val entity = HttpEntity<Any>(headers)
+        val header: MultiValueMap<String, String> = LinkedMultiValueMap()
+        header.add("Authorization", "Bearer $token")
+        header.add("Content-Type", MediaType.APPLICATION_JSON_VALUE)
 
-        val response = restTemplate.exchange(
-            "/user/{id}",
-            HttpMethod.GET,
-            entity,
-            UserResponse::class.java,
-            mapOf("id" to user.id)
+        val response = restTemplate.exchange<UserResponse>(
+            url = "/users/{id}",
+            method = HttpMethod.GET,
+            requestEntity = HttpEntity(null, header),
+            uriVariables = mapOf("id" to user.id)
         )
         assertAll(
             Executable { assertTrue(response.statusCode.is2xxSuccessful) },
@@ -88,7 +94,7 @@ class UserIT : BaseIntegrationTest() {
         val entity = HttpEntity<Any>(headers)
 
         val response = restTemplate.exchange(
-            "/user/{id}",
+            "/users/{id}",
             HttpMethod.GET,
             entity,
             UserResponse::class.java,
@@ -106,19 +112,19 @@ class UserIT : BaseIntegrationTest() {
         userRepository.save(UserFixtures.mockUserEntity(cpf = cpf, password = passwordEncoder.encode(password)))
 
         val token = getToken(cpf, password) ?: return
-        val headers = HttpHeaders()
-        headers.setBearerAuth(token)
-        val entity = HttpEntity<Any>(headers)
 
-        val response = restTemplate.exchange(
-            "/user/{id}",
-            HttpMethod.GET,
-            entity,
-            UserResponse::class.java,
-            mapOf("id" to randomId.toString())
+        val header: MultiValueMap<String, String> = LinkedMultiValueMap()
+        header.add("Authorization", "Bearer $token")
+        header.add("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+
+        val response = restTemplate.exchange<UserResponse>(
+            url = "/users/{id}",
+            method = HttpMethod.GET,
+            requestEntity = HttpEntity(null, header),
+            uriVariables = mapOf("id" to randomId.toString())
         )
 
-        assertEquals(response.statusCode.value(), HttpStatus.NOT_FOUND.value())
+        assertEquals(HttpStatus.NOT_FOUND.value(), response.statusCode.value())
     }
 
     @Test
@@ -135,7 +141,7 @@ class UserIT : BaseIntegrationTest() {
         val entity = HttpEntity<Any>(headers)
 
         val response = restTemplate.exchange(
-            "/customer?cpf={cpf}",
+            "/users?cpf={cpf}",
             HttpMethod.GET,
             entity,
             UserResponse::class.java,

@@ -1,0 +1,49 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="20240517-order-order-item-table-creation" author="rafaeljpc@gmail.com">
+        <createTable tableName="order" schemaName="myburguer">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_order"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="customer_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="order_item" schemaName="myburguer">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_order_item"/>
+            </column>
+            <column name="quantity" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="order_id" type="UUID"/>
+            <column name="product_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="order" constraintName="fk_customer"
+                                 baseTableSchemaName="myburguer"
+                                 deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+                                 referencedTableName="customer" referencedTableSchemaName="myburguer" validate="true"/>
+
+        <addForeignKeyConstraint baseColumnNames="order_id" baseTableName="order_item" constraintName="fk_order"
+                                 baseTableSchemaName="myburguer"
+                                 deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+                                 referencedTableName="order" referencedTableSchemaName="myburguer" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="order_item" constraintName="fk_product"
+                                 baseTableSchemaName="myburguer"
+                                 deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+                                 referencedTableName="product" referencedTableSchemaName="myburguer" validate="true"/>
+    </changeSet>
+
+</databaseChangeLog>

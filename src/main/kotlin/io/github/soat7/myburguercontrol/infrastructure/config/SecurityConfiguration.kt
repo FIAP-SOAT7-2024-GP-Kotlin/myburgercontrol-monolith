@@ -24,9 +24,16 @@ class SecurityConfiguration(
             .csrf { it.disable() }
             .authorizeHttpRequests {
                 it
-                    .requestMatchers("/auth", "/auth/refresh", "/error", "/swagger-ui/**", "/v3/api-docs/**", "/webjars/**")
+                    .requestMatchers(
+                        "/auth",
+                        "/auth/refresh",
+                        "/error",
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**",
+                        "/webjars/**"
+                    )
                     .permitAll()
-                    .requestMatchers(HttpMethod.POST, "/user")
+                    .requestMatchers(HttpMethod.POST, "/users")
                     .permitAll()
                     .requestMatchers("/user**")
                     .hasRole("USER")

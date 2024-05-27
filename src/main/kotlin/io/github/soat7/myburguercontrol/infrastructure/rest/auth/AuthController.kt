@@ -1,8 +1,8 @@
-package io.github.soat7.myburguercontrol.infrastructure.rest
+package io.github.soat7.myburguercontrol.infrastructure.rest.auth
 
 import io.github.soat7.myburguercontrol.application.ports.inbound.AuthenticationServicePort
-import io.github.soat7.myburguercontrol.infrastructure.rest.api.AuthRequest
-import io.github.soat7.myburguercontrol.infrastructure.rest.api.AuthResponse
+import io.github.soat7.myburguercontrol.infrastructure.rest.auth.api.AuthRequest
+import io.github.soat7.myburguercontrol.infrastructure.rest.auth.api.AuthResponse
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.PostMapping

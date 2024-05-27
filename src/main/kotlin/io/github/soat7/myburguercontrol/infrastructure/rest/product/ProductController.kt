@@ -23,7 +23,11 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
 @RestController("product-controller")
-@RequestMapping("products")
+@RequestMapping(
+    path = ["products"],
+    consumes = [MediaType.APPLICATION_JSON_VALUE],
+    produces = [MediaType.APPLICATION_JSON_VALUE]
+)
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 @SecurityRequirement(name = "Bearer Authentication")
 class ProductController(
@@ -32,10 +36,7 @@ class ProductController(
 
     private companion object : KLogging()
 
-    @PostMapping(
-        consumes = [MediaType.APPLICATION_JSON_VALUE],
-        produces = [MediaType.APPLICATION_JSON_VALUE]
-    )
+    @PostMapping
     @Operation(
         tags = ["99 - Comum"],
         summary = "Utilize esta rota para cadastrar um novo produto",
@@ -49,10 +50,7 @@ class ProductController(
         ResponseEntity.ok(response.toResponse())
     }
 
-    @GetMapping(
-        path = ["/{id}"],
-        produces = [MediaType.APPLICATION_JSON_VALUE]
-    )
+    @GetMapping(path = ["/{id}"])
     @Operation(
         tags = ["99 - Comum"],
         summary = "Utilize esta rota para encontrar um produto utilizando o identificador na base de dados",

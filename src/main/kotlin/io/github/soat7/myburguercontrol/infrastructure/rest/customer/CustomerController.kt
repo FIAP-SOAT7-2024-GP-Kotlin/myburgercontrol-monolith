@@ -20,17 +20,18 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
 @RestController("customer-controller")
-@RequestMapping(path = ["customers"])
+@RequestMapping(
+    path = ["customers"],
+    consumes = [MediaType.APPLICATION_JSON_VALUE],
+    produces = [MediaType.APPLICATION_JSON_VALUE]
+)
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 @SecurityRequirement(name = "Bearer Authentication")
 class CustomerController(
     private val service: CustomerServicePort
 ) {
 
-    @PostMapping(
-        consumes = [MediaType.APPLICATION_JSON_VALUE],
-        produces = [MediaType.APPLICATION_JSON_VALUE]
-    )
+    @PostMapping
     @Operation(
         tags = ["1 - Jornada de Cliente"],
         summary = "Utilize esta rota para criar um novo cliente",
@@ -42,10 +43,7 @@ class CustomerController(
         ResponseEntity.ok(customer.toResponse())
     }
 
-    @GetMapping(
-        path = ["/{id}"],
-        produces = [MediaType.APPLICATION_JSON_VALUE]
-    )
+    @GetMapping("/{id}")
     @Operation(
         tags = ["99 - Comum"],
         summary = "Utilize esta rota para encontrar um cliente utilizando o identificador na base de dados",
@@ -58,9 +56,7 @@ class CustomerController(
         } ?: ResponseEntity.notFound().build()
     }
 
-    @GetMapping(
-        produces = [MediaType.APPLICATION_JSON_VALUE]
-    )
+    @GetMapping
     @Operation(
         tags = ["1 - Jornada de Cliente"],
         summary = "Utilize esta rota para encontrar um cliente pelo CPF",

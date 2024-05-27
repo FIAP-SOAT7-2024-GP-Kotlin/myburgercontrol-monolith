@@ -1,6 +1,6 @@
-package io.github.soat7.myburguercontrol.infrastructure.rest.api
+package io.github.soat7.myburguercontrol.infrastructure.rest.auth.api
 
-import io.github.soat7.myburguercontrol.domain.model.Role
+import io.github.soat7.myburguercontrol.domain.enum.UserRole
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
 
@@ -13,5 +13,5 @@ data class UserCreationRequest(
     val password: String,
 
     @NotBlank
-    val role: Role
+    val role: UserRole
 )

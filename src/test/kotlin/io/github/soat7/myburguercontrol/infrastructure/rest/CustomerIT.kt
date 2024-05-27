@@ -2,7 +2,6 @@ package io.github.soat7.myburguercontrol.infrastructure.rest
 
 import io.github.soat7.myburguercontrol.base.BaseIntegrationTest
 import io.github.soat7.myburguercontrol.fixtures.CustomerFixtures
-import io.github.soat7.myburguercontrol.infrastructure.persistence.customer.repository.CustomerRepository
 import io.github.soat7.myburguercontrol.infrastructure.rest.customer.api.response.CustomerResponse
 import org.junit.jupiter.api.Assertions.assertAll
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -10,7 +9,6 @@ import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.function.Executable
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.web.client.exchange
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpEntity
@@ -19,9 +17,6 @@ import org.springframework.http.HttpStatus
 import java.util.UUID
 
 class CustomerIT : BaseIntegrationTest() {
-
-    @Autowired
-    private lateinit var customerRepository: CustomerRepository
 
     @Test
     fun `should successfully create a new customer`() {
@@ -66,7 +61,7 @@ class CustomerIT : BaseIntegrationTest() {
     @Test
     fun `should successfully find a customer by id`() {
         val cpf = "45661450001"
-        val customer = customerRepository.save(CustomerFixtures.mockCustomerEntity(cpf = cpf))
+        val customer = insertCustomerData(CustomerFixtures.mockDomainCustomer(cpf = cpf))
 
         val response = restTemplate.exchange<CustomerResponse>(
             url = "/customers/{id}",
@@ -104,7 +99,7 @@ class CustomerIT : BaseIntegrationTest() {
     fun `should successfully find a customer by cpf`() {
         val cpf = "79569068060"
 
-        val customer = customerRepository.save(CustomerFixtures.mockCustomerEntity(cpf = cpf))
+        val customer = insertCustomerData(CustomerFixtures.mockDomainCustomer(cpf = cpf))
 
         val response = restTemplate.exchange<CustomerResponse>(
             url = "/customers?cpf={cpf}",

@@ -1,6 +1,6 @@
 package io.github.soat7.myburguercontrol.infrastructure.persistence.user.entity
 
-import io.github.soat7.myburguercontrol.domain.model.Role
+import io.github.soat7.myburguercontrol.domain.enum.UserRole
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -34,5 +34,5 @@ data class UserEntity(
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", length = 20, nullable = false)
-    var role: Role
+    var role: UserRole
 )

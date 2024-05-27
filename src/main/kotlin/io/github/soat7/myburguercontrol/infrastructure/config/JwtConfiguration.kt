@@ -25,7 +25,10 @@ class JwtConfiguration {
     fun encoder(): PasswordEncoder = BCryptPasswordEncoder()
 
     @Bean
-    fun authenticationProvider(userDetailsService: UserDetailsService, userRepository: UserRepository): AuthenticationProvider =
+    fun authenticationProvider(
+        userDetailsService: UserDetailsService,
+        userRepository: UserRepository
+    ): AuthenticationProvider =
         DaoAuthenticationProvider()
             .also {
                 it.setUserDetailsService(userDetailsService(userRepository))

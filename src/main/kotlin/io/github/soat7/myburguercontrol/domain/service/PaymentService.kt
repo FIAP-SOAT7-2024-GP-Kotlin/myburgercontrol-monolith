@@ -37,7 +37,9 @@ class PaymentService(
                 status = checkApproval(paymentResult.approved),
                 authorizationId = paymentResult.authorizationId
             )
-        )
+        ).also {
+            if (it.status == PaymentStatus.DENIED) throw ReasonCodeException(ReasonCode.PAYMENT_INTEGRATION_ERROR)
+        }
 
         logger.info { "Successfully integrated with status return: [${order.payment.status.name}]" }
 

@@ -25,7 +25,7 @@ class AuthController(
         tags = ["0 - Jornada de Autenticação"],
         summary = "Utilize esta rota para autenticar um usuário já criado",
         description = "Utilize esta rota para autenticar um usuário já criado",
-        operationId = "4"
+        operationId = "auth_4"
     )
     fun authenticate(@RequestBody authRequest: AuthRequest): AuthResponse =
         authenticationService.authenticate(authRequest)

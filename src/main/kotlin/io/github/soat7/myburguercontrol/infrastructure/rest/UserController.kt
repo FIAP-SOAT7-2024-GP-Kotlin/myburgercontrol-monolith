@@ -32,7 +32,7 @@ class UserController(
         tags = ["0 - Jornada de Autenticação"],
         summary = "Utilize esta rota para criar um novo usuário",
         description = "Utilize esta rota para criar um novo usuário",
-        operationId = "1"
+        operationId = "auth_1"
     )
     fun createUser(@RequestBody request: UserCreationRequest): ResponseEntity<UserResponse> = run {
         val resp = service.create(request.toDomain())
@@ -47,7 +47,7 @@ class UserController(
         tags = ["0 - Jornada de Autenticação"],
         summary = "Utilize esta rota para encontrar um usuário utilizando o identificador na base de dados",
         description = "Utilize esta rota para encontrar um usuário utilizando o identificador na base de dados",
-        operationId = "2"
+        operationId = "auth_2"
     )
     fun findUserById(@PathVariable("id") id: UUID): ResponseEntity<UserResponse> = run {
         service.findUserById(id)?.let {
@@ -62,7 +62,7 @@ class UserController(
         tags = ["0 - Jornada de Autenticação"],
         summary = "Utilize esta rota para encontrar um usuário utilizando o cpf",
         description = "Utilize esta rota para encontrar um usuário utilizando o cpf",
-        operationId = "3"
+        operationId = "auth_3"
     )
     fun findUserByCpf(@RequestParam("cpf") cpf: String): ResponseEntity<UserResponse> = run {
         service.findUserByCpf(cpf)?.let {

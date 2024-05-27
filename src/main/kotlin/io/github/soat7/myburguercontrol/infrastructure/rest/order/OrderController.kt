@@ -1,6 +1,7 @@
 package io.github.soat7.myburguercontrol.infrastructure.rest.order
 
 import io.github.soat7.myburguercontrol.application.ports.inbound.OrderServicePort
+import io.github.soat7.myburguercontrol.domain.enum.OrderStatus
 import io.github.soat7.myburguercontrol.domain.mapper.toOrderDetails
 import io.github.soat7.myburguercontrol.domain.mapper.toResponse
 import io.github.soat7.myburguercontrol.infrastructure.rest.common.PaginatedResponse
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.util.UUID
 
 @RestController("order-controller")
 @RequestMapping(
@@ -56,5 +58,33 @@ class OrderController(
                 pageSize = response.size
             )
         )
+    }
+
+    @PostMapping("/received")
+    fun updateOrderStatusToReceived(
+        @RequestBody orderID: UUID
+    ) = run {
+        ResponseEntity.ok(service.changeOrderStatus(OrderStatus.RECEIVED, orderID))
+    }
+
+    @PostMapping("/in-progress")
+    fun updateOrderStatusToInProgress(
+        @RequestBody orderID: UUID
+    ) = run {
+        ResponseEntity.ok(service.changeOrderStatus(OrderStatus.IN_PROGRESS, orderID))
+    }
+
+    @PostMapping("/ready")
+    fun updateOrderStatusToReady(
+        @RequestBody orderID: UUID
+    ) = run {
+        ResponseEntity.ok(service.changeOrderStatus(OrderStatus.READY, orderID))
+    }
+
+    @PostMapping("/finished")
+    fun updateOrderStatusToFinished(
+        @RequestBody orderID: UUID
+    ) = run {
+        ResponseEntity.ok(service.changeOrderStatus(OrderStatus.FINISHED, orderID))
     }
 }

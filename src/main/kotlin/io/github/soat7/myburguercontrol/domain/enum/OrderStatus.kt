@@ -4,6 +4,7 @@ import mu.KLogging
 
 enum class OrderStatus {
     NEW,
+    RECEIVED,
     IN_PROGRESS,
     READY,
     FINISHED;

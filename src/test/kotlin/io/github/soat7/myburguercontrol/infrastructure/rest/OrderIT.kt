@@ -4,6 +4,7 @@ import io.github.soat7.myburguercontrol.base.BaseIntegrationTest
 import io.github.soat7.myburguercontrol.domain.enum.OrderStatus
 import io.github.soat7.myburguercontrol.fixtures.CustomerFixtures.mockDomainCustomer
 import io.github.soat7.myburguercontrol.fixtures.OrderFixtures
+import io.github.soat7.myburguercontrol.fixtures.PaymentFixtures.mockPayment
 import io.github.soat7.myburguercontrol.infrastructure.rest.order.api.request.OrderCreationRequest
 import io.github.soat7.myburguercontrol.infrastructure.rest.order.api.response.OrderResponse
 import io.github.soat7.myburguercontrol.util.toBigDecimal
@@ -63,7 +64,8 @@ class OrderIT : BaseIntegrationTest() {
         run {
             val customer = insertCustomerData(mockDomainCustomer(cpf = cpf))
             val product = insertProducts().first()
-            orderRepository.save(OrderFixtures.mockOrderEntity(customer, product))
+            val payment = insertPaymentData(mockPayment())
+            orderRepository.save(OrderFixtures.mockOrderEntity(customer, product, payment))
         }
 
         val orders = restTemplate.exchange<List<OrderResponse>>(

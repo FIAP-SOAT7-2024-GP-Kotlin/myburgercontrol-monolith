@@ -52,8 +52,8 @@ class OrderService(
         return orderDatabasePort.findNewOrders(OrderStatus.NEW.name, pageable)
     }
 
-    override fun changeOrderStatus(): Order {
-        TODO("Not yet implemented")
+    override fun changeOrderStatus(status: OrderStatus, orderId: UUID): Order {
+        return orderDatabasePort.findById(orderId) ?: throw ReasonCodeException(ReasonCode.ORDER_NOT_FOUND)
     }
 
     private fun buildOrderItems(orderDetail: OrderDetail): List<OrderItem> {

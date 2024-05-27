@@ -35,7 +35,7 @@ class OrderIT : BaseIntegrationTest() {
             )
         }
 
-        HttpMockRequest.mockApprovedPayment(customer.cpf)
+        HttpMockRequest.mockApprovedPayment()
         val inputOrderData = OrderCreationRequest(customerCpf = customer.cpf, items)
 
         val orderResponse = restTemplate.exchange<OrderResponse>(

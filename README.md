@@ -59,34 +59,35 @@ desejada na ordem de execução.
 
 #### Jornada de autenticação
 
-- **[POST]** */users* Utilize esta rota para criar um novo usuário.
-- **[GET]** */users* Utilize esta rota para encontrar um usuário utilizando o cpf.
-- **[POST]** */auth* Utilize esta rota para autenticar um usuário já criado.
-- **[POST]** */users/{id}* Utilize esta rota para encontrar um usuário utilizando o identificador na base de dados.
+- **[POST]** | */users* | Utilize esta rota para criar um novo usuário.
+- **[GET]** | */users* Utilize esta rota para encontrar um usuário utilizando o cpf.
+- **[POST]** | */auth* | Utilize esta rota para autenticar um usuário já criado.
+- **[POST]** | */users/{id}* | Utilize esta rota para encontrar um usuário utilizando o identificador na base de dados.
 
 #### Jornada de Cliente
 
-- **[POST]** */customers* Utilize esta rota para criar um novo cliente.
-- **[GET]** */customers* Utilize esta rota para encontrar um cliente pelo CPF.
+- **[POST]** | */customers* | Utilize esta rota para criar um novo cliente.
+- **[GET]** | */customers* | Utilize esta rota para encontrar um cliente pelo CPF.
 
 #### Jornada de Pedido
 
-- **[GET]** */products* Utilize esta rota para buscar todos os produtos cadastrados.
-- **[GET]** */products/type* Utilize esta rota para buscar todos os produtos cadastrados por categoria.
-- **[POST]** */orders* Utilize esta rota para criar um pedido.
-- **[GET]** */orders/queue* Utilize esta rota para encontrar a lista do(s) novo(s) pedido(s).
-- **[GET]** */orders* Utilize esta rota para encontrar o(s) pedido(s) por cpf de cliente.
-- **[POST]** */orders/received* Utilize esta rota para alterar o estado pedido para RECEBIDO.
-- **[POST]** */orders/in-progress* Utilize esta rota para alterar o estado pedido para EM PREPARAÇÃO.
-- **[POST]** */orders/ready* Utilize esta rota para alterar o estado pedido para PRONTO.
-- **[POST]** */orders/finished* Utilize esta rota para alterar o estado pedido para FINALIZADO.
+- **[GET]** | */products* | Utilize esta rota para buscar todos os produtos cadastrados.
+- **[GET]** | */products/type* | Utilize esta rota para buscar todos os produtos cadastrados por categoria.
+- **[POST]** | */orders* | Utilize esta rota para criar um pedido.
+- **[GET]** | */orders/queue* | Utilize esta rota para encontrar a lista do(s) novo(s) pedido(s).
+- **[GET]** | */orders* | Utilize esta rota para encontrar o(s) pedido(s) por cpf de cliente.
+- **[POST]** | */orders/received* | Utilize esta rota para alterar o estado pedido para RECEBIDO.
+- **[POST]** | */orders/in-progress* | Utilize esta rota para alterar o estado pedido para EM PREPARAÇÃO.
+- **[POST]** | */orders/ready* | Utilize esta rota para alterar o estado pedido para PRONTO.
+- **[POST]** | */orders/finished* | Utilize esta rota para alterar o estado pedido para FINALIZADO.
 
 #### Adminstrativo
 
-- **[POST]** */users* Utilize esta rota para criar um novo usuário.
-- **[GET]** */users* Utilize esta rota para encontrar um usuário utilizando o cpf.
-- **[POST]** */auth* Utilize esta rota para autenticar um usuário já criado.
-- **[POST]** */users/{id}* Utilize esta rota para encontrar um usuário utilizando o identificador na base de dados.
+- **[POST]** | */products* | Utilize esta rota para cadastrar um novo produto.
+- **[GET]** | */products/{id}* | Utilize esta rota para encontrar um produto utilizando o identificador na base de
+  dados.
+- **[GET]** | */customer/{id}* | Utilize esta rota para encontrar um cliente utilizando o identificador na base de
+  dados.
 
 ### Liquibase
 

@@ -153,6 +153,37 @@ class ProductIT : BaseIntegrationTest() {
         )
     }
 
+    @Test
+    fun `should delete a product with given ID`() {
+        val id = UUID.randomUUID()
+        val product = productRepository.save(ProductFixtures.mockProductEntity(id))
+
+        val response = restTemplate.exchange<Void>(
+            url = "/products/{id}",
+            method = HttpMethod.DELETE,
+            requestEntity = HttpEntity(null, authenticationHeader),
+            uriVariables = mapOf("id" to product.id)
+        )
+
+        assertTrue(response.statusCode.is2xxSuccessful)
+    }
+
+    @Test
+    fun `should return NOT_FOUND when trying to delete a product with the given Id`() {
+        val randomId = UUID.randomUUID()
+
+        val response = restTemplate.exchange<Void>(
+            url = "/products/{id}",
+            method = HttpMethod.DELETE,
+            requestEntity = HttpEntity(null, authenticationHeader),
+            uriVariables = mapOf(
+                "id" to randomId.toString()
+            )
+        )
+
+        assertEquals(response.statusCode.value(), HttpStatus.NOT_FOUND.value())
+    }
+
     private fun insertRandomTypeProducts() {
         productRepository.save(ProductFixtures.mockProductEntity())
         productRepository.save(ProductFixtures.mockProductEntity(type = ProductType.DRINK))

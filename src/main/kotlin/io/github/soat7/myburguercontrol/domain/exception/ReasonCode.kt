@@ -14,6 +14,7 @@ enum class ReasonCode(
     INVALID_PRODUCT(HttpStatus.UNPROCESSABLE_ENTITY, "12", "Error while creating order due to invalid product"),
     PAYMENT_NOT_FOUND(HttpStatus.UNPROCESSABLE_ENTITY, "13", "No payment was found by the given id"),
     ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, "14", "No order was found by the given id"),
+    PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, "15", "No product was found by the given id"),
 
     PAYMENT_INTEGRATION_ERROR(
         HttpStatus.UNPROCESSABLE_ENTITY,

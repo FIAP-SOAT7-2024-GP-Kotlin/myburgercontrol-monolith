@@ -9,6 +9,8 @@ interface ProductServicePort {
 
     fun create(product: Product): Product
 
+    fun delete(id: UUID)
+
     fun findAll(pageable: Pageable): Page<Product>
 
     fun findById(id: UUID): Product?

@@ -1,0 +1,109 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="2024-05-27-init-products-table" author="luizfernando.calazans8@gmail.com">
+        <insert tableName="product" schemaName="myburguer">
+            <column name="id" value="a7a6b2d0-6d3f-4f79-89e6-bd914b5098a1"/>
+            <column name="name" value="Cheeseburger"/>
+            <column name="description" value="A delicious cheeseburger with all the fixings"/>
+            <column name="type" value="FOOD"/>
+            <column name="price" value="5.99"/>
+            <column name="created_at" value="2023-05-27T12:34:56Z"/>
+            <column name="updated_at" value="2023-05-27T12:34:56Z"/>
+        </insert>
+
+        <insert tableName="product" schemaName="myburguer">
+            <column name="id" value="a8b6c3d0-6d4f-4f89-89f6-bd924b5099b2"/>
+            <column name="name" value="Chicken Sandwich"/>
+            <column name="description" value="A crispy chicken sandwich"/>
+            <column name="type" value="FOOD"/>
+            <column name="price" value="6.99"/>
+            <column name="created_at" value="2023-05-27T12:34:56Z"/>
+            <column name="updated_at" value="2023-05-27T12:34:56Z"/>
+        </insert>
+
+        <insert tableName="product" schemaName="myburguer">
+            <column name="id" value="c2a7e9c1-0b5f-4e2e-bf91-8e1d2557899e"/>
+            <column name="name" value="Chocolate Cake"/>
+            <column name="description" value="A rich and moist chocolate cake"/>
+            <column name="type" value="DESSERT"/>
+            <column name="price" value="3.50"/>
+            <column name="created_at" value="2023-05-27T12:34:56Z"/>
+            <column name="updated_at" value="2023-05-27T12:34:56Z"/>
+        </insert>
+
+        <insert tableName="product" schemaName="myburguer">
+            <column name="id" value="d3b8f9c2-0c6f-4f3e-bf92-8e2d255789ad"/>
+            <column name="name" value="Vanilla Ice Cream"/>
+            <column name="description" value="A creamy vanilla ice cream"/>
+            <column name="type" value="DESSERT"/>
+            <column name="price" value="2.50"/>
+            <column name="created_at" value="2023-05-27T12:34:56Z"/>
+            <column name="updated_at" value="2023-05-27T12:34:56Z"/>
+        </insert>
+
+        <insert tableName="product" schemaName="myburguer">
+            <column name="id" value="f5a2bc83-e0de-4bcb-99de-6b10c6a6f63e"/>
+            <column name="name" value="Lemonade"/>
+            <column name="description" value="A refreshing glass of lemonade"/>
+            <column name="type" value="DRINK"/>
+            <column name="price" value="1.75"/>
+            <column name="created_at" value="2023-05-27T12:34:56Z"/>
+            <column name="updated_at" value="2023-05-27T12:34:56Z"/>
+        </insert>
+
+        <insert tableName="product" schemaName="myburguer">
+            <column name="id" value="e4c3fbc5-1d75-4f47-b9b5-84b7a7d1c7e9"/>
+            <column name="name" value="Iced Tea"/>
+            <column name="description" value="A chilled glass of iced tea"/>
+            <column name="type" value="DRINK"/>
+            <column name="price" value="1.50"/>
+            <column name="created_at" value="2023-05-27T12:34:56Z"/>
+            <column name="updated_at" value="2023-05-27T12:34:56Z"/>
+        </insert>
+
+        <insert tableName="product" schemaName="myburguer">
+            <column name="id" value="d4c3efb4-1b64-4e36-b9a4-73b7a6d1b6e8"/>
+            <column name="name" value="French Fries"/>
+            <column name="description" value="Crispy golden French fries"/>
+            <column name="type" value="APPETIZER"/>
+            <column name="price" value="2.50"/>
+            <column name="created_at" value="2023-05-27T12:34:56Z"/>
+            <column name="updated_at" value="2023-05-27T12:34:56Z"/>
+        </insert>
+
+        <insert tableName="product" schemaName="myburguer">
+            <column name="id" value="e5d4fcb5-1e86-4f48-bac6-85b8b7d1c8fa"/>
+            <column name="name" value="Onion Rings"/>
+            <column name="description" value="Crispy fried onion rings"/>
+            <column name="type" value="APPETIZER"/>
+            <column name="price" value="2.75"/>
+            <column name="created_at" value="2023-05-27T12:34:56Z"/>
+            <column name="updated_at" value="2023-05-27T12:34:56Z"/>
+        </insert>
+
+        <insert tableName="product" schemaName="myburguer">
+            <column name="id" value="b1f1d1e6-88d1-4bdf-931b-2d3e22e6f1a7"/>
+            <column name="name" value="Salad"/>
+            <column name="description" value="A healthy green salad"/>
+            <column name="type" value="OTHER"/>
+            <column name="price" value="4.00"/>
+            <column name="created_at" value="2023-05-27T12:34:56Z"/>
+            <column name="updated_at" value="2023-05-27T12:34:56Z"/>
+        </insert>
+
+        <insert tableName="product" schemaName="myburguer">
+            <column name="id" value="f6e5dcb6-1f97-4f59-bcd7-96b9c8d2d9fb"/>
+            <column name="name" value="Fruit Cup"/>
+            <column name="description" value="A mix of fresh fruits"/>
+            <column name="type" value="OTHER"/>
+            <column name="price" value="3.00"/>
+            <column name="created_at" value="2023-05-27T12:34:56Z"/>
+            <column name="updated_at" value="2023-05-27T12:34:56Z"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

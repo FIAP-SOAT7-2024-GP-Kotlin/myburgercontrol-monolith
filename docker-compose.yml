@@ -27,6 +27,7 @@ services:
       JWT_KEY: ${JWT_KEY}
       LOG_LEVEL: "DEBUG"
   wiremock:
+    platform: linux/amd64
     image: holomekc/wiremock-gui:3.5.7-alpine
     ports:
       - "9090:8080"

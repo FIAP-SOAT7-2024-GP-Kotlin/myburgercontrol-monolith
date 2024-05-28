@@ -7,6 +7,7 @@ import io.github.soat7.myburguercontrol.application.ports.inbound.ProductService
 import io.github.soat7.myburguercontrol.application.ports.inbound.TokenServicePort
 import io.github.soat7.myburguercontrol.application.ports.outbound.CustomerDatabasePort
 import io.github.soat7.myburguercontrol.application.ports.outbound.OrderDatabasePort
+import io.github.soat7.myburguercontrol.application.ports.outbound.PaymentDatabasePort
 import io.github.soat7.myburguercontrol.application.ports.outbound.PaymentIntegrationPort
 import io.github.soat7.myburguercontrol.application.ports.outbound.ProductDatabasePort
 import io.github.soat7.myburguercontrol.application.ports.outbound.UserDatabasePort
@@ -35,7 +36,8 @@ class BeanConfiguration(
         CustomerService(customerDatabasePort)
 
     @Bean
-    fun paymentService(paymentIntegrationPort: PaymentIntegrationPort) = PaymentService(paymentIntegrationPort)
+    fun paymentService(paymentIntegrationPort: PaymentIntegrationPort, paymentDatabasePort: PaymentDatabasePort) =
+        PaymentService(paymentIntegrationPort, paymentDatabasePort)
 
     @Bean
     fun userService(
@@ -68,7 +70,8 @@ class BeanConfiguration(
     fun orderService(
         orderDatabasePort: OrderDatabasePort,
         customerServicePort: CustomerServicePort,
-        productServicePort: ProductServicePort
+        productServicePort: ProductServicePort,
+        paymentService: PaymentService
     ) =
-        OrderService(orderDatabasePort, customerServicePort, productServicePort)
+        OrderService(orderDatabasePort, customerServicePort, productServicePort, paymentService)
 }

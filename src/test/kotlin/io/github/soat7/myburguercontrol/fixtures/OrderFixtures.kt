@@ -4,10 +4,12 @@ import io.github.soat7.myburguercontrol.domain.enum.OrderStatus
 import io.github.soat7.myburguercontrol.domain.model.Customer
 import io.github.soat7.myburguercontrol.domain.model.Order
 import io.github.soat7.myburguercontrol.domain.model.OrderItem
+import io.github.soat7.myburguercontrol.domain.model.Payment
 import io.github.soat7.myburguercontrol.fixtures.ProductFixtures.mockDomainProduct
 import io.github.soat7.myburguercontrol.infrastructure.persistence.customer.entity.CustomerEntity
 import io.github.soat7.myburguercontrol.infrastructure.persistence.order.entity.OrderEntity
 import io.github.soat7.myburguercontrol.infrastructure.persistence.order.entity.OrderItemEntity
+import io.github.soat7.myburguercontrol.infrastructure.persistence.payment.entity.PaymentEntity
 import io.github.soat7.myburguercontrol.infrastructure.persistence.product.entity.ProductEntity
 import java.time.Instant
 import java.util.UUID
@@ -18,7 +20,8 @@ object OrderFixtures {
         customer: Customer
     ) = Order(
         id = UUID.randomUUID(),
-        customer = customer
+        customer = customer,
+        payment = Payment()
     ).apply {
         val productId = UUID.randomUUID()
         this.items.map {
@@ -32,12 +35,14 @@ object OrderFixtures {
 
     fun mockOrderEntity(
         customerEntity: CustomerEntity,
-        product: ProductEntity
+        product: ProductEntity,
+        paymentEntity: PaymentEntity
     ) = OrderEntity(
         id = UUID.randomUUID(),
         customer = customerEntity,
         status = OrderStatus.NEW.name,
-        createdAt = Instant.now()
+        createdAt = Instant.now(),
+        payment = paymentEntity
     ).apply {
         this.items = listOf(
             OrderItemEntity(

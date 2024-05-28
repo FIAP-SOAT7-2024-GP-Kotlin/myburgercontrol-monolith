@@ -52,7 +52,7 @@ spring:
 
 third-party:
   payment-integration:
-    url: http://localhost/mercadopago/pagamento
+    url: ${WIREMOCK_URL}
     connectionTimeout: 5000
     readTimeout: 5000
 

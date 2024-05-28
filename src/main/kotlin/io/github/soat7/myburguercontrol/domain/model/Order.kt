@@ -12,7 +12,8 @@ data class Order(
     val customer: Customer,
     val items: List<OrderItem> = listOf(),
     val status: OrderStatus = OrderStatus.NEW,
-    val createdAt: Instant = Instant.now()
+    val createdAt: Instant = Instant.now(),
+    val payment: Payment? = null
 ) {
     val total: BigDecimal
         get() = items.sumOf { it.product.price * it.quantity.toBigDecimal() }.setScale(DEFAULT_BIG_DECIMAL_SCALE)

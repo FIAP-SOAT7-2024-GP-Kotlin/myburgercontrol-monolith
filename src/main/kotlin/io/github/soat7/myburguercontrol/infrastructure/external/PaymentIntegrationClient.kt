@@ -5,8 +5,8 @@ import io.github.soat7.myburguercontrol.domain.dto.PaymentResult
 import io.github.soat7.myburguercontrol.domain.exception.ReasonCode
 import io.github.soat7.myburguercontrol.domain.exception.ReasonCodeException
 import io.github.soat7.myburguercontrol.domain.mapper.toDto
-import io.github.soat7.myburguercontrol.domain.mapper.toRequest
-import io.github.soat7.myburguercontrol.domain.model.Payment
+import io.github.soat7.myburguercontrol.domain.mapper.toPaymentRequest
+import io.github.soat7.myburguercontrol.domain.model.Order
 import io.github.soat7.myburguercontrol.infrastructure.external.rest.PaymentIntegrationResponse
 import mu.KLogging
 import org.springframework.beans.factory.annotation.Value
@@ -22,13 +22,13 @@ class PaymentIntegrationClient(
 
     private companion object : KLogging()
 
-    override fun requestPayment(payment: Payment): PaymentResult {
+    override fun requestPayment(order: Order): PaymentResult {
         logger.info { "Starting integration with PaymentProvider" }
 
         try {
             val response = paymentRestTemplate.postForEntity(
                 paymentServiceUrl,
-                payment.toRequest(),
+                order.toPaymentRequest(),
                 PaymentIntegrationResponse::class.java
             )
 

@@ -87,6 +87,8 @@ dependencies {
     testImplementation("io.mockk:mockk:1.+")
     testImplementation("org.testcontainers:testcontainers")
     testImplementation("org.testcontainers:postgresql")
+    testImplementation("org.testcontainers:mockserver")
+    testImplementation("org.mock-server:mockserver-client-java:5.13.2")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

@@ -25,7 +25,6 @@ import java.util.UUID
 @RestController("product-controller")
 @RequestMapping(
     path = ["products"],
-    consumes = [MediaType.APPLICATION_JSON_VALUE],
     produces = [MediaType.APPLICATION_JSON_VALUE]
 )
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
@@ -36,12 +35,11 @@ class ProductController(
 
     private companion object : KLogging()
 
-    @PostMapping
+    @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE])
     @Operation(
-        tags = ["99 - Comum"],
+        tags = ["99 - Adminstrativo"],
         summary = "Utilize esta rota para cadastrar um novo produto",
-        description = "Utilize esta rota para cadastrar um novo produto",
-        operationId = "2"
+        description = "Utilize esta rota para cadastrar um novo produto"
     )
     fun createProduct(@RequestBody request: ProductCreationRequest): ResponseEntity<ProductResponse> = run {
         logger.debug { "Creating product" }
@@ -52,10 +50,9 @@ class ProductController(
 
     @GetMapping(path = ["/{id}"])
     @Operation(
-        tags = ["99 - Comum"],
+        tags = ["99 - Adminstrativo"],
         summary = "Utilize esta rota para encontrar um produto utilizando o identificador na base de dados",
         description = "Utilize esta rota para encontrar um produto utilizando o identificador na base de dados",
-        operationId = "3"
     )
     fun getProductById(@PathVariable("id") id: UUID): ResponseEntity<ProductResponse> = run {
         logger.debug { "Getting product by id: [$id]" }
@@ -68,8 +65,7 @@ class ProductController(
     @Operation(
         tags = ["2 - Jornada do Pedido"],
         summary = "Utilize esta rota para buscar todos os produtos cadastrados",
-        description = "Utilize esta rota para buscar todos os produtos cadastrados",
-        operationId = "1"
+        description = "Utilize esta rota para buscar todos os produtos cadastrados"
     )
     fun findAll(
         @RequestParam(defaultValue = "0") page: Int,

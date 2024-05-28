@@ -21,19 +21,17 @@ import java.util.UUID
 @RestController("user-controller")
 @RequestMapping(
     path = ["/users"],
-    consumes = [MediaType.APPLICATION_JSON_VALUE],
     produces = [MediaType.APPLICATION_JSON_VALUE]
 )
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 class UserController(
     private val service: UserServicePort
 ) {
-    @PostMapping
+    @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE])
     @Operation(
         tags = ["0 - Jornada de Autenticação"],
         summary = "Utilize esta rota para criar um novo usuário",
-        description = "Utilize esta rota para criar um novo usuário",
-        operationId = "auth_1"
+        description = "Utilize esta rota para criar um novo usuário"
     )
     fun createUser(@RequestBody request: UserCreationRequest): ResponseEntity<UserResponse> = run {
         val resp = service.create(request.toDomain())
@@ -44,8 +42,7 @@ class UserController(
     @Operation(
         tags = ["0 - Jornada de Autenticação"],
         summary = "Utilize esta rota para encontrar um usuário utilizando o identificador na base de dados",
-        description = "Utilize esta rota para encontrar um usuário utilizando o identificador na base de dados",
-        operationId = "auth_2"
+        description = "Utilize esta rota para encontrar um usuário utilizando o identificador na base de dados"
     )
     fun findUserById(@PathVariable("id") id: UUID): ResponseEntity<UserResponse> = run {
         service.findUserById(id)?.let {
@@ -57,8 +54,7 @@ class UserController(
     @Operation(
         tags = ["0 - Jornada de Autenticação"],
         summary = "Utilize esta rota para encontrar um usuário utilizando o cpf",
-        description = "Utilize esta rota para encontrar um usuário utilizando o cpf",
-        operationId = "auth_3"
+        description = "Utilize esta rota para encontrar um usuário utilizando o cpf"
     )
     fun findUserByCpf(@RequestParam("cpf") cpf: String): ResponseEntity<UserResponse> = run {
         service.findUserByCpf(cpf)?.let {

@@ -22,7 +22,6 @@ import java.util.UUID
 @RestController("customer-controller")
 @RequestMapping(
     path = ["customers"],
-    consumes = [MediaType.APPLICATION_JSON_VALUE],
     produces = [MediaType.APPLICATION_JSON_VALUE]
 )
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
@@ -31,12 +30,11 @@ class CustomerController(
     private val service: CustomerServicePort
 ) {
 
-    @PostMapping
+    @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE])
     @Operation(
         tags = ["1 - Jornada de Cliente"],
         summary = "Utilize esta rota para criar um novo cliente",
-        description = "Utilize esta rota para criar um novo cliente",
-        operationId = "1"
+        description = "Utilize esta rota para criar um novo cliente"
     )
     fun createCustomer(@RequestBody request: CustomerCreationRequest): ResponseEntity<CustomerResponse> = run {
         val customer = service.create(request.toDomain())
@@ -45,10 +43,9 @@ class CustomerController(
 
     @GetMapping("/{id}")
     @Operation(
-        tags = ["99 - Comum"],
+        tags = ["99 - Adminstrativo"],
         summary = "Utilize esta rota para encontrar um cliente utilizando o identificador na base de dados",
-        description = "Utilize esta rota para encontrar um cliente utilizando o identificador na base de dados",
-        operationId = "1"
+        description = "Utilize esta rota para encontrar um cliente utilizando o identificador na base de dados"
     )
     fun findCustomerById(@PathVariable("id") id: UUID): ResponseEntity<CustomerResponse> = run {
         service.findCustomerById(id)?.let {
@@ -60,8 +57,7 @@ class CustomerController(
     @Operation(
         tags = ["1 - Jornada de Cliente"],
         summary = "Utilize esta rota para encontrar um cliente pelo CPF",
-        description = "Utilize esta rota para encontrar um cliente pelo CPF",
-        operationId = "2"
+        description = "Utilize esta rota para encontrar um cliente pelo CPF"
     )
     fun findCustomerByCpf(@RequestParam("cpf") cpf: String): ResponseEntity<CustomerResponse> = run {
         service.findCustomerByCpf(cpf)?.let {

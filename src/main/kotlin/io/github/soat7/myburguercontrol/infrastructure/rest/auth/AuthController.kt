@@ -20,12 +20,12 @@ class AuthController(
     private val authenticationService: AuthenticationServicePort
 ) {
 
-    @PostMapping
+    @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE])
     @Operation(
         tags = ["0 - Jornada de Autenticação"],
         summary = "Utilize esta rota para autenticar um usuário já criado",
         description = "Utilize esta rota para autenticar um usuário já criado",
-        operationId = "auth_4"
+        operationId = "auth_3"
     )
     fun authenticate(@RequestBody authRequest: AuthRequest): AuthResponse =
         authenticationService.authenticate(authRequest)

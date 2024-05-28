@@ -6,6 +6,7 @@ import io.github.soat7.myburguercontrol.domain.mapper.toResponse
 import io.github.soat7.myburguercontrol.infrastructure.rest.auth.api.UserCreationRequest
 import io.github.soat7.myburguercontrol.infrastructure.rest.auth.api.UserResponse
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -44,6 +45,7 @@ class UserController(
         summary = "Utilize esta rota para encontrar um usuário utilizando o identificador na base de dados",
         description = "Utilize esta rota para encontrar um usuário utilizando o identificador na base de dados"
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     fun findUserById(@PathVariable("id") id: UUID): ResponseEntity<UserResponse> = run {
         service.findUserById(id)?.let {
             ResponseEntity.ok().body(it.toResponse())
@@ -56,6 +58,7 @@ class UserController(
         summary = "Utilize esta rota para encontrar um usuário utilizando o cpf",
         description = "Utilize esta rota para encontrar um usuário utilizando o cpf"
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     fun findUserByCpf(@RequestParam("cpf") cpf: String): ResponseEntity<UserResponse> = run {
         service.findUserByCpf(cpf)?.let {
             ResponseEntity.ok(it.toResponse())

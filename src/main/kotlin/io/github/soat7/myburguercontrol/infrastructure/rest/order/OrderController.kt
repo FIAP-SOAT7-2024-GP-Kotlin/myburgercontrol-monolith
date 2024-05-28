@@ -35,7 +35,7 @@ class OrderController(
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE])
     @Operation(
         tags = ["2 - Jornada do Pedido"],
-        summary = "2.2 - Utilize esta rota para criar um pedido",
+        summary = "Utilize esta rota para criar um pedido",
         description = "Utilize esta rota para criar um pedido"
     )
     fun create(@RequestBody request: OrderCreationRequest): ResponseEntity<OrderResponse> = run {
@@ -46,7 +46,7 @@ class OrderController(
     @GetMapping
     @Operation(
         tags = ["2 - Jornada do Pedido"],
-        summary = "2.3 - Utilize esta rota para encontrar o(s) pedido(s) por cpf de cliente",
+        summary = "Utilize esta rota para encontrar o(s) pedido(s) por cpf de cliente",
         description = "Utilize esta rota para encontrar o(s) pedido(s) por cpf de cliente"
     )
     fun findOrdersByCpf(@RequestParam("cpf") cpf: String): ResponseEntity<List<OrderResponse>> = run {
@@ -56,7 +56,7 @@ class OrderController(
     @GetMapping("/queue")
     @Operation(
         tags = ["2 - Jornada do Pedido"],
-        summary = "2.4 - Utilize esta rota para encontrar a lista do(s) pedido(s)",
+        summary = "Utilize esta rota para encontrar a lista do(s) pedido(s)",
         description = "Utilize esta rota para encontrar a lista do(s) pedido(s)"
     )
     fun findOrderQueue(
@@ -80,7 +80,7 @@ class OrderController(
     @PostMapping("/received", consumes = [MediaType.APPLICATION_JSON_VALUE])
     @Operation(
         tags = ["2 - Jornada do Pedido"],
-        summary = "2.5 - Utilize esta rota para alterar o estado pedido para RECEBIDO",
+        summary = "Utilize esta rota para alterar o estado pedido para RECEBIDO",
         description = "Utilize esta rota para alterar o estado pedido para RECEBIDO"
     )
     fun updateOrderStatusToReceived(
@@ -92,7 +92,7 @@ class OrderController(
     @PostMapping("/in-progress", consumes = [MediaType.APPLICATION_JSON_VALUE])
     @Operation(
         tags = ["2 - Jornada do Pedido"],
-        summary = "2.6 - Utilize esta rota para alterar o estado pedido para EM PREPARAÇÃO",
+        summary = "Utilize esta rota para alterar o estado pedido para EM PREPARAÇÃO",
         description = "Utilize esta rota para alterar o estado pedido para EM PREPARAÇÃO"
     )
     fun updateOrderStatusToInProgress(

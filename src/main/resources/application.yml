@@ -60,6 +60,9 @@ springdoc:
   version: '@springdoc.version@'
   swagger-ui:
     use-root-path: true
+    tagsSorter: alpha
+    operationsSorter: alpha
+    writer-with-order-by-keys: true
   path: /api/v1/swagger-ui/index.html
 
 logging:

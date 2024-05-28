@@ -36,7 +36,7 @@ class ProductService(
         logger.debug { "Finding product with id $id" }
         databasePort.findById(id)
     } catch (ex: Exception) {
-        logger.error(ex) { "Error while finding product by id" }
+        logger.error(ex) { "Error while finding product by type" }
         throw ReasonCodeException(ReasonCode.UNEXPECTED_ERROR, ex)
     }
 

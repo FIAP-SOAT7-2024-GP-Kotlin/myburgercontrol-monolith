@@ -6,6 +6,7 @@ import io.github.soat7.myburguercontrol.domain.mapper.toResponse
 import io.github.soat7.myburguercontrol.infrastructure.rest.common.PaginatedResponse
 import io.github.soat7.myburguercontrol.infrastructure.rest.product.api.ProductCreationRequest
 import io.github.soat7.myburguercontrol.infrastructure.rest.product.api.ProductResponse
+import io.swagger.v3.oas.annotations.Operation
 import mu.KLogging
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.MediaType
@@ -49,6 +50,10 @@ class ProductController(
     }
 
     @GetMapping("/type")
+    @Operation(
+        tags = ["2 - Jornada do Pedido"],
+        summary = "Utilize esta rota para buscar todos os produtos cadastrados por categoria",
+        description = "Utilize esta rota para buscar todos os produtos cadastrados por categoria")
     fun getProductByType(@RequestParam type: String): ResponseEntity<List<ProductResponse>> = run {
         logger.debug { "Getting product by type: [$type]" }
         val products = service.findByType(type).map { it.toResponse() }

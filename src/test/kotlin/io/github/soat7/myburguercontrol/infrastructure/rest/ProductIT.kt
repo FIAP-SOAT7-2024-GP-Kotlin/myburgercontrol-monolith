@@ -125,7 +125,7 @@ class ProductIT : BaseIntegrationTest() {
         val type = "DRINK"
 
         val response = restTemplate.exchange<List<ProductResponse>>(
-            url = "/products/type/{type}",
+            url = "/products/type?type={type}",
             method = HttpMethod.GET,
             requestEntity = HttpEntity(null, authenticationHeader),
             uriVariables = mapOf("type" to type)
@@ -146,7 +146,7 @@ class ProductIT : BaseIntegrationTest() {
         val type = "PIZZA"
 
         val response = restTemplate.exchange<List<ProductResponse>>(
-            url = "/products/type/{type}",
+            url = "/products/type?type={type}",
             method = HttpMethod.GET,
             requestEntity = HttpEntity(null, authenticationHeader),
             uriVariables = mapOf("type" to type)

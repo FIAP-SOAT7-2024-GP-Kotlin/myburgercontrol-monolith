@@ -48,8 +48,8 @@ class ProductController(
         } ?: ResponseEntity.notFound().build()
     }
 
-    @GetMapping("/type/{type}")
-    fun getProductByType(@PathVariable type: String): ResponseEntity<List<ProductResponse>> = run {
+    @GetMapping("/type")
+    fun getProductByType(@RequestParam type: String): ResponseEntity<List<ProductResponse>> = run {
         logger.debug { "Getting product by type: [$type]" }
         val products = service.findByType(type).map { it.toResponse() }
         if (products.isNotEmpty()) {

@@ -53,15 +53,12 @@ class ProductController(
     @Operation(
         tags = ["2 - Jornada do Pedido"],
         summary = "Utilize esta rota para buscar todos os produtos cadastrados por categoria",
-        description = "Utilize esta rota para buscar todos os produtos cadastrados por categoria")
+        description = "Utilize esta rota para buscar todos os produtos cadastrados por categoria"
+    )
     fun getProductByType(@RequestParam type: String): ResponseEntity<List<ProductResponse>> = run {
         logger.debug { "Getting product by type: [$type]" }
         val products = service.findByType(type).map { it.toResponse() }
-        if (products.isNotEmpty()) {
-            ResponseEntity.ok(products)
-        } else {
-            ResponseEntity.notFound().build()
-        }
+        ResponseEntity.ok(products)
     }
 
     @GetMapping

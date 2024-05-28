@@ -139,7 +139,7 @@ class ProductIT : BaseIntegrationTest() {
     }
 
     @Test
-    fun `should NOT_FOUND find a product by type`() {
+    fun `should return an empty product page when no products are found by type`() {
         insertRandomTypeProducts()
         insertRandomTypeProducts()
         insertRandomTypeProducts()
@@ -153,8 +153,8 @@ class ProductIT : BaseIntegrationTest() {
         )
 
         assertAll(
-            Executable { assertEquals(response.statusCode.value(), HttpStatus.NOT_FOUND.value()) },
-            Executable { assertThat(response.body).isEqualTo(null) }
+            Executable { assertTrue(response.statusCode.is2xxSuccessful) },
+            Executable { assertThat(response.body).isEmpty() }
         )
     }
     private fun insertRandomTypeProducts(): ProductEntity {

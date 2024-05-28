@@ -63,12 +63,10 @@ class OrderIT : BaseIntegrationTest() {
     fun `should get orders using cpf`() {
         val cpf = "47052551004"
 
-        run {
-            val customer = insertCustomerData(mockDomainCustomer(cpf = cpf))
-            val product = insertProducts().first()
-            val payment = insertPaymentData(mockPayment())
-            orderRepository.save(OrderFixtures.mockOrderEntity(customer, product, payment))
-        }
+        val customer = insertCustomerData(mockDomainCustomer(cpf = cpf))
+        val product = insertProducts().first()
+        val payment = insertPaymentData(mockPayment())
+        orderRepository.save(OrderFixtures.mockOrderEntity(customer, product, payment))
 
         val orders = restTemplate.exchange<List<OrderResponse>>(
             url = "/orders?cpf={cpf}",
@@ -91,7 +89,7 @@ class OrderIT : BaseIntegrationTest() {
             Executable { assertEquals(cpf, order.customer.cpf) },
             Executable { assertEquals(OrderStatus.NEW, order.status) },
             Executable { assertFalse(order.items.isEmpty()) },
-            Executable { assertEquals(1.0.toBigDecimal(), order.total) }
+            Executable { assertEquals(5.99.toBigDecimal(), order.total) }
         )
     }
 

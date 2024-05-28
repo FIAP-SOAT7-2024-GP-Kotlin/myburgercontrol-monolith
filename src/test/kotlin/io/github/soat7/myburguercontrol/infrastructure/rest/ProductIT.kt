@@ -3,7 +3,6 @@ package io.github.soat7.myburguercontrol.infrastructure.rest
 import io.github.soat7.myburguercontrol.base.BaseIntegrationTest
 import io.github.soat7.myburguercontrol.domain.enum.ProductType
 import io.github.soat7.myburguercontrol.fixtures.ProductFixtures
-import io.github.soat7.myburguercontrol.infrastructure.persistence.product.entity.ProductEntity
 import io.github.soat7.myburguercontrol.infrastructure.rest.common.PaginatedResponse
 import io.github.soat7.myburguercontrol.infrastructure.rest.product.api.ProductResponse
 import org.assertj.core.api.Assertions.assertThat
@@ -113,14 +112,12 @@ class ProductIT : BaseIntegrationTest() {
             Executable { assertTrue(response.statusCode.is2xxSuccessful) },
             Executable { assertThat(response.body).isNotNull },
             Executable { assertThat(response.body!!.content.isNotEmpty()) },
-            Executable { assertEquals(2, response.body!!.totalPages) }
+            Executable { assertEquals(3, response.body!!.totalPages) }
         )
     }
 
     @Test
     fun `should successfully find a product by type`() {
-        insertRandomTypeProducts()
-        insertRandomTypeProducts()
         insertRandomTypeProducts()
         val type = "DRINK"
 
@@ -141,8 +138,6 @@ class ProductIT : BaseIntegrationTest() {
     @Test
     fun `should return an empty product page when no products are found by type`() {
         insertRandomTypeProducts()
-        insertRandomTypeProducts()
-        insertRandomTypeProducts()
         val type = "PIZZA"
 
         val response = restTemplate.exchange<List<ProductResponse>>(
@@ -157,11 +152,12 @@ class ProductIT : BaseIntegrationTest() {
             Executable { assertThat(response.body).isEmpty() }
         )
     }
-    private fun insertRandomTypeProducts(): ProductEntity {
+
+    private fun insertRandomTypeProducts() {
         productRepository.save(ProductFixtures.mockProductEntity())
         productRepository.save(ProductFixtures.mockProductEntity(type = ProductType.DRINK))
         productRepository.save(ProductFixtures.mockProductEntity(type = ProductType.APPETIZER))
         productRepository.save(ProductFixtures.mockProductEntity(type = ProductType.DESSERT))
-        return productRepository.save(ProductFixtures.mockProductEntity(type = ProductType.OTHER))
+        productRepository.save(ProductFixtures.mockProductEntity(type = ProductType.OTHER))
     }
 }

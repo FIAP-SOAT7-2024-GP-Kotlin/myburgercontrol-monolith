@@ -27,6 +27,10 @@ class ProductDatabaseAdapter(
         throw ex
     }
 
+    override fun delete(product: Product) {
+        repository.deleteById(product.id)
+    }
+
     override fun findById(id: UUID): Product? = repository.findByIdOrNull(id)?.toDomain()
 
     override fun findByType(type: String): List<Product> = repository.findByType(type)

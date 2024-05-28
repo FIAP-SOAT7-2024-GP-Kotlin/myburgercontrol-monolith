@@ -3,6 +3,7 @@ package io.github.soat7.myburguercontrol.domain.service
 import io.github.soat7.myburguercontrol.application.ports.inbound.ProductServicePort
 import io.github.soat7.myburguercontrol.application.ports.outbound.ProductDatabasePort
 import io.github.soat7.myburguercontrol.domain.exception.ReasonCode
+import io.github.soat7.myburguercontrol.domain.exception.ReasonCode.PRODUCT_NOT_FOUND
 import io.github.soat7.myburguercontrol.domain.exception.ReasonCodeException
 import io.github.soat7.myburguercontrol.domain.model.Product
 import mu.KLogging
@@ -22,6 +23,12 @@ class ProductService(
     } catch (ex: Exception) {
         logger.error(ex) { "Error while creating product" }
         throw ReasonCodeException(ReasonCode.UNEXPECTED_ERROR, ex)
+    }
+
+    override fun delete(id: UUID) {
+        logger.debug { "Saving product with id $id" }
+        val product = databasePort.findById(id) ?: throw ReasonCodeException(PRODUCT_NOT_FOUND)
+        databasePort.delete(product)
     }
 
     override fun findAll(pageable: Pageable): Page<Product> = try {

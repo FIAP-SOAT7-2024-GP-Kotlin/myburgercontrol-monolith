@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CrossOrigin
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -46,6 +47,18 @@ class ProductController(
         val response = service.create(request.toDomain())
 
         ResponseEntity.ok(response.toResponse())
+    }
+
+    @DeleteMapping(path = ["/{id}"])
+    @Operation(
+        tags = ["99 - Adminstrativo"],
+        summary = "Utilize esta rota para apagar um produto utilizando o identificador na base de dados",
+        description = "Utilize esta rota para apagar um produto utilizando o identificador na base de dados"
+    )
+    fun deleteProduct(@PathVariable("id") id: UUID): ResponseEntity<Void> = run {
+        logger.debug { "Deleting product by id: [$id]" }
+        service.delete(id)
+        ResponseEntity.ok().build()
     }
 
     @GetMapping(path = ["/{id}"])

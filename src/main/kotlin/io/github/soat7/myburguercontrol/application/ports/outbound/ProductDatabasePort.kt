@@ -9,6 +9,8 @@ interface ProductDatabasePort {
 
     fun create(product: Product): Product
 
+    fun delete(product: Product)
+
     fun findById(id: UUID): Product?
 
     fun findByType(type: String): List<Product>

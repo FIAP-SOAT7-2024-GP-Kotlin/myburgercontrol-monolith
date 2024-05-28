@@ -25,6 +25,7 @@ services:
       DATABASE_USER: ${DATABASE_USER}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
       JWT_KEY: ${JWT_KEY}
+      WIREMOCK_URL: ${WIREMOCK_URL}
       LOG_LEVEL: "DEBUG"
   wiremock:
     platform: linux/amd64

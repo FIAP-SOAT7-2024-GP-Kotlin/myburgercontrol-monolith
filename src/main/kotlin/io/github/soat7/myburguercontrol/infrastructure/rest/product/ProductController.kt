@@ -7,6 +7,7 @@ import io.github.soat7.myburguercontrol.infrastructure.rest.common.PaginatedResp
 import io.github.soat7.myburguercontrol.infrastructure.rest.product.api.ProductCreationRequest
 import io.github.soat7.myburguercontrol.infrastructure.rest.product.api.ProductResponse
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import mu.KLogging
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.MediaType
@@ -27,13 +28,19 @@ import java.util.UUID
     produces = [MediaType.APPLICATION_JSON_VALUE]
 )
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
+@SecurityRequirement(name = "Bearer Authentication")
 class ProductController(
     private val service: ProductServicePort
 ) {
 
     private companion object : KLogging()
 
-    @PostMapping
+    @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE])
+    @Operation(
+        tags = ["99 - Adminstrativo"],
+        summary = "Utilize esta rota para cadastrar um novo produto",
+        description = "Utilize esta rota para cadastrar um novo produto"
+    )
     fun createProduct(@RequestBody request: ProductCreationRequest): ResponseEntity<ProductResponse> = run {
         logger.debug { "Creating product" }
         val response = service.create(request.toDomain())
@@ -41,7 +48,12 @@ class ProductController(
         ResponseEntity.ok(response.toResponse())
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(path = ["/{id}"])
+    @Operation(
+        tags = ["99 - Adminstrativo"],
+        summary = "Utilize esta rota para encontrar um produto utilizando o identificador na base de dados",
+        description = "Utilize esta rota para encontrar um produto utilizando o identificador na base de dados",
+    )
     fun getProductById(@PathVariable("id") id: UUID): ResponseEntity<ProductResponse> = run {
         logger.debug { "Getting product by id: [$id]" }
         service.findById(id)?.let {
@@ -62,6 +74,11 @@ class ProductController(
     }
 
     @GetMapping
+    @Operation(
+        tags = ["2 - Jornada do Pedido"],
+        summary = "Utilize esta rota para buscar todos os produtos cadastrados",
+        description = "Utilize esta rota para buscar todos os produtos cadastrados"
+    )
     fun findAll(
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "10") size: Int

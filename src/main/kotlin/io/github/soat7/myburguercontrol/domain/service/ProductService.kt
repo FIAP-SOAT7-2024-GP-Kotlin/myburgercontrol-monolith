@@ -36,6 +36,14 @@ class ProductService(
         logger.debug { "Finding product with id $id" }
         databasePort.findById(id)
     } catch (ex: Exception) {
+        logger.error(ex) { "Error while finding product by type" }
+        throw ReasonCodeException(ReasonCode.UNEXPECTED_ERROR, ex)
+    }
+
+    override fun findByType(type: String): List<Product> = try {
+        logger.debug { "Finding product with type $type" }
+        databasePort.findByType(type)
+    } catch (ex: Exception) {
         logger.error(ex) { "Error while finding product by id" }
         throw ReasonCodeException(ReasonCode.UNEXPECTED_ERROR, ex)
     }

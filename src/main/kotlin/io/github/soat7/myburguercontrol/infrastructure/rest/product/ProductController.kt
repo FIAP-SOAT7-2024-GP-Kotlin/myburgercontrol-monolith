@@ -61,6 +61,18 @@ class ProductController(
         } ?: ResponseEntity.notFound().build()
     }
 
+    @GetMapping("/type")
+    @Operation(
+        tags = ["2 - Jornada do Pedido"],
+        summary = "Utilize esta rota para buscar todos os produtos cadastrados por categoria",
+        description = "Utilize esta rota para buscar todos os produtos cadastrados por categoria"
+    )
+    fun getProductByType(@RequestParam type: String): ResponseEntity<List<ProductResponse>> = run {
+        logger.debug { "Getting product by type: [$type]" }
+        val products = service.findByType(type).map { it.toResponse() }
+        ResponseEntity.ok(products)
+    }
+
     @GetMapping
     @Operation(
         tags = ["2 - Jornada do Pedido"],

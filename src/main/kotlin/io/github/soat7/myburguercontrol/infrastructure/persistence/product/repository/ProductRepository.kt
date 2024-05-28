@@ -9,4 +9,6 @@ import java.util.UUID
 interface ProductRepository : JpaRepository<ProductEntity, UUID> {
 
     override fun findAll(pageable: Pageable): Page<ProductEntity>
+
+    fun findByType(type: String): List<ProductEntity>
 }

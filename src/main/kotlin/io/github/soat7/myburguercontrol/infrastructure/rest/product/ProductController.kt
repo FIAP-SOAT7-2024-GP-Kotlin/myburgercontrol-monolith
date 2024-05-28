@@ -52,7 +52,7 @@ class ProductController(
     @Operation(
         tags = ["99 - Adminstrativo"],
         summary = "Utilize esta rota para encontrar um produto utilizando o identificador na base de dados",
-        description = "Utilize esta rota para encontrar um produto utilizando o identificador na base de dados",
+        description = "Utilize esta rota para encontrar um produto utilizando o identificador na base de dados"
     )
     fun getProductById(@PathVariable("id") id: UUID): ResponseEntity<ProductResponse> = run {
         logger.debug { "Getting product by id: [$id]" }

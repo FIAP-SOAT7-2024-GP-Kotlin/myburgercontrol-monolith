@@ -1,4 +1,4 @@
-package io.github.soat7.myburguercontrol.domain.service
+package io.github.soat7.myburguercontrol.business
 
 import io.github.soat7.myburguercontrol.business.exception.ReasonCodeException
 import io.github.soat7.myburguercontrol.business.model.Customer

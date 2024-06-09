@@ -1,4 +1,4 @@
-package io.github.soat7.myburguercontrol.infrastructure.external
+package io.github.soat7.myburguercontrol.business
 
 import io.github.soat7.myburguercontrol.business.enum.PaymentStatus
 import io.github.soat7.myburguercontrol.business.exception.ReasonCodeException

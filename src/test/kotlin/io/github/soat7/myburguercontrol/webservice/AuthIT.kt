@@ -1,4 +1,4 @@
-package io.github.soat7.myburguercontrol.infrastructure.rest
+package io.github.soat7.myburguercontrol.webservice
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.github.soat7.myburguercontrol.base.BaseIntegrationTest

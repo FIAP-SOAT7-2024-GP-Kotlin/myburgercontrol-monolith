@@ -1,4 +1,4 @@
-package io.github.soat7.myburguercontrol.domain.service
+package io.github.soat7.myburguercontrol.business
 
 import io.github.soat7.myburguercontrol.business.enum.OrderStatus
 import io.github.soat7.myburguercontrol.business.repository.OrderRepository
@@ -31,16 +31,16 @@ import io.github.soat7.myburguercontrol.business.model.Order as OrderModel
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class OrderServiceTest {
 
-    private val orderRepository = mockk<OrderRepository>()
+    private val repository = mockk<OrderRepository>()
     private val customerService = mockk<CustomerService>()
     private val productService = mockk<ProductService>()
     private val paymentService = mockk<PaymentService>()
-    private val service = OrderService(orderRepository, customerService, productService, paymentService)
+    private val service = OrderService(repository, customerService, productService, paymentService)
 
     @BeforeTest
     fun setUp() {
         clearMocks(customerService)
-        clearMocks(orderRepository)
+        clearMocks(repository)
     }
 
     @Test
@@ -52,7 +52,7 @@ class OrderServiceTest {
         val payment = mockPayment()
 
         every { customerService.findCustomerByCpf(cpf) } returns customer
-        every { orderRepository.create(any<OrderModel>()) } answers {
+        every { repository.create(any<OrderModel>()) } answers {
             (this.firstArg() as OrderModel).copy(id = UUID.randomUUID())
         }
         every { productService.findById(any()) } returns product
@@ -60,15 +60,15 @@ class OrderServiceTest {
             paymentService.requestPayment(any())
         } returns payment
         every { paymentService.createPayment() } returns payment
-        every { orderRepository.update(any<OrderModel>()) } answers {
+        every { repository.update(any<OrderModel>()) } answers {
             (this.firstArg() as OrderModel).copy(id = UUID.randomUUID())
         }
 
         val order = service.createOrder(OrderDetailFixtures.mockOrderDetail(cpf = cpf, product = product))
 
         verify(exactly = 1) { customerService.findCustomerByCpf(any()) }
-        verify(exactly = 2) { orderRepository.update(any()) }
-        verify(exactly = 1) { orderRepository.create(any()) }
+        verify(exactly = 2) { repository.update(any()) }
+        verify(exactly = 1) { repository.create(any()) }
         verify(exactly = 1) { paymentService.createPayment() }
         verify(exactly = 1) { paymentService.requestPayment(any()) }
 

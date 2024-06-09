@@ -1,4 +1,4 @@
-package io.github.soat7.myburguercontrol.domain.service
+package io.github.soat7.myburguercontrol.business
 
 import io.github.soat7.myburguercontrol.business.exception.ReasonCodeException
 import io.github.soat7.myburguercontrol.business.model.Product
@@ -29,19 +29,19 @@ import kotlin.test.assertNull
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ProductServiceTest {
 
-    private val databasePort = mockk<ProductRepository>()
-    private val service = ProductService(databasePort)
+    private val repository = mockk<ProductRepository>()
+    private val service = ProductService(repository)
 
     @BeforeTest
     fun setUp() {
-        clearMocks(databasePort)
+        clearMocks(repository)
     }
 
     @Test
     fun `should successfully create an product`() {
         val product = mockDomainProduct(id = UUID.randomUUID(), description = "Product")
 
-        every { databasePort.create(any<Product>()) } returns product
+        every { repository.create(any<Product>()) } returns product
 
         val result = assertDoesNotThrow {
             service.create(product)
@@ -50,7 +50,7 @@ class ProductServiceTest {
         assertNotNull(result)
         assertEquals(product, result)
 
-        verify(exactly = 1) { databasePort.create(any<Product>()) }
+        verify(exactly = 1) { repository.create(any<Product>()) }
     }
 
     @Test
@@ -58,7 +58,7 @@ class ProductServiceTest {
         val id = UUID.randomUUID()
         val product = mockDomainProduct(id = id, description = "Product")
 
-        every { databasePort.findById(any()) } returns product
+        every { repository.findById(any()) } returns product
 
         val result = assertDoesNotThrow {
             service.findById(id)
@@ -67,14 +67,14 @@ class ProductServiceTest {
         assertNotNull(result)
         assertEquals(product, result)
 
-        verify(exactly = 1) { databasePort.findById(any()) }
+        verify(exactly = 1) { repository.findById(any()) }
     }
 
     @Test
     fun `should return null when no product is found by given id`() {
         val id = UUID.randomUUID()
 
-        every { databasePort.findById(any()) } returns null
+        every { repository.findById(any()) } returns null
 
         val result = assertDoesNotThrow {
             service.findById(id)
@@ -82,14 +82,14 @@ class ProductServiceTest {
 
         assertNull(result)
 
-        verify(exactly = 1) { databasePort.findById(any()) }
+        verify(exactly = 1) { repository.findById(any()) }
     }
 
     @Test
     fun `should throw ReasonCodeException when an exception is thrown while finding product by id`() {
         val id = UUID.randomUUID()
 
-        every { databasePort.findById(any()) } throws Exception("Unexpected error occurred")
+        every { repository.findById(any()) } throws Exception("Unexpected error occurred")
 
         val result = assertThrows(ReasonCodeException::class.java) {
             service.findById(id)
@@ -100,7 +100,7 @@ class ProductServiceTest {
             Executable { assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, result.reasonCode.status) }
         )
 
-        verify(exactly = 1) { databasePort.findById(any()) }
+        verify(exactly = 1) { repository.findById(any()) }
     }
 
     @Test
@@ -112,7 +112,7 @@ class ProductServiceTest {
         )
 
         val page = PageImpl(products, pageable, products.size.toLong())
-        every { databasePort.findAll(any()) } returns page
+        every { repository.findAll(any()) } returns page
 
         val result = assertDoesNotThrow {
             service.findAll(pageable)
@@ -121,14 +121,14 @@ class ProductServiceTest {
         assertNotNull(result)
         assertEquals(page, result)
 
-        verify(exactly = 1) { databasePort.findAll(any()) }
+        verify(exactly = 1) { repository.findAll(any()) }
     }
 
     @Test
     fun `should throw ReasonCodeException when Exception is thrown while finding all products`() {
         val pageable = Pageable.unpaged()
 
-        every { databasePort.findAll(any()) } throws Exception("Unexpected error occurred while finding all products")
+        every { repository.findAll(any()) } throws Exception("Unexpected error occurred while finding all products")
 
         val result = assertThrows(ReasonCodeException::class.java) {
             service.findAll(pageable)
@@ -139,14 +139,14 @@ class ProductServiceTest {
             Executable { assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, result.reasonCode.status) }
         )
 
-        verify(exactly = 1) { databasePort.findAll(any()) }
+        verify(exactly = 1) { repository.findAll(any()) }
     }
 
     @Test
     fun `should return empty page when no products are found`() {
         val pageable = Pageable.unpaged()
 
-        every { databasePort.findAll(any()) } returns Page.empty()
+        every { repository.findAll(any()) } returns Page.empty()
 
         val result = assertDoesNotThrow {
             service.findAll(pageable)
@@ -155,6 +155,6 @@ class ProductServiceTest {
         assertNotNull(result)
         assertThat(result).isEmpty()
 
-        verify(exactly = 1) { databasePort.findAll(any()) }
+        verify(exactly = 1) { repository.findAll(any()) }
     }
 }

@@ -1,11 +1,7 @@
-package io.github.soat7.myburguercontrol.business
+package io.github.soat7.myburguercontrol.business.service
 
 import io.github.soat7.myburguercontrol.business.enum.OrderStatus
 import io.github.soat7.myburguercontrol.business.repository.OrderRepository
-import io.github.soat7.myburguercontrol.business.service.CustomerService
-import io.github.soat7.myburguercontrol.business.service.OrderService
-import io.github.soat7.myburguercontrol.business.service.PaymentService
-import io.github.soat7.myburguercontrol.business.service.ProductService
 import io.github.soat7.myburguercontrol.fixtures.CustomerFixtures.mockDomainCustomer
 import io.github.soat7.myburguercontrol.fixtures.OrderDetailFixtures
 import io.github.soat7.myburguercontrol.fixtures.PaymentFixtures.mockPayment

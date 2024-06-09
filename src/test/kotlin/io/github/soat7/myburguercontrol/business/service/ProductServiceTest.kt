@@ -1,9 +1,8 @@
-package io.github.soat7.myburguercontrol.business
+package io.github.soat7.myburguercontrol.business.service
 
 import io.github.soat7.myburguercontrol.business.exception.ReasonCodeException
 import io.github.soat7.myburguercontrol.business.model.Product
 import io.github.soat7.myburguercontrol.business.repository.ProductRepository
-import io.github.soat7.myburguercontrol.business.service.ProductService
 import io.github.soat7.myburguercontrol.fixtures.ProductFixtures.mockDomainProduct
 import io.mockk.clearMocks
 import io.mockk.every

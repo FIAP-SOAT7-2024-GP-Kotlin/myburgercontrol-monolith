@@ -1,10 +1,9 @@
-package io.github.soat7.myburguercontrol.business
+package io.github.soat7.myburguercontrol.business.service
 
 import io.github.soat7.myburguercontrol.business.enum.PaymentStatus
 import io.github.soat7.myburguercontrol.business.exception.ReasonCodeException
 import io.github.soat7.myburguercontrol.business.repository.PaymentIntegrationRepository
 import io.github.soat7.myburguercontrol.business.repository.PaymentRepository
-import io.github.soat7.myburguercontrol.business.service.PaymentService
 import io.github.soat7.myburguercontrol.fixtures.CustomerFixtures.mockDomainCustomer
 import io.github.soat7.myburguercontrol.fixtures.OrderFixtures.mockOrder
 import io.github.soat7.myburguercontrol.fixtures.PaymentFixtures.mockPayment

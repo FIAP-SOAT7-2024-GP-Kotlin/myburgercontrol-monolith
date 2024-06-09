@@ -1,4 +1,4 @@
-package io.github.soat7.myburguercontrol.service
+package io.github.soat7.myburguercontrol.business.service
 
 import io.github.soat7.myburguercontrol.business.enum.UserRole
 import io.github.soat7.myburguercontrol.business.model.User

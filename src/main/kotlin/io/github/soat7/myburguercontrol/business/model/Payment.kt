@@ -1,6 +1,6 @@
-package io.github.soat7.myburguercontrol.domain.model
+package io.github.soat7.myburguercontrol.business.model
 
-import io.github.soat7.myburguercontrol.domain.enum.PaymentStatus
+import io.github.soat7.myburguercontrol.business.enum.PaymentStatus
 import java.time.Instant
 import java.util.UUID
 

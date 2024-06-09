@@ -1,4 +1,4 @@
-package io.github.soat7.myburguercontrol.business.gateway
+package io.github.soat7.myburguercontrol.business.repository
 
 import io.github.soat7.myburguercontrol.business.model.User
 import java.util.UUID

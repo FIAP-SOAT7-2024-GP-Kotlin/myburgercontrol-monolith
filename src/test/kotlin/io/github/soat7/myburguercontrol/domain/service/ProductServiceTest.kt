@@ -1,8 +1,9 @@
 package io.github.soat7.myburguercontrol.domain.service
 
-import io.github.soat7.myburguercontrol.application.ports.outbound.ProductDatabasePort
-import io.github.soat7.myburguercontrol.domain.exception.ReasonCodeException
-import io.github.soat7.myburguercontrol.domain.model.Product
+import io.github.soat7.myburguercontrol.business.exception.ReasonCodeException
+import io.github.soat7.myburguercontrol.business.model.Product
+import io.github.soat7.myburguercontrol.business.repository.ProductRepository
+import io.github.soat7.myburguercontrol.business.service.ProductService
 import io.github.soat7.myburguercontrol.fixtures.ProductFixtures.mockDomainProduct
 import io.mockk.clearMocks
 import io.mockk.every
@@ -28,7 +29,7 @@ import kotlin.test.assertNull
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ProductServiceTest {
 
-    private val databasePort = mockk<ProductDatabasePort>()
+    private val databasePort = mockk<ProductRepository>()
     private val service = ProductService(databasePort)
 
     @BeforeTest

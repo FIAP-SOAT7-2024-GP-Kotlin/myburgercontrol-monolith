@@ -1,32 +1,30 @@
-package io.github.soat7.myburguercontrol.domain.service
+package io.github.soat7.myburguercontrol.business.service
 
-import io.github.soat7.myburguercontrol.application.ports.inbound.CustomerServicePort
-import io.github.soat7.myburguercontrol.application.ports.inbound.OrderServicePort
-import io.github.soat7.myburguercontrol.application.ports.inbound.PaymentServicePort
-import io.github.soat7.myburguercontrol.application.ports.inbound.ProductServicePort
-import io.github.soat7.myburguercontrol.application.ports.outbound.OrderDatabasePort
-import io.github.soat7.myburguercontrol.domain.enum.OrderStatus
-import io.github.soat7.myburguercontrol.domain.exception.ReasonCode
-import io.github.soat7.myburguercontrol.domain.exception.ReasonCodeException
-import io.github.soat7.myburguercontrol.domain.model.Customer
-import io.github.soat7.myburguercontrol.domain.model.Order
-import io.github.soat7.myburguercontrol.domain.model.OrderDetail
-import io.github.soat7.myburguercontrol.domain.model.OrderItem
+import io.github.soat7.myburguercontrol.business.enum.OrderStatus
+import io.github.soat7.myburguercontrol.business.exception.ReasonCode
+import io.github.soat7.myburguercontrol.business.exception.ReasonCodeException
+import io.github.soat7.myburguercontrol.business.model.Customer
+import io.github.soat7.myburguercontrol.business.model.Order
+import io.github.soat7.myburguercontrol.business.model.OrderDetail
+import io.github.soat7.myburguercontrol.business.model.OrderItem
+import io.github.soat7.myburguercontrol.business.repository.OrderRepository
 import mu.KLogging
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.stereotype.Service
 import java.util.UUID
 
+@Service
 class OrderService(
-    private val orderDatabasePort: OrderDatabasePort,
-    private val customerService: CustomerServicePort,
-    private val productService: ProductServicePort,
-    private val paymentServicePort: PaymentServicePort
-) : OrderServicePort {
+    private val orderRepository: OrderRepository,
+    private val customerService: CustomerService,
+    private val productService: ProductService,
+    private val paymentService: PaymentService
+) {
 
     private companion object : KLogging()
 
-    override fun createOrder(orderDetail: OrderDetail): Order {
+    fun createOrder(orderDetail: OrderDetail): Order {
         val customer = customerService.findCustomerByCpf(orderDetail.customerCpf)
             ?: throw ReasonCodeException(ReasonCode.CUSTOMER_NOT_FOUND)
 
@@ -34,27 +32,27 @@ class OrderService(
 
         val order = setupOrder(customer, items)
 
-        paymentServicePort.requestPayment(order)
+        paymentService.requestPayment(order)
 
-        return orderDatabasePort.update(order.copy(status = OrderStatus.RECEIVED))
+        return orderRepository.update(order.copy(status = OrderStatus.RECEIVED))
     }
 
-    override fun findOrdersByCustomerCpf(cpf: String): List<Order> {
+    fun findOrdersByCustomerCpf(cpf: String): List<Order> {
         logger.info { "Order.findOrders(cpf = $cpf)" }
         val customer = customerService.findCustomerByCpf(cpf)
             ?: throw ReasonCodeException(ReasonCode.CUSTOMER_NOT_FOUND)
 
-        return orderDatabasePort.findByCustomerId(customer.id)
+        return orderRepository.findByCustomerId(customer.id)
     }
 
-    override fun findQueuedOrders(pageable: Pageable): Page<Order> {
+    fun findQueuedOrders(pageable: Pageable): Page<Order> {
         logger.info { "Finding orders with status: [${OrderStatus.NEW}]" }
-        return orderDatabasePort.findNewOrders(OrderStatus.NEW.name, pageable)
+        return orderRepository.findNewOrders(OrderStatus.NEW.name, pageable)
     }
 
-    override fun changeOrderStatus(status: OrderStatus, orderId: UUID): Order {
-        return orderDatabasePort.update(
-            orderDatabasePort.findById(orderId)?.copy(status = status)
+    fun changeOrderStatus(status: OrderStatus, orderId: UUID): Order {
+        return orderRepository.update(
+            orderRepository.findById(orderId)?.copy(status = status)
                 ?: throw ReasonCodeException(ReasonCode.ORDER_NOT_FOUND)
         )
     }
@@ -77,7 +75,7 @@ class OrderService(
         customer: Customer,
         items: List<OrderItem>
     ): Order {
-        val order = orderDatabasePort.create(
+        val order = orderRepository.create(
             Order(
                 id = UUID.randomUUID(),
                 customer = customer,
@@ -85,8 +83,8 @@ class OrderService(
             )
         )
 
-        val payment = paymentServicePort.createPayment()
+        val payment = paymentService.createPayment()
 
-        return orderDatabasePort.update(order.copy(payment = payment))
+        return orderRepository.update(order.copy(payment = payment))
     }
 }

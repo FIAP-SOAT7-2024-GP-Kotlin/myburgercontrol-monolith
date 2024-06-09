@@ -1,8 +1,9 @@
 package io.github.soat7.myburguercontrol.domain.service
 
-import io.github.soat7.myburguercontrol.application.ports.outbound.CustomerDatabasePort
-import io.github.soat7.myburguercontrol.domain.exception.ReasonCodeException
-import io.github.soat7.myburguercontrol.domain.model.Customer
+import io.github.soat7.myburguercontrol.business.exception.ReasonCodeException
+import io.github.soat7.myburguercontrol.business.model.Customer
+import io.github.soat7.myburguercontrol.business.repository.CustomerRepository
+import io.github.soat7.myburguercontrol.business.service.CustomerService
 import io.github.soat7.myburguercontrol.fixtures.CustomerFixtures
 import io.mockk.clearMocks
 import io.mockk.every
@@ -29,12 +30,12 @@ import kotlin.test.assertNotNull
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class CustomerServiceTest {
 
-    private val customerDatabasePort = mockk<CustomerDatabasePort>()
-    private val service = CustomerService(customerDatabasePort)
+    private val customerRepository = mockk<CustomerRepository>()
+    private val service = CustomerService(customerRepository)
 
     @BeforeTest
     fun setUp() {
-        clearMocks(customerDatabasePort)
+        clearMocks(customerRepository)
     }
 
     @Test
@@ -44,9 +45,9 @@ class CustomerServiceTest {
         val id = UUID.randomUUID()
         val customer = CustomerFixtures.mockDomainCustomer(id = id, cpf = cpf)
 
-        every { customerDatabasePort.findCustomerByCpf(any()) } returns null
+        every { customerRepository.findCustomerByCpf(any()) } returns null
         every {
-            customerDatabasePort.create(any<Customer>())
+            customerRepository.create(any<Customer>())
         } returns customer
 
         val response = assertDoesNotThrow {
@@ -56,7 +57,7 @@ class CustomerServiceTest {
         assertEquals(cpf, response.cpf)
         assertEquals(id, response.id)
 
-        verify(exactly = 1) { customerDatabasePort.create(any<Customer>()) }
+        verify(exactly = 1) { customerRepository.create(any<Customer>()) }
     }
 
     @Test
@@ -65,7 +66,7 @@ class CustomerServiceTest {
         val cpf = "48024771802"
 
         every {
-            customerDatabasePort.findCustomerByCpf(any())
+            customerRepository.findCustomerByCpf(any())
         } throws Exception("Error while finding user by cpf")
 
         val response = assertThrows(ReasonCodeException::class.java) {
@@ -77,7 +78,7 @@ class CustomerServiceTest {
             Executable { Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.reasonCode.status) }
         )
 
-        verify(exactly = 1) { customerDatabasePort.findCustomerByCpf(any()) }
+        verify(exactly = 1) { customerRepository.findCustomerByCpf(any()) }
     }
 
     @Test
@@ -85,7 +86,7 @@ class CustomerServiceTest {
     fun `should throw ReasonCodeException when Exception is thrown while finding customer by id`() {
         val randomId = UUID.randomUUID()
         every {
-            customerDatabasePort.findCustomerById(any())
+            customerRepository.findCustomerById(any())
         } throws Exception("Error while finding user by cpf")
 
         val response = assertThrows(ReasonCodeException::class.java) {
@@ -97,7 +98,7 @@ class CustomerServiceTest {
             Executable { Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.reasonCode.status) }
         )
 
-        verify(exactly = 1) { customerDatabasePort.findCustomerById(any()) }
+        verify(exactly = 1) { customerRepository.findCustomerById(any()) }
     }
 
     @Test
@@ -107,9 +108,9 @@ class CustomerServiceTest {
         val id = UUID.randomUUID()
         val customer = CustomerFixtures.mockDomainCustomer(id = id, cpf = cpf)
 
-        every { customerDatabasePort.findCustomerByCpf(any()) } returns null
+        every { customerRepository.findCustomerByCpf(any()) } returns null
         every {
-            customerDatabasePort.create(any<Customer>())
+            customerRepository.create(any<Customer>())
         } throws Exception("Error while creating user")
 
         val response = assertThrows(ReasonCodeException::class.java) {
@@ -121,7 +122,7 @@ class CustomerServiceTest {
             Executable { Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.reasonCode.status) }
         )
 
-        verify(exactly = 1) { customerDatabasePort.create(any<Customer>()) }
+        verify(exactly = 1) { customerRepository.create(any<Customer>()) }
     }
 
     @Test
@@ -131,7 +132,7 @@ class CustomerServiceTest {
         val id = UUID.randomUUID()
         val customer = CustomerFixtures.mockDomainCustomer(id = id, cpf = cpf)
 
-        every { customerDatabasePort.findCustomerByCpf(any()) } returns customer
+        every { customerRepository.findCustomerByCpf(any()) } returns customer
 
         val response = assertThrows(ReasonCodeException::class.java) {
             service.create(customer)
@@ -142,7 +143,7 @@ class CustomerServiceTest {
             Executable { Assertions.assertEquals(HttpStatus.BAD_REQUEST, response.reasonCode.status) }
         )
 
-        verify(exactly = 0) { customerDatabasePort.create(any()) }
+        verify(exactly = 0) { customerRepository.create(any()) }
     }
 
     @Test
@@ -152,7 +153,7 @@ class CustomerServiceTest {
         val id = UUID.randomUUID()
         val customer = CustomerFixtures.mockDomainCustomer(id = id, cpf = cpf)
 
-        every { customerDatabasePort.findCustomerById(any()) } returns customer
+        every { customerRepository.findCustomerById(any()) } returns customer
 
         val response = assertDoesNotThrow {
             service.findCustomerById(id)
@@ -162,6 +163,6 @@ class CustomerServiceTest {
         assertEquals(id, response.id)
         assertEquals(cpf, response.cpf)
 
-        verify(exactly = 1) { customerDatabasePort.findCustomerById(any()) }
+        verify(exactly = 1) { customerRepository.findCustomerById(any()) }
     }
 }

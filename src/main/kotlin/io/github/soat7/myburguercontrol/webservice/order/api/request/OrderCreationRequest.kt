@@ -1,4 +1,4 @@
-package io.github.soat7.myburguercontrol.infrastructure.rest.order.api.request
+package io.github.soat7.myburguercontrol.webservice.order.api.request
 
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotEmpty

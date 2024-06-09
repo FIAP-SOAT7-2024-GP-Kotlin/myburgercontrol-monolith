@@ -1,7 +1,7 @@
-package io.github.soat7.myburguercontrol.domain.mapper
+package io.github.soat7.myburguercontrol.business.mapper
 
 import io.github.soat7.myburguercontrol.business.model.Customer
-import io.github.soat7.myburguercontrol.infrastructure.persistence.customer.entity.CustomerEntity
+import io.github.soat7.myburguercontrol.database.customer.entity.CustomerEntity
 import io.github.soat7.myburguercontrol.webservice.customer.api.request.CustomerCreationRequest
 import io.github.soat7.myburguercontrol.webservice.customer.api.response.CustomerResponse
 import java.time.Instant

@@ -1,4 +1,4 @@
-package io.github.soat7.myburguercontrol.infrastructure.config
+package io.github.soat7.myburguercontrol.config
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.web.client.RestTemplateBuilder

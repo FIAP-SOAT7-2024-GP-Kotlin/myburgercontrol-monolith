@@ -1,4 +1,4 @@
-package io.github.soat7.myburguercontrol.domain.model
+package io.github.soat7.myburguercontrol.business.model
 
 import java.util.UUID
 

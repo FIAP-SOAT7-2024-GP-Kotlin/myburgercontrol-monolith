@@ -1,19 +1,22 @@
-package io.github.soat7.myburguercontrol.domain.service
+package io.github.soat7.myburguercontrol.business.service
 
-import io.github.soat7.myburguercontrol.application.ports.inbound.CustomUserDetailsServicePort
-import io.github.soat7.myburguercontrol.infrastructure.persistence.user.repository.UserRepository
+import io.github.soat7.myburguercontrol.database.user.entity.UserEntity
+import io.github.soat7.myburguercontrol.database.user.repository.UserJpaRepository
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
+import org.springframework.stereotype.Service
 
-typealias ApplicationUser = io.github.soat7.myburguercontrol.infrastructure.persistence.user.entity.UserEntity
+typealias ApplicationUser = UserEntity
 
+@Service
 class CustomUserDetailsService(
-    private val userRepository: UserRepository
-) : CustomUserDetailsServicePort {
+    private val userJpaRepository: UserJpaRepository
+) : UserDetailsService {
 
     override fun loadUserByUsername(cpf: String): UserDetails =
-        userRepository.findByCpf(cpf)
+        userJpaRepository.findByCpf(cpf)
             ?.mapToUserDetails()
             ?: throw UsernameNotFoundException("Cpf not found: $cpf")
 

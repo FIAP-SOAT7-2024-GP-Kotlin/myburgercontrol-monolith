@@ -1,7 +1,7 @@
-package io.github.soat7.myburguercontrol.domain.mapper
+package io.github.soat7.myburguercontrol.business.mapper
 
 import io.github.soat7.myburguercontrol.business.model.User
-import io.github.soat7.myburguercontrol.infrastructure.persistence.user.entity.UserEntity
+import io.github.soat7.myburguercontrol.database.user.entity.UserEntity
 import io.github.soat7.myburguercontrol.webservice.auth.api.UserCreationRequest
 import io.github.soat7.myburguercontrol.webservice.auth.api.UserResponse
 import java.util.UUID

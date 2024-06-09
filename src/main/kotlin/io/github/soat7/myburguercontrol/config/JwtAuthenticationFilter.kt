@@ -1,7 +1,7 @@
-package io.github.soat7.myburguercontrol.infrastructure.config
+package io.github.soat7.myburguercontrol.config
 
-import io.github.soat7.myburguercontrol.application.ports.inbound.CustomUserDetailsServicePort
-import io.github.soat7.myburguercontrol.application.ports.inbound.TokenServicePort
+import io.github.soat7.myburguercontrol.business.service.CustomUserDetailsService
+import io.github.soat7.myburguercontrol.business.service.TokenService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -15,8 +15,8 @@ import org.springframework.web.filter.OncePerRequestFilter
 
 @Component
 class JwtAuthenticationFilter(
-    private val userDetailsService: CustomUserDetailsServicePort,
-    private val tokenService: TokenServicePort
+    private val userDetailsService: CustomUserDetailsService,
+    private val tokenService: TokenService
 ) : OncePerRequestFilter() {
 
     override fun doFilterInternal(

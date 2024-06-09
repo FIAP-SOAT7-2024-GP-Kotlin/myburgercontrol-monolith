@@ -2,7 +2,7 @@ package io.github.soat7.myburguercontrol.infrastructure.rest
 
 import io.github.soat7.myburguercontrol.base.BaseIntegrationTest
 import io.github.soat7.myburguercontrol.fixtures.CustomerFixtures
-import io.github.soat7.myburguercontrol.infrastructure.rest.customer.api.response.CustomerResponse
+import io.github.soat7.myburguercontrol.webservice.customer.api.response.CustomerResponse
 import org.junit.jupiter.api.Assertions.assertAll
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -34,7 +34,7 @@ class CustomerIT : BaseIntegrationTest() {
             Executable { assertNotNull(response.body) },
             Executable { assertEquals(cpf, response.body!!.cpf) }
         )
-        val savedCustomer = customerRepository.findByIdOrNull(response.body!!.id)
+        val savedCustomer = customerJpaRepository.findByIdOrNull(response.body!!.id)
 
         assertAll(
             Executable { assertNotNull(savedCustomer) },
@@ -47,7 +47,7 @@ class CustomerIT : BaseIntegrationTest() {
     fun `should return BAD_REQUEST when trying to create a new customer with a cpf that is already registered`() {
         val cpf = "82709425025"
         val inputCustomerData = CustomerFixtures.mockCustomerCreationRequest(cpf)
-        customerRepository.save(CustomerFixtures.mockCustomerEntity(UUID.randomUUID(), cpf))
+        customerJpaRepository.save(CustomerFixtures.mockCustomerEntity(UUID.randomUUID(), cpf))
 
         val response = restTemplate.exchange<Any>(
             url = "/customers",

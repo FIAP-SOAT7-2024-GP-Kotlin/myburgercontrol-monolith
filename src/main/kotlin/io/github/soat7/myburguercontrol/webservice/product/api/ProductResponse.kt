@@ -1,4 +1,4 @@
-package io.github.soat7.myburguercontrol.infrastructure.rest.product.api
+package io.github.soat7.myburguercontrol.webservice.product.api
 
 import java.math.BigDecimal
 import java.util.UUID

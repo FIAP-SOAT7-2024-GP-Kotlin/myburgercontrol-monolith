@@ -1,14 +1,14 @@
 package io.github.soat7.myburguercontrol.infrastructure.rest
 
 import io.github.soat7.myburguercontrol.base.BaseIntegrationTest
-import io.github.soat7.myburguercontrol.domain.enum.OrderStatus
+import io.github.soat7.myburguercontrol.business.enum.OrderStatus
 import io.github.soat7.myburguercontrol.fixtures.CustomerFixtures.mockDomainCustomer
 import io.github.soat7.myburguercontrol.fixtures.HttpMockRequest
 import io.github.soat7.myburguercontrol.fixtures.OrderFixtures
 import io.github.soat7.myburguercontrol.fixtures.PaymentFixtures.mockPayment
-import io.github.soat7.myburguercontrol.infrastructure.rest.order.api.request.OrderCreationRequest
-import io.github.soat7.myburguercontrol.infrastructure.rest.order.api.response.OrderResponse
 import io.github.soat7.myburguercontrol.util.toBigDecimal
+import io.github.soat7.myburguercontrol.webservice.order.api.request.OrderCreationRequest
+import io.github.soat7.myburguercontrol.webservice.order.api.response.OrderResponse
 import org.junit.jupiter.api.Assertions.assertAll
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -49,7 +49,7 @@ class OrderIT : BaseIntegrationTest() {
             Executable { assertNotNull(orderResponse.body) }
         )
 
-        val order = orderRepository.findById(orderResponse.body!!.id).getOrNull()
+        val order = orderJpaRepository.findById(orderResponse.body!!.id).getOrNull()
 
         assertAll(
             Executable { assertNotNull(order) },
@@ -66,7 +66,7 @@ class OrderIT : BaseIntegrationTest() {
         val customer = insertCustomerData(mockDomainCustomer(cpf = cpf))
         val product = insertProducts().first()
         val payment = insertPaymentData(mockPayment())
-        orderRepository.save(OrderFixtures.mockOrderEntity(customer, product, payment))
+        orderJpaRepository.save(OrderFixtures.mockOrderEntity(customer, product, payment))
 
         val orders = restTemplate.exchange<List<OrderResponse>>(
             url = "/orders?cpf={cpf}",

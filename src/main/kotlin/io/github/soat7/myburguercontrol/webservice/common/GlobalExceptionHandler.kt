@@ -1,7 +1,7 @@
-package io.github.soat7.myburguercontrol.infrastructure.common
+package io.github.soat7.myburguercontrol.webservice.common
 
-import io.github.soat7.myburguercontrol.domain.exception.ReasonCode
-import io.github.soat7.myburguercontrol.domain.exception.ReasonCodeException
+import io.github.soat7.myburguercontrol.business.exception.ReasonCode
+import io.github.soat7.myburguercontrol.business.exception.ReasonCodeException
 import mu.KLogging
 import mu.withLoggingContext
 import org.springframework.core.annotation.Order

@@ -1,9 +1,9 @@
 package io.github.soat7.myburguercontrol.service
 
-import io.github.soat7.myburguercontrol.application.ports.outbound.UserDatabasePort
-import io.github.soat7.myburguercontrol.domain.enum.UserRole
-import io.github.soat7.myburguercontrol.domain.model.User
-import io.github.soat7.myburguercontrol.domain.service.UserService
+import io.github.soat7.myburguercontrol.business.enum.UserRole
+import io.github.soat7.myburguercontrol.business.model.User
+import io.github.soat7.myburguercontrol.business.repository.UserRepository
+import io.github.soat7.myburguercontrol.business.service.UserService
 import io.github.soat7.myburguercontrol.fixtures.UserFixtures
 import io.mockk.clearMocks
 import io.mockk.every
@@ -26,14 +26,14 @@ import kotlin.test.assertNotNull
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class UserServiceTest {
 
-    private val userDatabasePort = mockk<UserDatabasePort>()
+    private val userRepository = mockk<UserRepository>()
     private val passwordEncoder: PasswordEncoder = BCryptPasswordEncoder()
 
-    private val service = UserService(userDatabasePort, passwordEncoder)
+    private val service = UserService(userRepository, passwordEncoder)
 
     @BeforeTest
     fun setUp() {
-        clearMocks(userDatabasePort)
+        clearMocks(userRepository)
     }
 
     @Test
@@ -46,7 +46,7 @@ class UserServiceTest {
         val user = UserFixtures.mockUser(id = id, cpf = cpf, password = password, userRole = userRole)
 
         every {
-            userDatabasePort.create(any<User>())
+            userRepository.create(any<User>())
         } returns user
 
         val response = assertDoesNotThrow {
@@ -56,7 +56,7 @@ class UserServiceTest {
         assertEquals(cpf, response.cpf)
         assertEquals(id, response.id)
 
-        verify(exactly = 1) { userDatabasePort.create(any<User>()) }
+        verify(exactly = 1) { userRepository.create(any<User>()) }
     }
 
     @Test
@@ -68,7 +68,7 @@ class UserServiceTest {
         val userRole = UserRole.USER
         val user = UserFixtures.mockUser(id = id, cpf = cpf, password = password, userRole = userRole)
 
-        every { userDatabasePort.findUserById(any()) } returns user
+        every { userRepository.findUserById(any()) } returns user
 
         val response = assertDoesNotThrow {
             service.findUserById(id = id)
@@ -78,7 +78,7 @@ class UserServiceTest {
         assertEquals(id, response.id)
         assertEquals(cpf, response.cpf)
 
-        verify(exactly = 1) { userDatabasePort.findUserById(any()) }
+        verify(exactly = 1) { userRepository.findUserById(any()) }
     }
 
     @Test
@@ -90,7 +90,7 @@ class UserServiceTest {
         val userRole = UserRole.USER
         val user = UserFixtures.mockUser(id = id, cpf = cpf, password = password, userRole = userRole)
 
-        every { userDatabasePort.findUserByCpf(any()) } returns user
+        every { userRepository.findUserByCpf(any()) } returns user
 
         val response = assertDoesNotThrow {
             service.findUserByCpf(cpf = cpf)
@@ -100,6 +100,6 @@ class UserServiceTest {
         assertEquals(id, response.id)
         assertEquals(cpf, response.cpf)
 
-        verify(exactly = 1) { userDatabasePort.findUserByCpf(any()) }
+        verify(exactly = 1) { userRepository.findUserByCpf(any()) }
     }
 }

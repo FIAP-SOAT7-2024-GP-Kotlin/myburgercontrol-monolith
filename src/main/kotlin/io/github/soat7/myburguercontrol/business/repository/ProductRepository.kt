@@ -1,4 +1,4 @@
-package io.github.soat7.myburguercontrol.business.gateway
+package io.github.soat7.myburguercontrol.business.repository
 
 import io.github.soat7.myburguercontrol.business.model.Product
 import org.springframework.data.domain.Page

@@ -1,6 +1,6 @@
-package io.github.soat7.myburguercontrol.infrastructure.persistence.order.entity
+package io.github.soat7.myburguercontrol.database.order.entity
 
-import io.github.soat7.myburguercontrol.infrastructure.persistence.product.entity.ProductEntity
+import io.github.soat7.myburguercontrol.database.product.entity.ProductEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType

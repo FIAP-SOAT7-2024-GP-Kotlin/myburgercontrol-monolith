@@ -1,10 +1,10 @@
 package io.github.soat7.myburguercontrol.infrastructure.rest
 
 import io.github.soat7.myburguercontrol.base.BaseIntegrationTest
-import io.github.soat7.myburguercontrol.domain.enum.ProductType
+import io.github.soat7.myburguercontrol.business.enum.ProductType
 import io.github.soat7.myburguercontrol.fixtures.ProductFixtures
-import io.github.soat7.myburguercontrol.infrastructure.rest.common.PaginatedResponse
-import io.github.soat7.myburguercontrol.infrastructure.rest.product.api.ProductResponse
+import io.github.soat7.myburguercontrol.webservice.common.PaginatedResponse
+import io.github.soat7.myburguercontrol.webservice.product.api.ProductResponse
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertAll
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -36,7 +36,7 @@ class ProductIT : BaseIntegrationTest() {
             Executable { assertEquals(inputProductData.type.name, response.body!!.type) }
         )
 
-        val savedProduct = productRepository.findByIdOrNull(response.body!!.id)
+        val savedProduct = productJpaRepository.findByIdOrNull(response.body!!.id)
 
         assertAll(
             Executable { assertThat(savedProduct).isNotNull },
@@ -48,7 +48,7 @@ class ProductIT : BaseIntegrationTest() {
     @Test
     fun `should successfully find a product by id`() {
         val id = UUID.randomUUID()
-        val product = productRepository.save(ProductFixtures.mockProductEntity(id))
+        val product = productJpaRepository.save(ProductFixtures.mockProductEntity(id))
 
         val response = restTemplate.exchange<ProductResponse>(
             url = "/products/{id}",
@@ -156,7 +156,7 @@ class ProductIT : BaseIntegrationTest() {
     @Test
     fun `should delete a product with given ID`() {
         val id = UUID.randomUUID()
-        val product = productRepository.save(ProductFixtures.mockProductEntity(id))
+        val product = productJpaRepository.save(ProductFixtures.mockProductEntity(id))
 
         val response = restTemplate.exchange<Void>(
             url = "/products/{id}",
@@ -185,10 +185,10 @@ class ProductIT : BaseIntegrationTest() {
     }
 
     private fun insertRandomTypeProducts() {
-        productRepository.save(ProductFixtures.mockProductEntity())
-        productRepository.save(ProductFixtures.mockProductEntity(type = ProductType.DRINK))
-        productRepository.save(ProductFixtures.mockProductEntity(type = ProductType.APPETIZER))
-        productRepository.save(ProductFixtures.mockProductEntity(type = ProductType.DESSERT))
-        productRepository.save(ProductFixtures.mockProductEntity(type = ProductType.OTHER))
+        productJpaRepository.save(ProductFixtures.mockProductEntity())
+        productJpaRepository.save(ProductFixtures.mockProductEntity(type = ProductType.DRINK))
+        productJpaRepository.save(ProductFixtures.mockProductEntity(type = ProductType.APPETIZER))
+        productJpaRepository.save(ProductFixtures.mockProductEntity(type = ProductType.DESSERT))
+        productJpaRepository.save(ProductFixtures.mockProductEntity(type = ProductType.OTHER))
     }
 }

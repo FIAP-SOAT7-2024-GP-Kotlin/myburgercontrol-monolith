@@ -1,8 +1,8 @@
-package io.github.soat7.myburguercontrol.domain.mapper
+package io.github.soat7.myburguercontrol.business.mapper
 
-import io.github.soat7.myburguercontrol.domain.enum.ProductType
+import io.github.soat7.myburguercontrol.business.enum.ProductType
 import io.github.soat7.myburguercontrol.business.model.Product
-import io.github.soat7.myburguercontrol.infrastructure.persistence.product.entity.ProductEntity
+import io.github.soat7.myburguercontrol.database.product.entity.ProductEntity
 import io.github.soat7.myburguercontrol.webservice.order.api.response.OrderItemResponse
 import io.github.soat7.myburguercontrol.webservice.product.api.ProductCreationRequest
 import io.github.soat7.myburguercontrol.webservice.product.api.ProductResponse

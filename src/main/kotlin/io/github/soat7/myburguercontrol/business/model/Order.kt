@@ -1,6 +1,6 @@
-package io.github.soat7.myburguercontrol.domain.model
+package io.github.soat7.myburguercontrol.business.model
 
-import io.github.soat7.myburguercontrol.domain.enum.OrderStatus
+import io.github.soat7.myburguercontrol.business.enum.OrderStatus
 import io.github.soat7.myburguercontrol.util.DEFAULT_BIG_DECIMAL_SCALE
 import io.github.soat7.myburguercontrol.util.toBigDecimal
 import java.math.BigDecimal

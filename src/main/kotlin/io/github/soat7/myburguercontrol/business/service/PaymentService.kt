@@ -1,42 +1,43 @@
-package io.github.soat7.myburguercontrol.domain.service
+package io.github.soat7.myburguercontrol.business.service
 
-import io.github.soat7.myburguercontrol.application.ports.inbound.PaymentServicePort
-import io.github.soat7.myburguercontrol.application.ports.outbound.PaymentDatabasePort
-import io.github.soat7.myburguercontrol.application.ports.outbound.PaymentIntegrationPort
-import io.github.soat7.myburguercontrol.domain.enum.PaymentStatus
-import io.github.soat7.myburguercontrol.domain.exception.ReasonCode
-import io.github.soat7.myburguercontrol.domain.exception.ReasonCodeException
-import io.github.soat7.myburguercontrol.domain.model.Order
-import io.github.soat7.myburguercontrol.domain.model.Payment
+import io.github.soat7.myburguercontrol.business.enum.PaymentStatus
+import io.github.soat7.myburguercontrol.business.exception.ReasonCode
+import io.github.soat7.myburguercontrol.business.exception.ReasonCodeException
+import io.github.soat7.myburguercontrol.business.model.Order
+import io.github.soat7.myburguercontrol.business.model.Payment
+import io.github.soat7.myburguercontrol.business.repository.PaymentIntegrationRepository
+import io.github.soat7.myburguercontrol.business.repository.PaymentRepository
 import mu.KLogging
+import org.springframework.stereotype.Service
 
+@Service
 class PaymentService(
-    private val paymentIntegrationPort: PaymentIntegrationPort,
-    private val paymentDatabasePort: PaymentDatabasePort
-) : PaymentServicePort {
+    private val paymentIntegrationRepository: PaymentIntegrationRepository,
+    private val paymentRepository: PaymentRepository
+) {
 
     private companion object : KLogging()
 
-    override fun createPayment(): Payment {
+    fun createPayment(): Payment {
         logger.info { "Creating payment" }
 
-        return paymentDatabasePort.create(Payment())
+        return paymentRepository.create(Payment())
     }
 
-    override fun requestPayment(order: Order): Payment {
+    fun requestPayment(order: Order): Payment {
         logger.info { "Starting to request payment integration for order id: [${order.id}]" }
 
         val payment = order.payment?.let {
-            paymentDatabasePort.findById(it.id)
+            paymentRepository.findById(it.id)
         } ?: throw ReasonCodeException(ReasonCode.PAYMENT_NOT_FOUND)
 
-        val paymentResult = paymentIntegrationPort.requestPayment(order)
+        val paymentResult = paymentIntegrationRepository.requestPayment(order)
 
         val updatedPayment = payment.copy(
             status = checkApproval(paymentResult.approved),
             authorizationId = paymentResult.authorizationId
         )
-        paymentDatabasePort.update(updatedPayment)
+        paymentRepository.update(updatedPayment)
 
         logger.info { "Successfully integrated with status return: [${updatedPayment.status.name}]" }
 

@@ -1,12 +1,12 @@
-package io.github.soat7.myburguercontrol.infrastructure.rest.order
+package io.github.soat7.myburguercontrol.webservice.order
 
-import io.github.soat7.myburguercontrol.application.ports.inbound.OrderServicePort
-import io.github.soat7.myburguercontrol.domain.enum.OrderStatus
-import io.github.soat7.myburguercontrol.domain.mapper.toOrderDetails
-import io.github.soat7.myburguercontrol.domain.mapper.toResponse
-import io.github.soat7.myburguercontrol.infrastructure.rest.common.PaginatedResponse
-import io.github.soat7.myburguercontrol.infrastructure.rest.order.api.request.OrderCreationRequest
-import io.github.soat7.myburguercontrol.infrastructure.rest.order.api.response.OrderResponse
+import io.github.soat7.myburguercontrol.business.enum.OrderStatus
+import io.github.soat7.myburguercontrol.business.mapper.toOrderDetails
+import io.github.soat7.myburguercontrol.business.mapper.toResponse
+import io.github.soat7.myburguercontrol.business.service.OrderService
+import io.github.soat7.myburguercontrol.webservice.common.PaginatedResponse
+import io.github.soat7.myburguercontrol.webservice.order.api.request.OrderCreationRequest
+import io.github.soat7.myburguercontrol.webservice.order.api.response.OrderResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.data.domain.PageRequest
@@ -29,7 +29,7 @@ import java.util.UUID
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 @SecurityRequirement(name = "Bearer Authentication")
 class OrderController(
-    private val service: OrderServicePort
+    private val service: OrderService
 ) {
 
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE])

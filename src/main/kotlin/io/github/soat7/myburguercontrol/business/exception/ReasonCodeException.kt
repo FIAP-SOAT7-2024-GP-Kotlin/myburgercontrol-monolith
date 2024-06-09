@@ -1,4 +1,4 @@
-package io.github.soat7.myburguercontrol.domain.exception
+package io.github.soat7.myburguercontrol.business.exception
 
 class ReasonCodeException(
     val reasonCode: ReasonCode,

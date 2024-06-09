@@ -22,7 +22,7 @@ class AuthIT : BaseIntegrationTest() {
     fun `should successfully authenticate`() {
         val cpf = "29257035859"
         val password = "pass123"
-        userRepository.save(UserFixtures.mockUserEntity(cpf = cpf, password = passwordEncoder.encode(password)))
+        userJpaRepository.save(UserFixtures.mockUserEntity(cpf = cpf, password = passwordEncoder.encode(password)))
 
         val inputAuthData = AuthFixtures.mockAuthCreationRequest(cpf, password)
 
@@ -40,7 +40,7 @@ class AuthIT : BaseIntegrationTest() {
         val objectMapper = jacksonObjectMapper()
         val cpf = "29257035859"
         val password = "pass123"
-        userRepository.save(UserFixtures.mockUserEntity(cpf = cpf, password = passwordEncoder.encode(password)))
+        userJpaRepository.save(UserFixtures.mockUserEntity(cpf = cpf, password = passwordEncoder.encode(password)))
 
         val inputAuthData = AuthFixtures.mockAuthCreationRequest(cpf, "wrongPass")
 

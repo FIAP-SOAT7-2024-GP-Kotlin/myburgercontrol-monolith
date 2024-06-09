@@ -1,23 +1,22 @@
-package io.github.soat7.myburguercontrol.domain.service
+package io.github.soat7.myburguercontrol.business.service
 
-import io.github.soat7.myburguercontrol.application.ports.inbound.AuthenticationServicePort
-import io.github.soat7.myburguercontrol.application.ports.inbound.CustomUserDetailsServicePort
-import io.github.soat7.myburguercontrol.application.ports.inbound.TokenServicePort
-import io.github.soat7.myburguercontrol.infrastructure.config.JwtProperties
-import io.github.soat7.myburguercontrol.infrastructure.rest.auth.api.AuthRequest
-import io.github.soat7.myburguercontrol.infrastructure.rest.auth.api.AuthResponse
+import io.github.soat7.myburguercontrol.config.JwtProperties
+import io.github.soat7.myburguercontrol.webservice.auth.api.AuthRequest
+import io.github.soat7.myburguercontrol.webservice.auth.api.AuthResponse
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.stereotype.Service
 import java.util.Date
 
+@Service
 class AuthenticationService(
     private val authManager: AuthenticationManager,
-    private val userDetailsService: CustomUserDetailsServicePort,
-    private val tokenService: TokenServicePort,
+    private val userDetailsService: CustomUserDetailsService,
+    private val tokenService: TokenService,
     private val jwtProperties: JwtProperties
-) : AuthenticationServicePort {
+) {
 
-    override fun authenticate(authRequest: AuthRequest): AuthResponse {
+    fun authenticate(authRequest: AuthRequest): AuthResponse {
         authManager.authenticate(
             UsernamePasswordAuthenticationToken(
                 authRequest.cpf,

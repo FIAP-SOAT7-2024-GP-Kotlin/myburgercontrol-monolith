@@ -1,10 +1,10 @@
-package io.github.soat7.myburguercontrol.infrastructure.rest.customer
+package io.github.soat7.myburguercontrol.webservice.customer
 
-import io.github.soat7.myburguercontrol.application.ports.inbound.CustomerServicePort
-import io.github.soat7.myburguercontrol.domain.mapper.toDomain
-import io.github.soat7.myburguercontrol.domain.mapper.toResponse
-import io.github.soat7.myburguercontrol.infrastructure.rest.customer.api.request.CustomerCreationRequest
-import io.github.soat7.myburguercontrol.infrastructure.rest.customer.api.response.CustomerResponse
+import io.github.soat7.myburguercontrol.business.mapper.toDomain
+import io.github.soat7.myburguercontrol.business.mapper.toResponse
+import io.github.soat7.myburguercontrol.business.service.CustomerService
+import io.github.soat7.myburguercontrol.webservice.customer.api.request.CustomerCreationRequest
+import io.github.soat7.myburguercontrol.webservice.customer.api.response.CustomerResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.http.MediaType
@@ -27,7 +27,7 @@ import java.util.UUID
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 @SecurityRequirement(name = "Bearer Authentication")
 class CustomerController(
-    private val service: CustomerServicePort
+    private val service: CustomerService
 ) {
 
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE])

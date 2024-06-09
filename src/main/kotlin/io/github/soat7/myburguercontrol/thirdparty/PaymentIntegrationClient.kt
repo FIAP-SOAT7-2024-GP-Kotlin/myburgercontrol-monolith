@@ -1,13 +1,13 @@
-package io.github.soat7.myburguercontrol.infrastructure.external
+package io.github.soat7.myburguercontrol.thirdparty
 
-import io.github.soat7.myburguercontrol.application.ports.outbound.PaymentIntegrationPort
-import io.github.soat7.myburguercontrol.domain.dto.PaymentResult
-import io.github.soat7.myburguercontrol.domain.exception.ReasonCode
-import io.github.soat7.myburguercontrol.domain.exception.ReasonCodeException
-import io.github.soat7.myburguercontrol.domain.mapper.toDto
-import io.github.soat7.myburguercontrol.domain.mapper.toPaymentRequest
-import io.github.soat7.myburguercontrol.domain.model.Order
-import io.github.soat7.myburguercontrol.infrastructure.external.rest.PaymentIntegrationResponse
+import io.github.soat7.myburguercontrol.business.exception.ReasonCode
+import io.github.soat7.myburguercontrol.business.exception.ReasonCodeException
+import io.github.soat7.myburguercontrol.business.mapper.toDto
+import io.github.soat7.myburguercontrol.business.mapper.toPaymentRequest
+import io.github.soat7.myburguercontrol.business.model.Order
+import io.github.soat7.myburguercontrol.business.repository.PaymentIntegrationRepository
+import io.github.soat7.myburguercontrol.thirdparty.api.PaymentIntegrationResponse
+import io.github.soat7.myburguercontrol.thirdparty.api.PaymentResult
 import mu.KLogging
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
@@ -18,7 +18,7 @@ import org.springframework.web.client.RestTemplate
 class PaymentIntegrationClient(
     @Value("\${third-party.payment-integration.url}") private val paymentServiceUrl: String,
     private val paymentRestTemplate: RestTemplate
-) : PaymentIntegrationPort {
+) : PaymentIntegrationRepository {
 
     private companion object : KLogging()
 

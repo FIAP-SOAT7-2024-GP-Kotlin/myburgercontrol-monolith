@@ -1,10 +1,10 @@
-package io.github.soat7.myburguercontrol.domain.mapper
+package io.github.soat7.myburguercontrol.business.mapper
 
-import io.github.soat7.myburguercontrol.domain.dto.PaymentResult
-import io.github.soat7.myburguercontrol.domain.enum.PaymentStatus
+import io.github.soat7.myburguercontrol.business.enum.PaymentStatus
 import io.github.soat7.myburguercontrol.business.model.Payment
+import io.github.soat7.myburguercontrol.database.payment.entity.PaymentEntity
 import io.github.soat7.myburguercontrol.thirdparty.api.PaymentIntegrationResponse
-import io.github.soat7.myburguercontrol.infrastructure.persistence.payment.entity.PaymentEntity
+import io.github.soat7.myburguercontrol.thirdparty.api.PaymentResult
 
 fun PaymentIntegrationResponse.toDto(approved: Boolean) =
     PaymentResult(authorizationId = this.authorizationId, approved)

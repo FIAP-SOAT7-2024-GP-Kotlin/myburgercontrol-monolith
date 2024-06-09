@@ -1,4 +1,4 @@
-package io.github.soat7.myburguercontrol.domain.exception
+package io.github.soat7.myburguercontrol.business.exception
 
 import org.springframework.http.HttpStatus
 

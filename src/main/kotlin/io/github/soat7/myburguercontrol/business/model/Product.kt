@@ -1,6 +1,6 @@
-package io.github.soat7.myburguercontrol.domain.model
+package io.github.soat7.myburguercontrol.business.model
 
-import io.github.soat7.myburguercontrol.domain.enum.ProductType
+import io.github.soat7.myburguercontrol.business.enum.ProductType
 import java.math.BigDecimal
 import java.util.UUID
 

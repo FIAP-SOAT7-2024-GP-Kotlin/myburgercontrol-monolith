@@ -1,4 +1,4 @@
-package io.github.soat7.myburguercontrol.infrastructure.external.rest
+package io.github.soat7.myburguercontrol.thirdparty.api
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import com.fasterxml.jackson.databind.annotation.JsonNaming

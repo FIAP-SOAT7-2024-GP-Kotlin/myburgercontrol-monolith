@@ -1,10 +1,10 @@
 package io.github.soat7.myburguercontrol.infrastructure.external
 
-import io.github.soat7.myburguercontrol.application.ports.outbound.PaymentDatabasePort
-import io.github.soat7.myburguercontrol.application.ports.outbound.PaymentIntegrationPort
-import io.github.soat7.myburguercontrol.domain.enum.PaymentStatus
-import io.github.soat7.myburguercontrol.domain.exception.ReasonCodeException
-import io.github.soat7.myburguercontrol.domain.service.PaymentService
+import io.github.soat7.myburguercontrol.business.enum.PaymentStatus
+import io.github.soat7.myburguercontrol.business.exception.ReasonCodeException
+import io.github.soat7.myburguercontrol.business.repository.PaymentIntegrationRepository
+import io.github.soat7.myburguercontrol.business.repository.PaymentRepository
+import io.github.soat7.myburguercontrol.business.service.PaymentService
 import io.github.soat7.myburguercontrol.fixtures.CustomerFixtures.mockDomainCustomer
 import io.github.soat7.myburguercontrol.fixtures.OrderFixtures.mockOrder
 import io.github.soat7.myburguercontrol.fixtures.PaymentFixtures.mockPayment
@@ -23,19 +23,19 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
-import io.github.soat7.myburguercontrol.domain.model.Order as OrderModel
+import io.github.soat7.myburguercontrol.business.model.Order as OrderModel
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class PaymentServiceTest {
 
-    private val paymentIntegrationPort = mockk<PaymentIntegrationPort>()
-    private val paymentDatabasePort = mockk<PaymentDatabasePort>()
-    private val service = PaymentService(paymentIntegrationPort, paymentDatabasePort)
+    private val paymentIntegrationRepository = mockk<PaymentIntegrationRepository>()
+    private val paymentRepository = mockk<PaymentRepository>()
+    private val service = PaymentService(paymentIntegrationRepository, paymentRepository)
 
     @BeforeTest
     fun setUp() {
-        clearMocks(paymentIntegrationPort)
+        clearMocks(paymentIntegrationRepository)
     }
 
     @Test
@@ -43,13 +43,13 @@ class PaymentServiceTest {
     fun `should try to pay successfully using an external service`() {
         val order = mockOrder(mockDomainCustomer(cpf = "12312312312"))
 
-        every { paymentIntegrationPort.requestPayment(any<OrderModel>()) } returns mockPaymentResult(
+        every { paymentIntegrationRepository.requestPayment(any<OrderModel>()) } returns mockPaymentResult(
             UUID.randomUUID().toString(),
             approved = true
         )
-        every { paymentDatabasePort.findById(any()) } returns mockPayment()
-        every { paymentDatabasePort.create(any()) } returns mockPayment()
-        every { paymentDatabasePort.update(any()) } returns mockPayment()
+        every { paymentRepository.findById(any()) } returns mockPayment()
+        every { paymentRepository.create(any()) } returns mockPayment()
+        every { paymentRepository.update(any()) } returns mockPayment()
 
         val response = assertDoesNotThrow {
             service.requestPayment(order)
@@ -65,12 +65,12 @@ class PaymentServiceTest {
         val order = mockOrder(mockDomainCustomer(cpf = "12312312312"))
 
         every {
-            paymentIntegrationPort.requestPayment(any<OrderModel>())
+            paymentIntegrationRepository.requestPayment(any<OrderModel>())
         } returns mockPaymentResult(null, false)
 
-        every { paymentDatabasePort.findById(any()) } returns mockPayment()
-        every { paymentDatabasePort.create(any()) } returns mockPayment()
-        every { paymentDatabasePort.update(any()) } returns mockPayment()
+        every { paymentRepository.findById(any()) } returns mockPayment()
+        every { paymentRepository.create(any()) } returns mockPayment()
+        every { paymentRepository.update(any()) } returns mockPayment()
 
         assertThrows<ReasonCodeException> {
             service.requestPayment(order)

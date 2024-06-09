@@ -1,6 +1,6 @@
 package io.github.soat7.myburguercontrol.fixtures
 
-import io.github.soat7.myburguercontrol.infrastructure.rest.auth.api.AuthRequest
+import io.github.soat7.myburguercontrol.webservice.auth.api.AuthRequest
 
 object AuthFixtures {
 

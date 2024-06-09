@@ -3,23 +3,24 @@ package io.github.soat7.myburguercontrol.database.order
 import io.github.soat7.myburguercontrol.business.mapper.toDomain
 import io.github.soat7.myburguercontrol.business.mapper.toPersistence
 import io.github.soat7.myburguercontrol.business.model.Order
-import io.github.soat7.myburguercontrol.database.order.repository.OrderRepository
-import io.github.soat7.myburguercontrol.database.product.repository.ProductRepository
+import io.github.soat7.myburguercontrol.business.repository.OrderRepository
+import io.github.soat7.myburguercontrol.database.order.repository.OrderJpaRepository
+import io.github.soat7.myburguercontrol.database.product.repository.ProductJpaRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
 import java.util.UUID
 
 @Component
-class OrderDatabaseAdapter(
-    private val repository: OrderRepository,
-    private val productRepository: ProductRepository
-) : io.github.soat7.myburguercontrol.business.gateway.OrderRepository {
+class OrderGateway(
+    private val repository: OrderJpaRepository,
+    private val productJpaRepository: ProductJpaRepository
+) : OrderRepository {
 
     override fun create(order: Order): Order = run {
         repository.save(
             order.toPersistence(order.customer.toPersistence(), order.payment?.toPersistence()) {
-                productRepository.findById(it).get()
+                productJpaRepository.findById(it).get()
             }
         ).toDomain()
     }
@@ -34,7 +35,7 @@ class OrderDatabaseAdapter(
     override fun update(order: Order): Order {
         return repository.save(
             order.toPersistence(order.customer.toPersistence(), order.payment?.toPersistence()) {
-                productRepository.findById(it).get()
+                productJpaRepository.findById(it).get()
             }
         ).toDomain()
     }

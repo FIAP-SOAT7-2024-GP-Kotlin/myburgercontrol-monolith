@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import java.util.UUID
 
-interface ProductRepository : JpaRepository<ProductEntity, UUID> {
+interface ProductJpaRepository : JpaRepository<ProductEntity, UUID> {
 
     override fun findAll(pageable: Pageable): Page<ProductEntity>
 

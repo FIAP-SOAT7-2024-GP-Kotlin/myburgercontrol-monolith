@@ -1,4 +1,4 @@
-package io.github.soat7.myburguercontrol.infrastructure.rest.common
+package io.github.soat7.myburguercontrol.webservice.common
 
 data class PaginatedResponse<T>(
     val content: List<T>,

@@ -1,6 +1,6 @@
-package io.github.soat7.myburguercontrol.infrastructure.rest.auth.api
+package io.github.soat7.myburguercontrol.webservice.auth.api
 
-import io.github.soat7.myburguercontrol.domain.enum.UserRole
+import io.github.soat7.myburguercontrol.business.enum.UserRole
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
 

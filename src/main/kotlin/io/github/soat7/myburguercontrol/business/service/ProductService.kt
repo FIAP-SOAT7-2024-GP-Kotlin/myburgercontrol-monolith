@@ -1,23 +1,24 @@
-package io.github.soat7.myburguercontrol.domain.service
+package io.github.soat7.myburguercontrol.business.service
 
-import io.github.soat7.myburguercontrol.application.ports.inbound.ProductServicePort
-import io.github.soat7.myburguercontrol.application.ports.outbound.ProductDatabasePort
-import io.github.soat7.myburguercontrol.domain.exception.ReasonCode
-import io.github.soat7.myburguercontrol.domain.exception.ReasonCode.PRODUCT_NOT_FOUND
-import io.github.soat7.myburguercontrol.domain.exception.ReasonCodeException
-import io.github.soat7.myburguercontrol.domain.model.Product
+import io.github.soat7.myburguercontrol.business.exception.ReasonCode
+import io.github.soat7.myburguercontrol.business.exception.ReasonCode.PRODUCT_NOT_FOUND
+import io.github.soat7.myburguercontrol.business.exception.ReasonCodeException
+import io.github.soat7.myburguercontrol.business.model.Product
+import io.github.soat7.myburguercontrol.business.repository.ProductRepository
 import mu.KLogging
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.stereotype.Service
 import java.util.UUID
 
+@Service
 class ProductService(
-    private val databasePort: ProductDatabasePort
-) : ProductServicePort {
+    private val databasePort: ProductRepository
+) {
 
     private companion object : KLogging()
 
-    override fun create(product: Product): Product = try {
+    fun create(product: Product): Product = try {
         logger.debug { "Saving new product $product" }
         databasePort.create(product)
     } catch (ex: Exception) {
@@ -25,13 +26,13 @@ class ProductService(
         throw ReasonCodeException(ReasonCode.UNEXPECTED_ERROR, ex)
     }
 
-    override fun delete(id: UUID) {
+    fun delete(id: UUID) {
         logger.debug { "Saving product with id $id" }
         val product = databasePort.findById(id) ?: throw ReasonCodeException(PRODUCT_NOT_FOUND)
         databasePort.delete(product)
     }
 
-    override fun findAll(pageable: Pageable): Page<Product> = try {
+    fun findAll(pageable: Pageable): Page<Product> = try {
         logger.debug { "Finding all products" }
         databasePort.findAll(pageable)
     } catch (ex: Exception) {
@@ -39,7 +40,7 @@ class ProductService(
         throw ReasonCodeException(ReasonCode.UNEXPECTED_ERROR, ex)
     }
 
-    override fun findById(id: UUID): Product? = try {
+    fun findById(id: UUID): Product? = try {
         logger.debug { "Finding product with id $id" }
         databasePort.findById(id)
     } catch (ex: Exception) {
@@ -47,7 +48,7 @@ class ProductService(
         throw ReasonCodeException(ReasonCode.UNEXPECTED_ERROR, ex)
     }
 
-    override fun findByType(type: String): List<Product> = try {
+    fun findByType(type: String): List<Product> = try {
         logger.debug { "Finding product with type $type" }
         databasePort.findByType(type)
     } catch (ex: Exception) {

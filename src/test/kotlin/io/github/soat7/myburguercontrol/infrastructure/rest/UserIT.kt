@@ -3,10 +3,10 @@ package io.github.soat7.myburguercontrol.infrastructure.rest
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import io.github.soat7.myburguercontrol.base.BaseIntegrationTest
-import io.github.soat7.myburguercontrol.domain.enum.UserRole
+import io.github.soat7.myburguercontrol.business.enum.UserRole
 import io.github.soat7.myburguercontrol.fixtures.AuthFixtures
 import io.github.soat7.myburguercontrol.fixtures.UserFixtures
-import io.github.soat7.myburguercontrol.infrastructure.rest.auth.api.UserResponse
+import io.github.soat7.myburguercontrol.webservice.auth.api.UserResponse
 import org.junit.jupiter.api.Assertions.assertAll
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
@@ -46,7 +46,7 @@ class UserIT : BaseIntegrationTest() {
             Executable { assertEquals(userRole, response.body!!.role) }
         )
 
-        val savedUser = userRepository.findByIdOrNull(response.body!!.id)
+        val savedUser = userJpaRepository.findByIdOrNull(response.body!!.id)
 
         assertAll(
             Executable { assertNotNull(savedUser) },
@@ -60,7 +60,7 @@ class UserIT : BaseIntegrationTest() {
         val cpf = "12345678901"
         val password = "pass123"
         val user =
-            userRepository.save(UserFixtures.mockUserEntity(cpf = cpf, password = passwordEncoder.encode(password)))
+            userJpaRepository.save(UserFixtures.mockUserEntity(cpf = cpf, password = passwordEncoder.encode(password)))
 
         val token = getToken(cpf, password) ?: return
         val header: MultiValueMap<String, String> = LinkedMultiValueMap()
@@ -86,7 +86,7 @@ class UserIT : BaseIntegrationTest() {
         val cpf = "12345678901"
         val password = "pass123"
         val randomId = UUID.randomUUID()
-        userRepository.save(UserFixtures.mockUserEntity(cpf = cpf, password = passwordEncoder.encode(password)))
+        userJpaRepository.save(UserFixtures.mockUserEntity(cpf = cpf, password = passwordEncoder.encode(password)))
 
         val token = getToken(cpf, "1234") ?: return
         val headers = HttpHeaders()
@@ -109,7 +109,7 @@ class UserIT : BaseIntegrationTest() {
         val cpf = "12345678901"
         val password = "pass123"
         val randomId = UUID.randomUUID()
-        userRepository.save(UserFixtures.mockUserEntity(cpf = cpf, password = passwordEncoder.encode(password)))
+        userJpaRepository.save(UserFixtures.mockUserEntity(cpf = cpf, password = passwordEncoder.encode(password)))
 
         val token = getToken(cpf, password) ?: return
 
@@ -131,9 +131,9 @@ class UserIT : BaseIntegrationTest() {
     fun `should successfully find a user by cpf`() {
         val cpf = "12345678901"
         val password = "pass123"
-        userRepository.save(UserFixtures.mockUserEntity(cpf = cpf, password = passwordEncoder.encode(password)))
+        userJpaRepository.save(UserFixtures.mockUserEntity(cpf = cpf, password = passwordEncoder.encode(password)))
 
-        val user = userRepository.save(UserFixtures.mockUserEntity(cpf = cpf))
+        val user = userJpaRepository.save(UserFixtures.mockUserEntity(cpf = cpf))
 
         val token = getToken(cpf, password) ?: return
         val headers = HttpHeaders()

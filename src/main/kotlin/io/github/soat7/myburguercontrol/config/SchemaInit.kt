@@ -1,4 +1,4 @@
-package io.github.soat7.myburguercontrol.infrastructure.config
+package io.github.soat7.myburguercontrol.config
 
 import liquibase.change.DatabaseChange
 import liquibase.integration.spring.SpringLiquibase

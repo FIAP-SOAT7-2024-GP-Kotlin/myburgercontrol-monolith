@@ -1,6 +1,6 @@
-package io.github.soat7.myburguercontrol.infrastructure.persistence.user.entity
+package io.github.soat7.myburguercontrol.database.user.entity
 
-import io.github.soat7.myburguercontrol.domain.enum.UserRole
+import io.github.soat7.myburguercontrol.business.enum.UserRole
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType

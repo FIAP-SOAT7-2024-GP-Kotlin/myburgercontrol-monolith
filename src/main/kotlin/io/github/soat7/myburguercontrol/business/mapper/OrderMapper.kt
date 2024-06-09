@@ -1,15 +1,15 @@
-package io.github.soat7.myburguercontrol.domain.mapper
+package io.github.soat7.myburguercontrol.business.mapper
 
-import io.github.soat7.myburguercontrol.domain.enum.OrderStatus
+import io.github.soat7.myburguercontrol.business.enum.OrderStatus
 import io.github.soat7.myburguercontrol.business.model.Order
 import io.github.soat7.myburguercontrol.business.model.OrderDetail
 import io.github.soat7.myburguercontrol.business.model.OrderItem
+import io.github.soat7.myburguercontrol.database.customer.entity.CustomerEntity
+import io.github.soat7.myburguercontrol.database.order.entity.OrderEntity
+import io.github.soat7.myburguercontrol.database.order.entity.OrderItemEntity
+import io.github.soat7.myburguercontrol.database.payment.entity.PaymentEntity
+import io.github.soat7.myburguercontrol.database.product.entity.ProductEntity
 import io.github.soat7.myburguercontrol.thirdparty.api.PaymentIntegrationRequest
-import io.github.soat7.myburguercontrol.infrastructure.persistence.customer.entity.CustomerEntity
-import io.github.soat7.myburguercontrol.infrastructure.persistence.order.entity.OrderEntity
-import io.github.soat7.myburguercontrol.infrastructure.persistence.order.entity.OrderItemEntity
-import io.github.soat7.myburguercontrol.infrastructure.persistence.payment.entity.PaymentEntity
-import io.github.soat7.myburguercontrol.infrastructure.persistence.product.entity.ProductEntity
 import io.github.soat7.myburguercontrol.webservice.order.api.request.OrderCreationRequest
 import io.github.soat7.myburguercontrol.webservice.order.api.response.OrderItemResponse
 import io.github.soat7.myburguercontrol.webservice.order.api.response.OrderResponse

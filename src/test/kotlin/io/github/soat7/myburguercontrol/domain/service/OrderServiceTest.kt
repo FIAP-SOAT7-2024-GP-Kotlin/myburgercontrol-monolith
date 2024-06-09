@@ -1,10 +1,11 @@
 package io.github.soat7.myburguercontrol.domain.service
 
-import io.github.soat7.myburguercontrol.application.ports.inbound.CustomerServicePort
-import io.github.soat7.myburguercontrol.application.ports.inbound.PaymentServicePort
-import io.github.soat7.myburguercontrol.application.ports.inbound.ProductServicePort
-import io.github.soat7.myburguercontrol.application.ports.outbound.OrderDatabasePort
-import io.github.soat7.myburguercontrol.domain.enum.OrderStatus
+import io.github.soat7.myburguercontrol.business.enum.OrderStatus
+import io.github.soat7.myburguercontrol.business.repository.OrderRepository
+import io.github.soat7.myburguercontrol.business.service.CustomerService
+import io.github.soat7.myburguercontrol.business.service.OrderService
+import io.github.soat7.myburguercontrol.business.service.PaymentService
+import io.github.soat7.myburguercontrol.business.service.ProductService
 import io.github.soat7.myburguercontrol.fixtures.CustomerFixtures.mockDomainCustomer
 import io.github.soat7.myburguercontrol.fixtures.OrderDetailFixtures
 import io.github.soat7.myburguercontrol.fixtures.PaymentFixtures.mockPayment
@@ -24,22 +25,22 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
-import io.github.soat7.myburguercontrol.domain.model.Order as OrderModel
+import io.github.soat7.myburguercontrol.business.model.Order as OrderModel
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class OrderServiceTest {
 
-    private val orderDatabasePort = mockk<OrderDatabasePort>()
-    private val customerServicePort = mockk<CustomerServicePort>()
-    private val productServicePort = mockk<ProductServicePort>()
-    private val paymentServicePort = mockk<PaymentServicePort>()
-    private val service = OrderService(orderDatabasePort, customerServicePort, productServicePort, paymentServicePort)
+    private val orderRepository = mockk<OrderRepository>()
+    private val customerService = mockk<CustomerService>()
+    private val productService = mockk<ProductService>()
+    private val paymentService = mockk<PaymentService>()
+    private val service = OrderService(orderRepository, customerService, productService, paymentService)
 
     @BeforeTest
     fun setUp() {
-        clearMocks(customerServicePort)
-        clearMocks(orderDatabasePort)
+        clearMocks(customerService)
+        clearMocks(orderRepository)
     }
 
     @Test
@@ -50,26 +51,26 @@ class OrderServiceTest {
         val product = ProductFixtures.mockDomainProduct()
         val payment = mockPayment()
 
-        every { customerServicePort.findCustomerByCpf(cpf) } returns customer
-        every { orderDatabasePort.create(any<OrderModel>()) } answers {
+        every { customerService.findCustomerByCpf(cpf) } returns customer
+        every { orderRepository.create(any<OrderModel>()) } answers {
             (this.firstArg() as OrderModel).copy(id = UUID.randomUUID())
         }
-        every { productServicePort.findById(any()) } returns product
+        every { productService.findById(any()) } returns product
         every {
-            paymentServicePort.requestPayment(any())
+            paymentService.requestPayment(any())
         } returns payment
-        every { paymentServicePort.createPayment() } returns payment
-        every { orderDatabasePort.update(any<OrderModel>()) } answers {
+        every { paymentService.createPayment() } returns payment
+        every { orderRepository.update(any<OrderModel>()) } answers {
             (this.firstArg() as OrderModel).copy(id = UUID.randomUUID())
         }
 
         val order = service.createOrder(OrderDetailFixtures.mockOrderDetail(cpf = cpf, product = product))
 
-        verify(exactly = 1) { customerServicePort.findCustomerByCpf(any()) }
-        verify(exactly = 2) { orderDatabasePort.update(any()) }
-        verify(exactly = 1) { orderDatabasePort.create(any()) }
-        verify(exactly = 1) { paymentServicePort.createPayment() }
-        verify(exactly = 1) { paymentServicePort.requestPayment(any()) }
+        verify(exactly = 1) { customerService.findCustomerByCpf(any()) }
+        verify(exactly = 2) { orderRepository.update(any()) }
+        verify(exactly = 1) { orderRepository.create(any()) }
+        verify(exactly = 1) { paymentService.createPayment() }
+        verify(exactly = 1) { paymentService.requestPayment(any()) }
 
         assertNotNull(order.id)
         assertEquals(cpf, order.customer.cpf)

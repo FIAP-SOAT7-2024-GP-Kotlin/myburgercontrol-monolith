@@ -1,4 +1,4 @@
-package io.github.soat7.myburguercontrol.infrastructure.config
+package io.github.soat7.myburguercontrol.config
 
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType
 import io.swagger.v3.oas.annotations.security.SecurityScheme

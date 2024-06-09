@@ -1,20 +1,21 @@
-package io.github.soat7.myburguercontrol.domain.service
+package io.github.soat7.myburguercontrol.business.service
 
-import io.github.soat7.myburguercontrol.application.ports.inbound.CustomerServicePort
-import io.github.soat7.myburguercontrol.application.ports.outbound.CustomerDatabasePort
-import io.github.soat7.myburguercontrol.domain.exception.ReasonCode
-import io.github.soat7.myburguercontrol.domain.exception.ReasonCodeException
-import io.github.soat7.myburguercontrol.domain.model.Customer
+import io.github.soat7.myburguercontrol.business.exception.ReasonCode
+import io.github.soat7.myburguercontrol.business.exception.ReasonCodeException
+import io.github.soat7.myburguercontrol.business.model.Customer
+import io.github.soat7.myburguercontrol.business.repository.CustomerRepository
 import mu.KLogging
+import org.springframework.stereotype.Service
 import java.util.UUID
 
+@Service
 class CustomerService(
-    private val databasePort: CustomerDatabasePort
-) : CustomerServicePort {
+    private val databasePort: CustomerRepository
+) {
 
     private companion object : KLogging()
 
-    override fun create(customer: Customer): Customer = try {
+    fun create(customer: Customer): Customer = try {
         logger.info { "Creating new customer with cpf: [${customer.cpf}]" }
         validateExistingCpf(customer.cpf)
 
@@ -26,7 +27,7 @@ class CustomerService(
         throw ReasonCodeException(ReasonCode.UNEXPECTED_ERROR, ex)
     }
 
-    override fun findCustomerById(id: UUID): Customer? = try {
+    fun findCustomerById(id: UUID): Customer? = try {
         logger.info { "Finding customer with id: [$id]" }
         databasePort.findCustomerById(id)
     } catch (ex: Exception) {
@@ -34,7 +35,7 @@ class CustomerService(
         throw ReasonCodeException(ReasonCode.UNEXPECTED_ERROR, ex)
     }
 
-    override fun findCustomerByCpf(cpf: String): Customer? = try {
+    fun findCustomerByCpf(cpf: String): Customer? = try {
         logger.info { "Finding customer with cpf: [$cpf]" }
         databasePort.findCustomerByCpf(cpf)
     } catch (ex: Exception) {

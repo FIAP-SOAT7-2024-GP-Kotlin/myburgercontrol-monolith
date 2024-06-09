@@ -1,11 +1,11 @@
-package io.github.soat7.myburguercontrol.infrastructure.rest.product
+package io.github.soat7.myburguercontrol.webservice.product
 
-import io.github.soat7.myburguercontrol.application.ports.inbound.ProductServicePort
-import io.github.soat7.myburguercontrol.domain.mapper.toDomain
-import io.github.soat7.myburguercontrol.domain.mapper.toResponse
-import io.github.soat7.myburguercontrol.infrastructure.rest.common.PaginatedResponse
-import io.github.soat7.myburguercontrol.infrastructure.rest.product.api.ProductCreationRequest
-import io.github.soat7.myburguercontrol.infrastructure.rest.product.api.ProductResponse
+import io.github.soat7.myburguercontrol.business.mapper.toDomain
+import io.github.soat7.myburguercontrol.business.mapper.toResponse
+import io.github.soat7.myburguercontrol.business.service.ProductService
+import io.github.soat7.myburguercontrol.webservice.common.PaginatedResponse
+import io.github.soat7.myburguercontrol.webservice.product.api.ProductCreationRequest
+import io.github.soat7.myburguercontrol.webservice.product.api.ProductResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import mu.KLogging
@@ -31,7 +31,7 @@ import java.util.UUID
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 @SecurityRequirement(name = "Bearer Authentication")
 class ProductController(
-    private val service: ProductServicePort
+    private val service: ProductService
 ) {
 
     private companion object : KLogging()

@@ -1,36 +1,38 @@
-package io.github.soat7.myburguercontrol.domain.service
+package io.github.soat7.myburguercontrol.business.service
 
-import io.github.soat7.myburguercontrol.application.ports.inbound.UserServicePort
-import io.github.soat7.myburguercontrol.application.ports.outbound.UserDatabasePort
-import io.github.soat7.myburguercontrol.domain.model.User
+import io.github.soat7.myburguercontrol.business.model.User
+import io.github.soat7.myburguercontrol.business.repository.UserRepository
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.stereotype.Service
 import java.util.UUID
 
+@Service
 class UserService(
-    private val userDatabasePort: UserDatabasePort,
-    private val enconder: PasswordEncoder
-) : UserServicePort {
-    override fun create(user: User): User {
-        user.password = enconder.encode(user.password)
-        return userDatabasePort.create(user)
+    private val userRepository: UserRepository,
+    private val encoder: PasswordEncoder
+) {
+
+    fun create(user: User): User {
+        user.password = encoder.encode(user.password)
+        return userRepository.create(user)
     }
 
-    override fun findUserById(id: UUID): User? {
-        return userDatabasePort.findUserById(id)
+    fun findUserById(id: UUID): User? {
+        return userRepository.findUserById(id)
     }
 
-    override fun findUserByCpf(cpf: String): User? {
-        return userDatabasePort.findUserByCpf(cpf)
+    fun findUserByCpf(cpf: String): User? {
+        return userRepository.findUserByCpf(cpf)
     }
 
-    override fun findByAll(): List<User> {
-        return userDatabasePort.findByAll()
+    fun findByAll(): List<User> {
+        return userRepository.findByAll()
     }
 
-    override fun deleteByUUID(uuid: UUID): Boolean {
+    fun deleteByUUID(uuid: UUID): Boolean {
         val found = findUserById(uuid)
         if (found != null) {
-            userDatabasePort.deleteByUUID(uuid)
+            userRepository.deleteByUUID(uuid)
             return true
         } else {
             return false

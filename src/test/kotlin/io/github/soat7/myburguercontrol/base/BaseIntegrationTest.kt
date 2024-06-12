@@ -1,23 +1,23 @@
 package io.github.soat7.myburguercontrol.base
 
 import io.github.soat7.myburguercontrol.Application
+import io.github.soat7.myburguercontrol.business.enum.UserRole
+import io.github.soat7.myburguercontrol.business.mapper.toPersistence
+import io.github.soat7.myburguercontrol.business.model.Customer
+import io.github.soat7.myburguercontrol.business.model.Payment
 import io.github.soat7.myburguercontrol.container.MockServerContainer
 import io.github.soat7.myburguercontrol.container.PostgresContainer
-import io.github.soat7.myburguercontrol.domain.enum.UserRole
-import io.github.soat7.myburguercontrol.domain.mapper.toPersistence
-import io.github.soat7.myburguercontrol.domain.model.Customer
-import io.github.soat7.myburguercontrol.domain.model.Payment
+import io.github.soat7.myburguercontrol.database.customer.entity.CustomerEntity
+import io.github.soat7.myburguercontrol.database.customer.repository.CustomerJpaRepository
+import io.github.soat7.myburguercontrol.database.order.repository.OrderJpaRepository
+import io.github.soat7.myburguercontrol.database.payment.repository.PaymentJpaRepository
+import io.github.soat7.myburguercontrol.database.product.entity.ProductEntity
+import io.github.soat7.myburguercontrol.database.product.repository.ProductJpaRepository
+import io.github.soat7.myburguercontrol.database.user.repository.UserJpaRepository
 import io.github.soat7.myburguercontrol.fixtures.AuthFixtures
 import io.github.soat7.myburguercontrol.fixtures.ProductFixtures
 import io.github.soat7.myburguercontrol.fixtures.UserFixtures
-import io.github.soat7.myburguercontrol.infrastructure.persistence.customer.entity.CustomerEntity
-import io.github.soat7.myburguercontrol.infrastructure.persistence.customer.repository.CustomerRepository
-import io.github.soat7.myburguercontrol.infrastructure.persistence.order.repository.OrderRepository
-import io.github.soat7.myburguercontrol.infrastructure.persistence.payment.repository.PaymentRepository
-import io.github.soat7.myburguercontrol.infrastructure.persistence.product.entity.ProductEntity
-import io.github.soat7.myburguercontrol.infrastructure.persistence.product.repository.ProductRepository
-import io.github.soat7.myburguercontrol.infrastructure.persistence.user.repository.UserRepository
-import io.github.soat7.myburguercontrol.infrastructure.rest.auth.api.AuthResponse
+import io.github.soat7.myburguercontrol.webservice.auth.api.AuthResponse
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -43,50 +43,50 @@ class BaseIntegrationTest {
     protected lateinit var restTemplate: TestRestTemplate
 
     @Autowired
-    protected lateinit var productRepository: ProductRepository
+    protected lateinit var productJpaRepository: ProductJpaRepository
 
     @Autowired
-    protected lateinit var customerRepository: CustomerRepository
+    protected lateinit var customerJpaRepository: CustomerJpaRepository
 
     @Autowired
-    protected lateinit var orderRepository: OrderRepository
+    protected lateinit var orderJpaRepository: OrderJpaRepository
 
     @Autowired
-    protected lateinit var userRepository: UserRepository
+    protected lateinit var userJpaRepository: UserJpaRepository
 
     @Autowired
     protected lateinit var passwordEncoder: PasswordEncoder
 
     @Autowired
-    protected lateinit var paymentRepository: PaymentRepository
+    protected lateinit var paymentJpaRepository: PaymentJpaRepository
 
     protected lateinit var authenticationHeader: MultiValueMap<String, String>
 
     @BeforeEach
     fun setUpAuthentication() {
         println("Cleaning User database...")
-        userRepository.deleteAll()
+        userJpaRepository.deleteAll()
         authenticationHeader = buildAuthentication()
     }
 
     protected fun insertProducts(): List<ProductEntity> {
-        productRepository.save(ProductFixtures.mockProductEntity())
-        productRepository.save(ProductFixtures.mockProductEntity())
+        productJpaRepository.save(ProductFixtures.mockProductEntity())
+        productJpaRepository.save(ProductFixtures.mockProductEntity())
 
-        return productRepository.findAll()
+        return productJpaRepository.findAll()
     }
 
     protected fun insertCustomerData(customer: Customer): CustomerEntity {
-        return customerRepository.save(customer.toPersistence())
+        return customerJpaRepository.save(customer.toPersistence())
     }
 
-    protected fun insertPaymentData(payment: Payment) = paymentRepository.save(payment.toPersistence())
+    protected fun insertPaymentData(payment: Payment) = paymentJpaRepository.save(payment.toPersistence())
 
     protected fun buildAuthentication(): MultiValueMap<String, String> {
         val cpf = "15666127055"
         val password = UUID.randomUUID().toString()
         val userRole = UserRole.ADMIN
-        userRepository.save(
+        userJpaRepository.save(
             UserFixtures.mockUserEntity(
                 cpf = cpf,
                 password = passwordEncoder.encode(password),

@@ -16,7 +16,7 @@ import java.util.UUID
 @Entity
 @Table(
     name = "order_item",
-    schema = "myburguer"
+    schema = "myburguer",
 )
 class OrderItemEntity(
     @Id
@@ -36,5 +36,5 @@ class OrderItemEntity(
     var quantity: Int,
 
     @Column(name = "comment", length = 1000)
-    var comment: String? = null
+    var comment: String? = null,
 )

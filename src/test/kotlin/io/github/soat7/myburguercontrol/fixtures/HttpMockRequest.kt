@@ -20,15 +20,15 @@ object HttpMockRequest {
             HttpRequest.request()
                 .withPath("/payment-integration")
                 .withMethod("POST"),
-            Times.once()
+            Times.once(),
         )
             .respond(
                 HttpResponse.response()
                     .withStatusCode(HttpStatus.OK.value())
                     .withBody(
                         objectMapper.writeValueAsString(PaymentResponse.approvedResponseBody()),
-                        MediaType.APPLICATION_JSON
-                    )
+                        MediaType.APPLICATION_JSON,
+                    ),
             )
     }
 

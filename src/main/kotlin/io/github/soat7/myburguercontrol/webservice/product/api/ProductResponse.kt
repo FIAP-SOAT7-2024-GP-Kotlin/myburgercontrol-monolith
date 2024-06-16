@@ -8,5 +8,5 @@ data class ProductResponse(
     val name: String,
     val description: String,
     val price: BigDecimal,
-    val type: String
+    val type: String,
 )

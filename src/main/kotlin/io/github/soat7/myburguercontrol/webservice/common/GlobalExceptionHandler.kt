@@ -1,9 +1,9 @@
 package io.github.soat7.myburguercontrol.webservice.common
 
+import io.github.oshai.kotlinlogging.KotlinLogging
+import io.github.oshai.kotlinlogging.withLoggingContext
 import io.github.soat7.myburguercontrol.business.exception.ReasonCode
 import io.github.soat7.myburguercontrol.business.exception.ReasonCodeException
-import mu.KLogging
-import mu.withLoggingContext
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -16,16 +16,16 @@ import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
 import java.net.URI
 
+private val logger = KotlinLogging.logger {}
+
 @ControllerAdvice
 @Order(-2)
 class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
 
-    companion object : KLogging()
-
     internal data class HttpError(
         val httpStatus: HttpStatus,
         val code: String,
-        val message: String
+        val message: String,
     ) {
         constructor(reasonCode: ReasonCode) : this(reasonCode.status, reasonCode.code, reasonCode.description)
     }
@@ -37,7 +37,7 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
             is ResponseStatusException -> HttpError(
                 HttpStatus.valueOf(t.statusCode.value()),
                 ReasonCode.UNEXPECTED_ERROR.code,
-                t.reason ?: "An unexpected error occurred"
+                t.reason ?: "An unexpected error occurred",
             )
 
             else -> HttpError(ReasonCode.UNEXPECTED_ERROR)
@@ -46,7 +46,7 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
 
         val problemDetail = ProblemDetail.forStatusAndDetail(
             error.httpStatus,
-            error.message
+            error.message,
         ).apply {
             title = error.httpStatus.reasonPhrase
             detail = t.message ?: "Unexpected  error occurred"
@@ -65,7 +65,7 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
             "status" to error.httpStatus.value().toString(),
             "code" to error.code,
             "message" to t.message,
-            "cause" to t.cause?.message
+            "cause" to t.cause?.message,
         ) {
             if (error.httpStatus == HttpStatus.INTERNAL_SERVER_ERROR) {
                 logger.error { "Unexpected error occurred while processing request" }

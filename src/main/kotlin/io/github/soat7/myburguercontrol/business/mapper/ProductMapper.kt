@@ -12,7 +12,7 @@ import java.util.UUID
 fun Product.toOrderItemProductResponse() = OrderItemResponse.OrderItemProductResponse(
     name = this.name,
     productId = this.id,
-    price = this.price
+    price = this.price,
 )
 
 fun Product.toResponse() = ProductResponse(
@@ -20,7 +20,7 @@ fun Product.toResponse() = ProductResponse(
     name = this.name,
     description = this.description,
     price = this.price,
-    type = this.type.name
+    type = this.type.name,
 )
 
 fun Product.toPersistence() = ProductEntity(
@@ -30,7 +30,7 @@ fun Product.toPersistence() = ProductEntity(
     price = this.price,
     type = this.type.name,
     createdAt = Instant.now(),
-    updatedAt = Instant.now()
+    updatedAt = Instant.now(),
 )
 
 fun ProductCreationRequest.toDomain() = Product(
@@ -38,7 +38,7 @@ fun ProductCreationRequest.toDomain() = Product(
     name = this.name,
     description = this.description,
     price = this.price,
-    type = ProductType.valueOf(this.type.name)
+    type = ProductType.valueOf(this.type.name),
 )
 
 fun ProductEntity.toDomain() = Product(
@@ -46,5 +46,5 @@ fun ProductEntity.toDomain() = Product(
     name = this.name,
     description = this.description,
     price = this.price,
-    type = ProductType.from(this.type)
+    type = ProductType.from(this.type),
 )

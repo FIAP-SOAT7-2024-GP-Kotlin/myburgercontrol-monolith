@@ -7,14 +7,14 @@ object OrderDetailFixtures {
 
     fun mockOrderDetail(
         cpf: String,
-        product: Product = ProductFixtures.mockDomainProduct()
+        product: Product = ProductFixtures.mockDomainProduct(),
     ) = OrderDetail(
         customerCpf = cpf,
         items = listOf(
             OrderDetail.OrderItemDetail(
                 productId = product.id,
-                quantity = 1
-            )
-        )
+                quantity = 1,
+            ),
+        ),
     )
 }

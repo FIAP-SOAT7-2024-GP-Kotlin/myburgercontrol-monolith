@@ -12,7 +12,7 @@ object CustomerFixtures {
         id: UUID = UUID.randomUUID(),
         cpf: String,
         name: String = "TEST_NAME",
-        email: String = "test@test.com"
+        email: String = "test@test.com",
     ) =
         CustomerEntity(
             id = id,
@@ -20,13 +20,13 @@ object CustomerFixtures {
             name = name,
             email = email,
             createdAt = Instant.now(),
-            updatedAt = Instant.now()
+            updatedAt = Instant.now(),
         )
 
     fun mockCustomerCreationRequest(cpf: String) = CustomerCreationRequest(
         cpf = cpf,
         name = "TEST_NAME",
-        email = "test@test.com"
+        email = "test@test.com",
     )
 
     fun mockDomainCustomer(id: UUID = UUID.randomUUID(), cpf: String): Customer {
@@ -36,7 +36,7 @@ object CustomerFixtures {
             id = entity.id!!,
             cpf = entity.cpf,
             name = entity.name,
-            email = entity.email
+            email = entity.email,
         )
     }
 }

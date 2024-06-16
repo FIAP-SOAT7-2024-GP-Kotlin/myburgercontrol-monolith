@@ -1,0 +1,20 @@
+# This pod is a simple test pod, should not be deployed as final app version
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myburguer
+  labels:
+    app: myburguer
+spec:
+  containers:
+  - name: myburguer
+    image: fiapmyburguer/myburgercontrol-clean-arch:latest
+    resources:
+      limits:
+        memory: "512Mi"
+        cpu: "1000m"
+    ports:
+      - containerPort: 8080
+    envFrom:
+      - configMapRef:
+          name: myburguer-config

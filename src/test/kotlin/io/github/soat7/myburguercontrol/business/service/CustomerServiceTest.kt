@@ -74,7 +74,7 @@ class CustomerServiceTest {
 
         assertAll(
             Executable { assertThat(response is ReasonCodeException) },
-            Executable { Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.reasonCode.status) }
+            Executable { Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.reasonCode.status) },
         )
 
         verify(exactly = 1) { customerRepository.findCustomerByCpf(any()) }
@@ -94,7 +94,7 @@ class CustomerServiceTest {
 
         assertAll(
             Executable { assertThat(response is ReasonCodeException) },
-            Executable { Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.reasonCode.status) }
+            Executable { Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.reasonCode.status) },
         )
 
         verify(exactly = 1) { customerRepository.findCustomerById(any()) }
@@ -118,7 +118,7 @@ class CustomerServiceTest {
 
         assertAll(
             Executable { assertThat(response is ReasonCodeException) },
-            Executable { Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.reasonCode.status) }
+            Executable { Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.reasonCode.status) },
         )
 
         verify(exactly = 1) { customerRepository.create(any<Customer>()) }
@@ -139,7 +139,7 @@ class CustomerServiceTest {
 
         assertAll(
             Executable { assertThat(response is ReasonCodeException) },
-            Executable { Assertions.assertEquals(HttpStatus.BAD_REQUEST, response.reasonCode.status) }
+            Executable { Assertions.assertEquals(HttpStatus.BAD_REQUEST, response.reasonCode.status) },
         )
 
         verify(exactly = 0) { customerRepository.create(any()) }

@@ -7,7 +7,8 @@ enum class ProductType {
     DESSERT,
     DRINK,
     FOOD,
-    OTHER;
+    OTHER,
+    ;
 
     companion object {
         fun from(resource: String): ProductType {

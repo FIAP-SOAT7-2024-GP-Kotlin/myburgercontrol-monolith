@@ -34,7 +34,7 @@ import java.util.UUID
 @ActiveProfiles("test")
 @SpringBootTest(
     classes = [Application::class],
-    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
 )
 @ExtendWith(PostgresContainer::class, MockServerContainer::class)
 class BaseIntegrationTest {
@@ -90,13 +90,13 @@ class BaseIntegrationTest {
             UserFixtures.mockUserEntity(
                 cpf = cpf,
                 password = passwordEncoder.encode(password),
-                userRole = userRole
-            )
+                userRole = userRole,
+            ),
         )
 
         val response = restTemplate.postForEntity<AuthResponse>(
             "/auth",
-            AuthFixtures.mockAuthCreationRequest(cpf, password)
+            AuthFixtures.mockAuthCreationRequest(cpf, password),
         ).body
             ?: throw RuntimeException("Failed to authenticate")
 

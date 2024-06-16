@@ -31,7 +31,7 @@ class OrderIT : BaseIntegrationTest() {
         val items = insertProducts().map {
             OrderCreationRequest.OrderItem(
                 productId = it.id!!,
-                quantity = 1
+                quantity = 1,
             )
         }
 
@@ -41,12 +41,12 @@ class OrderIT : BaseIntegrationTest() {
         val orderResponse = restTemplate.exchange<OrderResponse>(
             url = "/orders",
             method = HttpMethod.POST,
-            requestEntity = HttpEntity(inputOrderData, authenticationHeader)
+            requestEntity = HttpEntity(inputOrderData, authenticationHeader),
         )
 
         assertAll(
             Executable { assertTrue(orderResponse.statusCode.is2xxSuccessful) },
-            Executable { assertNotNull(orderResponse.body) }
+            Executable { assertNotNull(orderResponse.body) },
         )
 
         val order = orderJpaRepository.findById(orderResponse.body!!.id).getOrNull()
@@ -55,7 +55,7 @@ class OrderIT : BaseIntegrationTest() {
             Executable { assertNotNull(order) },
             Executable { assertEquals(cpf, order!!.customer.cpf) },
             Executable { assertEquals(OrderStatus.RECEIVED.name, order!!.status) },
-            Executable { assertFalse(order!!.items.isEmpty()) }
+            Executable { assertFalse(order!!.items.isEmpty()) },
         )
     }
 
@@ -73,13 +73,13 @@ class OrderIT : BaseIntegrationTest() {
             method = HttpMethod.GET,
             requestEntity = HttpEntity(null, authenticationHeader),
             uriVariables = mapOf(
-                "cpf" to cpf
-            )
+                "cpf" to cpf,
+            ),
         )
 
         assertAll(
             Executable { assertNotNull(orders.body) },
-            Executable { assertFalse(orders.body!!.isEmpty()) }
+            Executable { assertFalse(orders.body!!.isEmpty()) },
         )
 
         val order = orders.body!!.first()
@@ -89,7 +89,7 @@ class OrderIT : BaseIntegrationTest() {
             Executable { assertEquals(cpf, order.customer.cpf) },
             Executable { assertEquals(OrderStatus.NEW, order.status) },
             Executable { assertFalse(order.items.isEmpty()) },
-            Executable { assertEquals(5.99.toBigDecimal(), order.total) }
+            Executable { assertEquals(5.99.toBigDecimal(), order.total) },
         )
     }
 
@@ -99,7 +99,7 @@ class OrderIT : BaseIntegrationTest() {
         val items = insertProducts().map {
             OrderCreationRequest.OrderItem(
                 productId = it.id!!,
-                quantity = 1
+                quantity = 1,
             )
         }
         val inputOrderData = OrderCreationRequest(customerCpf = cpf, items)
@@ -107,7 +107,7 @@ class OrderIT : BaseIntegrationTest() {
         val response = restTemplate.exchange<Any>(
             url = "/orders",
             method = HttpMethod.POST,
-            requestEntity = HttpEntity(inputOrderData, authenticationHeader)
+            requestEntity = HttpEntity(inputOrderData, authenticationHeader),
         )
 
         assertEquals(HttpStatus.BAD_REQUEST, response.statusCode)

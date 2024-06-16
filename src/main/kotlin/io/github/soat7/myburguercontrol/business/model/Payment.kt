@@ -9,5 +9,5 @@ data class Payment(
     val status: PaymentStatus = PaymentStatus.REQUESTED,
     val authorizationId: String? = null,
     val createdAt: Instant = Instant.now(),
-    val updatedAt: Instant = Instant.now()
+    val updatedAt: Instant = Instant.now(),
 )

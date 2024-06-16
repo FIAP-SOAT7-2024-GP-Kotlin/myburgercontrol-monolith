@@ -1,5 +1,6 @@
 package io.github.soat7.myburguercontrol.business.service
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.github.soat7.myburguercontrol.business.enum.OrderStatus
 import io.github.soat7.myburguercontrol.business.exception.ReasonCode
 import io.github.soat7.myburguercontrol.business.exception.ReasonCodeException
@@ -8,21 +9,20 @@ import io.github.soat7.myburguercontrol.business.model.Order
 import io.github.soat7.myburguercontrol.business.model.OrderDetail
 import io.github.soat7.myburguercontrol.business.model.OrderItem
 import io.github.soat7.myburguercontrol.business.repository.OrderRepository
-import mu.KLogging
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import java.util.UUID
+
+private val logger = KotlinLogging.logger {}
 
 @Service
 class OrderService(
     private val orderRepository: OrderRepository,
     private val customerService: CustomerService,
     private val productService: ProductService,
-    private val paymentService: PaymentService
+    private val paymentService: PaymentService,
 ) {
-
-    private companion object : KLogging()
 
     fun createOrder(orderDetail: OrderDetail): Order {
         val customer = customerService.findCustomerByCpf(orderDetail.customerCpf)
@@ -53,7 +53,7 @@ class OrderService(
     fun changeOrderStatus(status: OrderStatus, orderId: UUID): Order {
         return orderRepository.update(
             orderRepository.findById(orderId)?.copy(status = status)
-                ?: throw ReasonCodeException(ReasonCode.ORDER_NOT_FOUND)
+                ?: throw ReasonCodeException(ReasonCode.ORDER_NOT_FOUND),
         )
     }
 
@@ -64,7 +64,7 @@ class OrderService(
                     id = UUID.randomUUID(),
                     product = product,
                     quantity = item.quantity,
-                    comment = item.comment
+                    comment = item.comment,
                 )
             } ?: throw ReasonCodeException(ReasonCode.INVALID_PRODUCT)
         }
@@ -73,14 +73,14 @@ class OrderService(
 
     private fun setupOrder(
         customer: Customer,
-        items: List<OrderItem>
+        items: List<OrderItem>,
     ): Order {
         val order = orderRepository.create(
             Order(
                 id = UUID.randomUUID(),
                 customer = customer,
-                items = items
-            )
+                items = items,
+            ),
         )
 
         val payment = paymentService.createPayment()

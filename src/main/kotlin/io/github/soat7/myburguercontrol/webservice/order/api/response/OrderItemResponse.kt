@@ -6,11 +6,11 @@ import java.util.UUID
 class OrderItemResponse(
     val product: OrderItemProductResponse,
     val quantity: Int,
-    val comment: String? = null
+    val comment: String? = null,
 ) {
     data class OrderItemProductResponse(
         val productId: UUID,
         val name: String,
-        val price: BigDecimal
+        val price: BigDecimal,
     )
 }

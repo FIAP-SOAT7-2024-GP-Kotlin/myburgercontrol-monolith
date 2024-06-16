@@ -12,7 +12,7 @@ import java.util.UUID
 @Entity
 @Table(
     name = "payment",
-    schema = "myburguer"
+    schema = "myburguer",
 )
 class PaymentEntity(
     @Id
@@ -30,5 +30,5 @@ class PaymentEntity(
     val createdAt: Instant,
 
     @Column(name = "updated_at", nullable = false)
-    val updatedAt: Instant
+    val updatedAt: Instant,
 )

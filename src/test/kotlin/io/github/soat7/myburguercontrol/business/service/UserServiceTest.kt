@@ -3,7 +3,6 @@ package io.github.soat7.myburguercontrol.business.service
 import io.github.soat7.myburguercontrol.business.enum.UserRole
 import io.github.soat7.myburguercontrol.business.model.User
 import io.github.soat7.myburguercontrol.business.repository.UserRepository
-import io.github.soat7.myburguercontrol.business.service.UserService
 import io.github.soat7.myburguercontrol.fixtures.UserFixtures
 import io.mockk.clearMocks
 import io.mockk.every

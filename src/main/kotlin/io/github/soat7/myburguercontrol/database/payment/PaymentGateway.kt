@@ -12,7 +12,7 @@ import kotlin.jvm.optionals.getOrNull
 
 @Component
 class PaymentGateway(
-    private val repository: PaymentJpaRepository
+    private val repository: PaymentJpaRepository,
 ) : PaymentRepository {
 
     override fun create(payment: Payment): Payment {

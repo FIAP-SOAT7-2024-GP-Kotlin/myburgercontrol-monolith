@@ -1,0 +1,38 @@
+@startuml myburguer-component
+skinparam componentstyle uml2
+title "MyBurguer Component Graph"
+
+<style>
+title {HorizontalAlignment center}
+</style>
+
+actor User as user
+
+cloud Kubernetes {
+    interface "MyBurguer\nSVC" as mbService #Yellow
+    component "MyBurguer\nDeployment" as mbDeployment #Yellow
+    component "MyBurguer\nConfigMap" as mbConfig #Yellow
+    port "8080" as p8080 #Purple
+
+    p8080 -r-> mbService
+    mbService -r-> mbDeployment
+    mbDeployment .r.>mbConfig
+
+    interface "PostgreSQL\nSVC" as postgresService #Orange
+    database "PostgreSQL\nDeployment" as postgresDeployment #Orange
+    component "PostgreSQL\nPVC" as postgresPVC #Orange
+    component "PostgreSQL\nPV" as postgresPV #Orange
+    component "PostgreSQL\nConfigMap" as postgresConfig #Orange
+
+    postgresService -r-> postgresDeployment
+    postgresDeployment -r-> postgresPVC
+    postgresPVC -r-> postgresPV
+    postgresDeployment .d.> postgresConfig
+
+    mbDeployment -d-> postgresService : port 5432
+}
+
+user --> p8080
+
+
+@enduml

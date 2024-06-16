@@ -11,14 +11,14 @@ fun CustomerCreationRequest.toDomain() = Customer(
     id = UUID.randomUUID(),
     cpf = this.cpf,
     name = this.name,
-    email = this.email
+    email = this.email,
 )
 
 fun CustomerEntity.toDomain() = Customer(
     id = this.id!!,
     cpf = this.cpf,
     name = this.name,
-    email = this.email
+    email = this.email,
 )
 
 fun Customer.toPersistence() = CustomerEntity(
@@ -27,12 +27,12 @@ fun Customer.toPersistence() = CustomerEntity(
     name = this.name,
     email = this.email,
     createdAt = Instant.now(),
-    updatedAt = Instant.now()
+    updatedAt = Instant.now(),
 )
 
 fun Customer.toResponse() = CustomerResponse(
     id = this.id,
     cpf = this.cpf,
     name = this.name,
-    email = this.email
+    email = this.email,
 )

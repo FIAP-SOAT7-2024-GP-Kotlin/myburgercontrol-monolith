@@ -26,20 +26,20 @@ class CustomerIT : BaseIntegrationTest() {
         val response = restTemplate.exchange<CustomerResponse>(
             url = "/customers",
             method = HttpMethod.POST,
-            requestEntity = HttpEntity(inputCustomerData, authenticationHeader)
+            requestEntity = HttpEntity(inputCustomerData, authenticationHeader),
         )
 
         assertAll(
             Executable { assertTrue(response.statusCode.is2xxSuccessful) },
             Executable { assertNotNull(response.body) },
-            Executable { assertEquals(cpf, response.body!!.cpf) }
+            Executable { assertEquals(cpf, response.body!!.cpf) },
         )
         val savedCustomer = customerJpaRepository.findByIdOrNull(response.body!!.id)
 
         assertAll(
             Executable { assertNotNull(savedCustomer) },
             Executable { assertEquals(cpf, savedCustomer!!.cpf) },
-            Executable { assertEquals(response.body!!.id, savedCustomer!!.id) }
+            Executable { assertEquals(response.body!!.id, savedCustomer!!.id) },
         )
     }
 
@@ -52,7 +52,7 @@ class CustomerIT : BaseIntegrationTest() {
         val response = restTemplate.exchange<Any>(
             url = "/customers",
             method = HttpMethod.POST,
-            requestEntity = HttpEntity(inputCustomerData, authenticationHeader)
+            requestEntity = HttpEntity(inputCustomerData, authenticationHeader),
         )
 
         assertEquals(HttpStatus.BAD_REQUEST, response.statusCode)
@@ -68,15 +68,15 @@ class CustomerIT : BaseIntegrationTest() {
             method = HttpMethod.GET,
             requestEntity = HttpEntity(null, authenticationHeader),
             uriVariables = mapOf(
-                "id" to customer.id
-            )
+                "id" to customer.id,
+            ),
         )
 
         assertAll(
             Executable { assertTrue(response.statusCode.is2xxSuccessful) },
             Executable { assertNotNull(response.body) },
             Executable { assertEquals(customer.id, response.body!!.id) },
-            Executable { assertEquals(cpf, response.body!!.cpf) }
+            Executable { assertEquals(cpf, response.body!!.cpf) },
         )
     }
 
@@ -89,8 +89,8 @@ class CustomerIT : BaseIntegrationTest() {
             method = HttpMethod.GET,
             requestEntity = HttpEntity(null, authenticationHeader),
             uriVariables = mapOf(
-                "id" to randomId.toString()
-            )
+                "id" to randomId.toString(),
+            ),
         )
         assertEquals(response.statusCode.value(), HttpStatus.NOT_FOUND.value())
     }
@@ -106,15 +106,15 @@ class CustomerIT : BaseIntegrationTest() {
             method = HttpMethod.GET,
             requestEntity = HttpEntity(null, authenticationHeader),
             uriVariables = mapOf(
-                "cpf" to cpf
-            )
+                "cpf" to cpf,
+            ),
         )
 
         assertAll(
             Executable { assertTrue(response.statusCode.is2xxSuccessful) },
             Executable { assertNotNull(response.body) },
             Executable { assertEquals(customer.id, response.body!!.id) },
-            Executable { assertEquals(cpf, response.body!!.cpf) }
+            Executable { assertEquals(cpf, response.body!!.cpf) },
         )
     }
 
@@ -127,8 +127,8 @@ class CustomerIT : BaseIntegrationTest() {
             method = HttpMethod.GET,
             requestEntity = HttpEntity(null, authenticationHeader),
             uriVariables = mapOf(
-                "cpf" to cpf
-            )
+                "cpf" to cpf,
+            ),
         )
         assertEquals(response.statusCode.value(), HttpStatus.NOT_FOUND.value())
     }

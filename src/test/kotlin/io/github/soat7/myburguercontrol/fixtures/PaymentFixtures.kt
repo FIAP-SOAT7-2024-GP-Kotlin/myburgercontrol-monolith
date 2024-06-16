@@ -10,7 +10,7 @@ object PaymentFixtures {
         return Payment(
             id = UUID.randomUUID(),
             status = PaymentStatus.REQUESTED,
-            authorizationId = null
+            authorizationId = null,
         )
     }
 }

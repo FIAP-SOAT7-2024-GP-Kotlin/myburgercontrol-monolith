@@ -17,8 +17,8 @@ import java.util.UUID
     name = "user",
     schema = "myburguer",
     uniqueConstraints = [
-        UniqueConstraint(name = "pk_user_id", columnNames = ["id"])
-    ]
+        UniqueConstraint(name = "pk_user_id", columnNames = ["id"]),
+    ],
 )
 data class UserEntity(
     @Id
@@ -34,5 +34,5 @@ data class UserEntity(
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", length = 20, nullable = false)
-    var role: UserRole
+    var role: UserRole,
 )

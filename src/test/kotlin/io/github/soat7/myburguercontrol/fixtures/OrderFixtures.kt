@@ -17,18 +17,18 @@ import java.util.UUID
 object OrderFixtures {
 
     fun mockOrder(
-        customer: Customer
+        customer: Customer,
     ) = Order(
         id = UUID.randomUUID(),
         customer = customer,
-        payment = Payment()
+        payment = Payment(),
     ).apply {
         val productId = UUID.randomUUID()
         this.items.map {
             OrderItem(
                 id = productId,
                 product = mockDomainProduct(description = "Product $productId"),
-                quantity = 1
+                quantity = 1,
             )
         }
     }
@@ -36,21 +36,21 @@ object OrderFixtures {
     fun mockOrderEntity(
         customerEntity: CustomerEntity,
         product: ProductEntity,
-        paymentEntity: PaymentEntity
+        paymentEntity: PaymentEntity,
     ) = OrderEntity(
         id = UUID.randomUUID(),
         customer = customerEntity,
         status = OrderStatus.NEW.name,
         createdAt = Instant.now(),
-        payment = paymentEntity
+        payment = paymentEntity,
     ).apply {
         this.items = listOf(
             OrderItemEntity(
                 id = UUID.randomUUID(),
                 this,
                 product = product,
-                quantity = 1
-            )
+                quantity = 1,
+            ),
         )
     }
 }

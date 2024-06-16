@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: myburguer-config
+  labels:
+    app: myburguer-config
+data:
+  DATABASE_URL: postgresql://postgres:5432/myburguer
+  DATABASE_USER: myburguer
+  DATABASE_PASSWORD: a
+  JWT_KEY: lkjhaskljdajkdlsfjklsdgjklssdljkgff
+  WIREMOCK_URL: http://wiremock:8080/mercadopago/pagamento
+  POSTGRES_USER: myburguer
+  POSTGRES_PASSWORD: a
+  POSTGRES_DB: myburguer
+  LOG_LEVEL: DEBUG
+

@@ -1,8 +1,8 @@
 package io.github.soat7.myburguercontrol.config
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import liquibase.change.DatabaseChange
 import liquibase.integration.spring.SpringLiquibase
-import mu.KLogging
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -18,6 +18,8 @@ import org.springframework.context.annotation.Import
 import org.springframework.stereotype.Component
 import javax.sql.DataSource
 
+private val logger = KotlinLogging.logger {}
+
 @Configuration
 @ConditionalOnClass(SpringLiquibase::class, DatabaseChange::class)
 @ConditionalOnProperty(prefix = "spring.liquibase", name = ["enabled"], matchIfMissing = true)
@@ -25,17 +27,15 @@ import javax.sql.DataSource
 @Import(SchemaInit.SpringLiquibaseDependsOnPostProcessor::class)
 class SchemaInit {
 
-    private companion object : KLogging()
-
     @Component
     class SchemaInitBean @Autowired constructor(
         private val dataSource: DataSource,
-        @Value("\${spring.datasource.schema}") private val schemaName: String
+        @Value("\${spring.datasource.schema}") private val schemaName: String,
     ) : InitializingBean {
         override fun afterPropertiesSet() {
             dataSource.connection.use { conn ->
                 conn.createStatement().use { stmt ->
-                    logger.info("CREATING SCHEMA $schemaName")
+                    logger.info { "CREATING SCHEMA $schemaName" }
                     stmt.execute("create schema if not exists $schemaName")
                 }
             }

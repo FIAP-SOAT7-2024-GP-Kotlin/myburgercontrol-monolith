@@ -13,21 +13,21 @@ class AuthenticationService(
     private val authManager: AuthenticationManager,
     private val userDetailsService: CustomUserDetailsService,
     private val tokenService: TokenService,
-    private val jwtProperties: JwtProperties
+    private val jwtProperties: JwtProperties,
 ) {
 
     fun authenticate(authRequest: AuthRequest): AuthResponse {
         authManager.authenticate(
             UsernamePasswordAuthenticationToken(
                 authRequest.cpf,
-                authRequest.password
-            )
+                authRequest.password,
+            ),
         )
         val user = userDetailsService.loadUserByUsername(authRequest.cpf)
 
         val accessToken = tokenService.generate(
             userDetails = user,
-            expirationDate = Date(System.currentTimeMillis() + jwtProperties.accessTokenExpiration)
+            expirationDate = Date(System.currentTimeMillis() + jwtProperties.accessTokenExpiration),
         )
 
         return AuthResponse(accessToken)

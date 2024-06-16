@@ -44,7 +44,7 @@ class PaymentServiceTest {
 
         every { paymentIntegrationRepository.requestPayment(any<OrderModel>()) } returns mockPaymentResult(
             UUID.randomUUID().toString(),
-            approved = true
+            approved = true,
         )
         every { paymentRepository.findById(any()) } returns mockPayment()
         every { paymentRepository.create(any()) } returns mockPayment()

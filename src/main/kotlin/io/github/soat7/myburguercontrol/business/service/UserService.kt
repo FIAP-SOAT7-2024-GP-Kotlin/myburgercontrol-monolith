@@ -9,7 +9,7 @@ import java.util.UUID
 @Service
 class UserService(
     private val userRepository: UserRepository,
-    private val encoder: PasswordEncoder
+    private val encoder: PasswordEncoder,
 ) {
 
     fun create(user: User): User {

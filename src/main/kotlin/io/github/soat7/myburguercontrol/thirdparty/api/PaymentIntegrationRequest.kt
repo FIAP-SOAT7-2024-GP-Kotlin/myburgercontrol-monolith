@@ -7,5 +7,5 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming
 data class PaymentIntegrationRequest(
     val id: String,
     val cpf: String,
-    val value: String
+    val value: String,
 )

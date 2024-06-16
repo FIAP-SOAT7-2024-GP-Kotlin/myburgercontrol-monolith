@@ -36,14 +36,14 @@ class UserIT : BaseIntegrationTest() {
 
         val response = restTemplate.postForEntity<UserResponse>(
             "/users",
-            inputUserData
+            inputUserData,
         )
 
         assertAll(
             Executable { assertTrue(response.statusCode.is2xxSuccessful) },
             Executable { assertNotNull(response.body?.id ?: String) },
             Executable { assertEquals(cpf, response.body!!.cpf) },
-            Executable { assertEquals(userRole, response.body!!.role) }
+            Executable { assertEquals(userRole, response.body!!.role) },
         )
 
         val savedUser = userJpaRepository.findByIdOrNull(response.body!!.id)
@@ -51,7 +51,7 @@ class UserIT : BaseIntegrationTest() {
         assertAll(
             Executable { assertNotNull(savedUser) },
             Executable { assertEquals(cpf, savedUser!!.cpf) },
-            Executable { assertEquals(response.body!!.id, savedUser!!.id) }
+            Executable { assertEquals(response.body!!.id, savedUser!!.id) },
         )
     }
 
@@ -71,13 +71,13 @@ class UserIT : BaseIntegrationTest() {
             url = "/users/{id}",
             method = HttpMethod.GET,
             requestEntity = HttpEntity(null, header),
-            uriVariables = mapOf("id" to user.id)
+            uriVariables = mapOf("id" to user.id),
         )
         assertAll(
             Executable { assertTrue(response.statusCode.is2xxSuccessful) },
             Executable { assertNotNull(response.body) },
             Executable { assertEquals(user.id, response.body!!.id) },
-            Executable { assertEquals(cpf, response.body!!.cpf) }
+            Executable { assertEquals(cpf, response.body!!.cpf) },
         )
     }
 
@@ -98,7 +98,7 @@ class UserIT : BaseIntegrationTest() {
             HttpMethod.GET,
             entity,
             UserResponse::class.java,
-            mapOf("id" to randomId.toString())
+            mapOf("id" to randomId.toString()),
         )
 
         assertEquals(response.statusCode.value(), HttpStatus.UNAUTHORIZED.value())
@@ -121,7 +121,7 @@ class UserIT : BaseIntegrationTest() {
             url = "/users/{id}",
             method = HttpMethod.GET,
             requestEntity = HttpEntity(null, header),
-            uriVariables = mapOf("id" to randomId.toString())
+            uriVariables = mapOf("id" to randomId.toString()),
         )
 
         assertEquals(HttpStatus.NOT_FOUND.value(), response.statusCode.value())
@@ -145,14 +145,14 @@ class UserIT : BaseIntegrationTest() {
             HttpMethod.GET,
             entity,
             UserResponse::class.java,
-            mapOf("cpf" to user.cpf)
+            mapOf("cpf" to user.cpf),
         )
 
         assertAll(
             Executable { assertTrue(response.statusCode.is2xxSuccessful) },
             Executable { assertNotNull(response.body) },
             Executable { assertEquals(user.id, response.body!!.id) },
-            Executable { assertEquals(cpf, response.body!!.cpf) }
+            Executable { assertEquals(cpf, response.body!!.cpf) },
         )
     }
 

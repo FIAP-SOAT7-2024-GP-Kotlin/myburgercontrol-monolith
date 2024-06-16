@@ -1,22 +1,24 @@
 {
-  "id" : "4a792dab-8247-48cd-a21a-bbaab233db73",
-  "request" : {
-    "url" : "/mercadopago/pagamento",
-    "method" : "POST",
-    "bodyPatterns" : [ {
-      "matchesJsonPath" : "$[?(@.cpf == '12345678900')]"
-    } ]
+  "id": "4a792dab-8247-48cd-a21a-bbaab233db73",
+  "request": {
+    "url": "/mercadopago/pagamento",
+    "method": "POST",
+    "bodyPatterns": [
+      {
+        "matchesJsonPath": "$[?(@.cpf == '12345678900')]"
+      }
+    ]
   },
-  "response" : {
-    "status" : 402,
-    "jsonBody" : {
-      "message" : "Pagamento não autorizado para o cpf: {{jsonPath request.body '$.cpf'}}"
+  "response": {
+    "status": 402,
+    "jsonBody": {
+      "message": "Pagamento não autorizado para o cpf: {{jsonPath request.body '$.cpf'}}"
     },
-    "headers" : {
-      "Content-Type" : "application/json"
+    "headers": {
+      "Content-Type": "application/json"
     }
   },
-  "uuid" : "4a792dab-8247-48cd-a21a-bbaab233db73",
-  "persistent" : true,
-  "insertionIndex" : 4
+  "uuid": "4a792dab-8247-48cd-a21a-bbaab233db73",
+  "persistent": true,
+  "insertionIndex": 4
 }

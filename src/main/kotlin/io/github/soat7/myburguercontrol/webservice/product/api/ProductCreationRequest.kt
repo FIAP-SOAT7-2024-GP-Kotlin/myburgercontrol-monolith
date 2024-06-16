@@ -16,5 +16,5 @@ data class ProductCreationRequest(
     val price: BigDecimal,
 
     @NotBlank(message = "The product type must be specified")
-    val type: ProductType
+    val type: ProductType,
 )

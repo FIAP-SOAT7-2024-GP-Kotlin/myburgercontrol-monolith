@@ -12,7 +12,7 @@ typealias ApplicationUser = UserEntity
 
 @Service
 class CustomUserDetailsService(
-    private val userJpaRepository: UserJpaRepository
+    private val userJpaRepository: UserJpaRepository,
 ) : UserDetailsService {
 
     override fun loadUserByUsername(cpf: String): UserDetails =

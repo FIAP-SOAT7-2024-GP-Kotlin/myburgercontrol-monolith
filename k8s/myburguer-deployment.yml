@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myburguer
+spec:
+  selector:
+    matchLabels:
+      app: myburguer
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: myburguer
+    spec:
+      containers:
+        - name: myburguer
+          image: fiapmyburguer/myburgercontrol-clean-arch:latest
+          imagePullPolicy: "IfNotPresent"
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "1000m"
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: myburguer-config
+

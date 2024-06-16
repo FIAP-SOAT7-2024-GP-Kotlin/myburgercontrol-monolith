@@ -27,7 +27,7 @@ class JwtConfiguration {
     @Bean
     fun authenticationProvider(
         userDetailsService: UserDetailsService,
-        userJpaRepository: UserJpaRepository
+        userJpaRepository: UserJpaRepository,
     ): AuthenticationProvider =
         DaoAuthenticationProvider()
             .also {

@@ -7,6 +7,6 @@ object PaymentResponse {
 
     fun approvedResponseBody() = PaymentIntegrationResponse(
         message = "Pagamento autorizado",
-        authorizationId = UUID.randomUUID().toString()
+        authorizationId = UUID.randomUUID().toString(),
     )
 }

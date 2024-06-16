@@ -5,6 +5,7 @@ import java.util.Properties
 
 // from gradle.properties
 val testContainerVersion: String by ext
+val javaVersion = JavaVersion.VERSION_21
 
 val props = Properties()
 try {
@@ -14,35 +15,35 @@ try {
 }
 
 plugins {
-    kotlin("jvm") version "1.9.23"
-    kotlin("plugin.spring") version "1.9.23"
-    kotlin("plugin.jpa") version "1.9.23"
-    kotlin("plugin.allopen") version "1.9.23"
+    kotlin("jvm") version "1.9.24"
+    kotlin("plugin.spring") version "1.9.24"
+    kotlin("plugin.jpa") version "1.9.24"
+    kotlin("plugin.allopen") version "1.9.24"
     jacoco
 
-    id("org.springframework.boot") version "3.2.4"
-    id("io.spring.dependency-management") version "1.1.4"
-    id("org.liquibase.gradle") version "2.2.1"
+    id("org.springframework.boot") version "3.2.6"
+    id("io.spring.dependency-management") version "1.1.5"
+    id("org.liquibase.gradle") version "2.2.2"
     id("org.barfuin.gradle.jacocolog") version "3.1.0"
-    id("org.jlleitschuh.gradle.ktlint") version "11.3.1"
+    id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
 }
 
 group = "io.github.soat7"
 version = "0.0.1-SNAPSHOT"
 
-if (JavaVersion.current() != JavaVersion.VERSION_21) {
+if (!javaVersion.isCompatibleWith(JavaVersion.current())) {
     error(
         """
         =======================================================
-        RUN WITH JAVA 21
+        RUN WITH JAVA $javaVersion
         =======================================================
-        """.trimIndent()
+        """.trimIndent(),
     )
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
 }
 
 allOpen {
@@ -61,7 +62,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
-    implementation("io.github.microutils:kotlin-logging-jvm:3.+")
+    implementation("io.github.oshai:kotlin-logging-jvm:6.+")
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -69,7 +70,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.postgresql:postgresql:42.7.+")
     implementation("org.liquibase:liquibase-core:4.+")
-    implementation("com.google.guava:guava:33.1.0-jre")
+    implementation("com.google.guava:guava:33.2.1-jre")
 
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.+")
 
@@ -107,7 +108,7 @@ dependencies {
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs += "-Xjsr305=strict"
-        jvmTarget = JavaVersion.VERSION_21.toString()
+        jvmTarget = javaVersion.toString()
     }
 }
 
@@ -119,14 +120,14 @@ tasks.withType<Test> {
     useJUnitPlatform()
 //    forkEvery = 0
     environment.putAll(
-        props.entries.associate { it.key.toString() to it.value.toString() }
+        props.entries.associate { it.key.toString() to it.value.toString() },
     )
     testLogging {
         showStandardStreams = true
         events = setOf(
             org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
             org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED,
-            org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
+            org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED,
         )
         exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
     }
@@ -152,8 +153,8 @@ tasks.jacocoTestCoverageVerification {
 }
 
 tasks.registering(JavaCompile::class) {
-    sourceCompatibility = JavaVersion.VERSION_21.toString()
-    targetCompatibility = JavaVersion.VERSION_21.toString()
+    sourceCompatibility = javaVersion.toString()
+    targetCompatibility = javaVersion.toString()
     options.encoding = "UTF-8"
     options.compilerArgs = listOf("-Xlint:unchecked", "-Xlint:deprecation")
 }
@@ -165,7 +166,7 @@ liquibase {
             "classpath" to sourceSets.main.get().output.resourcesDir?.absolutePath,
             "url" to "jdbc:${props["DATABASE_URL"]}",
             "username" to props["DATABASE_USER"],
-            "password" to props["DATABASE_PASSWORD"]
+            "password" to props["DATABASE_PASSWORD"],
         )
     }
     activities.register("rollback") {
@@ -175,7 +176,7 @@ liquibase {
             "url" to "jdbc:${props["DATABASE_URL"]}",
             "username" to props["DATABASE_USER"],
             "password" to props["DATABASE_PASSWORD"],
-            "count" to 1
+            "count" to 1,
         )
     }
     activities.register("diffLog") {
@@ -189,7 +190,7 @@ liquibase {
                 "dialect=org.hibernate.dialect.PostgreSQLDialect&" +
                 "hibernate.physical_naming_strategy=org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy&" +
                 "hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy",
-            "defaultSchemaName" to "myburguer"
+            "defaultSchemaName" to "myburguer",
             // "logLevel" to "debug",
         )
     }

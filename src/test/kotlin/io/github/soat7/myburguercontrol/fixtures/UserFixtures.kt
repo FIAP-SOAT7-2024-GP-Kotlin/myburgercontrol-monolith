@@ -12,19 +12,19 @@ object UserFixtures {
         id: UUID = UUID.randomUUID(),
         cpf: String,
         password: String = "pass123",
-        userRole: UserRole = UserRole.USER
+        userRole: UserRole = UserRole.USER,
     ) =
         UserEntity(
             id = id,
             cpf = cpf,
             password = password,
-            role = userRole
+            role = userRole,
         )
 
     fun mockUserCreationRequest(cpf: String, password: String, userRole: UserRole) = UserCreationRequest(
         cpf = cpf,
         password = password,
-        role = userRole
+        role = userRole,
     )
 
     fun mockUser(id: UUID = UUID.randomUUID(), cpf: String, password: String, userRole: UserRole): User {
@@ -34,7 +34,7 @@ object UserFixtures {
             id = entity.id,
             cpf = entity.cpf,
             password = entity.password,
-            role = entity.role
+            role = entity.role,
         )
     }
 }

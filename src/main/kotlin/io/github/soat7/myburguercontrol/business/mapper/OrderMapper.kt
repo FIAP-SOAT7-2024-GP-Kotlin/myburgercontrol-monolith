@@ -21,9 +21,9 @@ fun OrderCreationRequest.toOrderDetails() = OrderDetail(
         OrderDetail.OrderItemDetail(
             productId = it.productId,
             quantity = it.quantity,
-            comment = it.comment
+            comment = it.comment,
         )
-    }
+    },
 )
 
 fun Order.toResponse() = OrderResponse(
@@ -31,29 +31,29 @@ fun Order.toResponse() = OrderResponse(
     customer = this.customer.toResponse(),
     status = this.status,
     createdAt = this.createdAt,
-    total = this.total
+    total = this.total,
 ).apply {
     this.items.addAll(
         this@toResponse.items.map {
             OrderItemResponse(
                 product = it.product.toOrderItemProductResponse(),
                 quantity = it.quantity,
-                comment = it.comment
+                comment = it.comment,
             )
-        }
+        },
     )
 }
 
 fun Order.toPersistence(
     customerEntity: CustomerEntity,
     paymentEntity: PaymentEntity?,
-    productFinder: (productId: UUID) -> ProductEntity
+    productFinder: (productId: UUID) -> ProductEntity,
 ) = OrderEntity(
     id = this.id,
     customer = customerEntity,
     status = this.status.name,
     createdAt = this.createdAt,
-    payment = paymentEntity
+    payment = paymentEntity,
 ).apply {
     this.items = this@toPersistence.items.map { it.toPersistence(this, productFinder) }
 }
@@ -64,7 +64,7 @@ fun OrderItem.toPersistence(orderEntity: OrderEntity, productFinder: (productId:
         order = orderEntity,
         product = productFinder.invoke(this.product.id),
         quantity = this.quantity,
-        comment = this.comment
+        comment = this.comment,
     )
 
 fun OrderEntity.toDomain() = Order(
@@ -73,18 +73,18 @@ fun OrderEntity.toDomain() = Order(
     status = OrderStatus.from(this.status),
     createdAt = this.createdAt,
     items = this.items.map { it.toDomain() },
-    payment = this.payment?.toDomain()
+    payment = this.payment?.toDomain(),
 )
 
 fun OrderItemEntity.toDomain() = OrderItem(
     id = this.id ?: UUID.randomUUID(),
     product = this.product.toDomain(),
     quantity = this.quantity,
-    comment = this.comment
+    comment = this.comment,
 )
 
 fun Order.toPaymentRequest() = PaymentIntegrationRequest(
     id = this.id.toString(),
     cpf = this.customer.cpf,
-    value = this.total.toString()
+    value = this.total.toString(),
 )

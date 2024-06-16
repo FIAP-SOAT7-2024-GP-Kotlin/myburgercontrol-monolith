@@ -12,5 +12,5 @@ data class OrderResponse(
     val items: MutableList<OrderItemResponse> = mutableListOf(),
     val status: OrderStatus,
     val createdAt: Instant,
-    val total: BigDecimal
+    val total: BigDecimal,
 )

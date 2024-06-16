@@ -13,7 +13,7 @@ class RestTemplateConfiguration {
     @Bean
     fun paymentRestTemplate(
         @Value("\${third-party.payment-integration.connectionTimeout}") connectTimeout: Long,
-        @Value("\${third-party.payment-integration.readTimeout}") readTimeout: Long
+        @Value("\${third-party.payment-integration.readTimeout}") readTimeout: Long,
     ): RestTemplate {
         return RestTemplateBuilder()
             .setConnectTimeout(Duration.ofMillis(connectTimeout))

@@ -6,6 +6,6 @@ object AuthFixtures {
 
     fun mockAuthCreationRequest(cpf: String, password: String) = AuthRequest(
         cpf = cpf,
-        password = password
+        password = password,
     )
 }

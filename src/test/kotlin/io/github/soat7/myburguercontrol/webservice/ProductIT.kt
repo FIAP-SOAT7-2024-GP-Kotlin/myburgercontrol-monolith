@@ -27,13 +27,13 @@ class ProductIT : BaseIntegrationTest() {
         val response = restTemplate.exchange<ProductResponse>(
             url = "/products",
             method = HttpMethod.POST,
-            requestEntity = HttpEntity(inputProductData, authenticationHeader)
+            requestEntity = HttpEntity(inputProductData, authenticationHeader),
         )
 
         assertAll(
             Executable { assertTrue(response.statusCode.is2xxSuccessful) },
             Executable { assertThat(response.body).isNotNull },
-            Executable { assertEquals(inputProductData.type.name, response.body!!.type) }
+            Executable { assertEquals(inputProductData.type.name, response.body!!.type) },
         )
 
         val savedProduct = productJpaRepository.findByIdOrNull(response.body!!.id)
@@ -41,7 +41,7 @@ class ProductIT : BaseIntegrationTest() {
         assertAll(
             Executable { assertThat(savedProduct).isNotNull },
             Executable { assertEquals(inputProductData.description, savedProduct!!.description) },
-            Executable { assertEquals(inputProductData.price, savedProduct!!.price) }
+            Executable { assertEquals(inputProductData.price, savedProduct!!.price) },
         )
     }
 
@@ -54,7 +54,7 @@ class ProductIT : BaseIntegrationTest() {
             url = "/products/{id}",
             method = HttpMethod.GET,
             requestEntity = HttpEntity(null, authenticationHeader),
-            uriVariables = mapOf("id" to product.id)
+            uriVariables = mapOf("id" to product.id),
         )
 
         assertAll(
@@ -63,7 +63,7 @@ class ProductIT : BaseIntegrationTest() {
             Executable { assertEquals(product.id, response.body!!.id) },
             Executable { assertEquals(product.description, response.body!!.description) },
             Executable { assertEquals(product.price, response.body!!.price) },
-            Executable { assertEquals(product.type, response.body!!.type) }
+            Executable { assertEquals(product.type, response.body!!.type) },
         )
     }
 
@@ -76,8 +76,8 @@ class ProductIT : BaseIntegrationTest() {
             method = HttpMethod.GET,
             requestEntity = HttpEntity(null, authenticationHeader),
             uriVariables = mapOf(
-                "id" to randomId.toString()
-            )
+                "id" to randomId.toString(),
+            ),
         )
         assertEquals(response.statusCode.value(), HttpStatus.NOT_FOUND.value())
     }
@@ -88,13 +88,13 @@ class ProductIT : BaseIntegrationTest() {
             restTemplate.exchange<PaginatedResponse<ProductResponse>>(
                 url = "/products",
                 method = HttpMethod.GET,
-                requestEntity = HttpEntity(null, authenticationHeader)
+                requestEntity = HttpEntity(null, authenticationHeader),
             )
 
         assertAll(
             Executable { assertTrue(response.statusCode.is2xxSuccessful) },
             Executable { assertThat(response.body).isNotNull },
-            Executable { assertThat(response.body!!.content.isEmpty()) }
+            Executable { assertThat(response.body!!.content.isEmpty()) },
         )
     }
 
@@ -105,14 +105,14 @@ class ProductIT : BaseIntegrationTest() {
         val response = restTemplate.exchange<PaginatedResponse<ProductResponse>>(
             url = "/products",
             method = HttpMethod.GET,
-            requestEntity = HttpEntity(null, authenticationHeader)
+            requestEntity = HttpEntity(null, authenticationHeader),
         )
 
         assertAll(
             Executable { assertTrue(response.statusCode.is2xxSuccessful) },
             Executable { assertThat(response.body).isNotNull },
             Executable { assertThat(response.body!!.content.isNotEmpty()) },
-            Executable { assertEquals(3, response.body!!.totalPages) }
+            Executable { assertEquals(3, response.body!!.totalPages) },
         )
     }
 
@@ -125,13 +125,13 @@ class ProductIT : BaseIntegrationTest() {
             url = "/products/type?type={type}",
             method = HttpMethod.GET,
             requestEntity = HttpEntity(null, authenticationHeader),
-            uriVariables = mapOf("type" to type)
+            uriVariables = mapOf("type" to type),
         )
 
         assertAll(
             Executable { assertTrue(response.statusCode.is2xxSuccessful) },
             Executable { assertThat(response.body).isNotNull },
-            Executable { assertThat(response.body!!).allSatisfy { it.type == type } }
+            Executable { assertThat(response.body!!).allSatisfy { it.type == type } },
         )
     }
 
@@ -144,12 +144,12 @@ class ProductIT : BaseIntegrationTest() {
             url = "/products/type?type={type}",
             method = HttpMethod.GET,
             requestEntity = HttpEntity(null, authenticationHeader),
-            uriVariables = mapOf("type" to type)
+            uriVariables = mapOf("type" to type),
         )
 
         assertAll(
             Executable { assertTrue(response.statusCode.is2xxSuccessful) },
-            Executable { assertThat(response.body).isEmpty() }
+            Executable { assertThat(response.body).isEmpty() },
         )
     }
 
@@ -162,7 +162,7 @@ class ProductIT : BaseIntegrationTest() {
             url = "/products/{id}",
             method = HttpMethod.DELETE,
             requestEntity = HttpEntity(null, authenticationHeader),
-            uriVariables = mapOf("id" to product.id)
+            uriVariables = mapOf("id" to product.id),
         )
 
         assertTrue(response.statusCode.is2xxSuccessful)
@@ -177,8 +177,8 @@ class ProductIT : BaseIntegrationTest() {
             method = HttpMethod.DELETE,
             requestEntity = HttpEntity(null, authenticationHeader),
             uriVariables = mapOf(
-                "id" to randomId.toString()
-            )
+                "id" to randomId.toString(),
+            ),
         )
 
         assertEquals(response.statusCode.value(), HttpStatus.NOT_FOUND.value())

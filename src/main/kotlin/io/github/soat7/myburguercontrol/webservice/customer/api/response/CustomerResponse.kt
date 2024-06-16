@@ -6,5 +6,5 @@ data class CustomerResponse(
     val id: UUID,
     val cpf: String,
     val name: String? = null,
-    val email: String? = null
+    val email: String? = null,
 )

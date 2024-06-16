@@ -22,18 +22,18 @@ import java.util.UUID
 @RestController("user-controller")
 @RequestMapping(
     path = ["/users"],
-    produces = [MediaType.APPLICATION_JSON_VALUE]
+    produces = [MediaType.APPLICATION_JSON_VALUE],
 )
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 class UserController(
-    private val service: UserService
+    private val service: UserService,
 ) {
 
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE])
     @Operation(
         tags = ["0 - Jornada de Autenticação"],
         summary = "Utilize esta rota para criar um novo usuário",
-        description = "Utilize esta rota para criar um novo usuário"
+        description = "Utilize esta rota para criar um novo usuário",
     )
     fun createUser(@RequestBody request: UserCreationRequest): ResponseEntity<UserResponse> = run {
         val resp = service.create(request.toDomain())
@@ -44,7 +44,7 @@ class UserController(
     @Operation(
         tags = ["0 - Jornada de Autenticação"],
         summary = "Utilize esta rota para encontrar um usuário utilizando o identificador na base de dados",
-        description = "Utilize esta rota para encontrar um usuário utilizando o identificador na base de dados"
+        description = "Utilize esta rota para encontrar um usuário utilizando o identificador na base de dados",
     )
     @SecurityRequirement(name = "Bearer Authentication")
     fun findUserById(@PathVariable("id") id: UUID): ResponseEntity<UserResponse> = run {
@@ -57,7 +57,7 @@ class UserController(
     @Operation(
         tags = ["0 - Jornada de Autenticação"],
         summary = "Utilize esta rota para encontrar um usuário utilizando o cpf",
-        description = "Utilize esta rota para encontrar um usuário utilizando o cpf"
+        description = "Utilize esta rota para encontrar um usuário utilizando o cpf",
     )
     @SecurityRequirement(name = "Bearer Authentication")
     fun findUserByCpf(@RequestParam("cpf") cpf: String): ResponseEntity<UserResponse> = run {

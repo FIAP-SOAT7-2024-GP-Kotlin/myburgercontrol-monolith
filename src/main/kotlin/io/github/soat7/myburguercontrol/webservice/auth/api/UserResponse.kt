@@ -6,5 +6,5 @@ import java.util.UUID
 data class UserResponse(
     val id: UUID,
     val cpf: String,
-    val role: UserRole
+    val role: UserRole,
 )

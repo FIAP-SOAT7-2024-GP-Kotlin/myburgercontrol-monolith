@@ -8,11 +8,11 @@ data class OrderCreationRequest(
     @NotBlank
     val customerCpf: String,
     @NotEmpty
-    val items: List<OrderItem>
+    val items: List<OrderItem>,
 ) {
     data class OrderItem(
         val productId: UUID,
         val quantity: Int,
-        val comment: String? = null
+        val comment: String? = null,
     )
 }

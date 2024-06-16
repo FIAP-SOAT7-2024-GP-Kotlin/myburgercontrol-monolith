@@ -14,14 +14,14 @@ import java.util.UUID
 @Component
 class OrderGateway(
     private val repository: OrderJpaRepository,
-    private val productJpaRepository: ProductJpaRepository
+    private val productJpaRepository: ProductJpaRepository,
 ) : OrderRepository {
 
     override fun create(order: Order): Order = run {
         repository.save(
             order.toPersistence(order.customer.toPersistence(), order.payment?.toPersistence()) {
                 productJpaRepository.findById(it).get()
-            }
+            },
         ).toDomain()
     }
 
@@ -36,7 +36,7 @@ class OrderGateway(
         return repository.save(
             order.toPersistence(order.customer.toPersistence(), order.payment?.toPersistence()) {
                 productJpaRepository.findById(it).get()
-            }
+            },
         ).toDomain()
     }
 

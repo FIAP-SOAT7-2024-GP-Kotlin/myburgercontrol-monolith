@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus
 enum class ReasonCode(
     val status: HttpStatus,
     val code: String,
-    val description: String
+    val description: String,
 ) {
     UNEXPECTED_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "01", "An unexpected error occurred"),
 
@@ -19,6 +19,6 @@ enum class ReasonCode(
     PAYMENT_INTEGRATION_ERROR(
         HttpStatus.UNPROCESSABLE_ENTITY,
         "20",
-        "The payment provider did not return the required values"
-    )
+        "The payment provider did not return the required values",
+    ),
 }

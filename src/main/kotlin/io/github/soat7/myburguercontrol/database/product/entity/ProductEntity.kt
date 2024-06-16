@@ -13,7 +13,7 @@ import java.util.UUID
 @Entity
 @Table(
     name = "product",
-    schema = "myburguer"
+    schema = "myburguer",
 )
 data class ProductEntity(
 
@@ -38,5 +38,5 @@ data class ProductEntity(
     val createdAt: Instant,
 
     @Column(name = "updated_at", nullable = false)
-    val updatedAt: Instant?
+    val updatedAt: Instant?,
 )

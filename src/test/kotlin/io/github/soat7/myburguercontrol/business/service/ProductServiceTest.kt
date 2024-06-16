@@ -96,7 +96,7 @@ class ProductServiceTest {
 
         assertAll(
             Executable { assertThat(result is ReasonCodeException) },
-            Executable { assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, result.reasonCode.status) }
+            Executable { assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, result.reasonCode.status) },
         )
 
         verify(exactly = 1) { repository.findById(any()) }
@@ -107,7 +107,7 @@ class ProductServiceTest {
         val pageable = Pageable.unpaged()
         val products = listOf(
             mockDomainProduct(id = UUID.randomUUID(), description = "Product 1"),
-            mockDomainProduct(id = UUID.randomUUID(), description = "Product 2")
+            mockDomainProduct(id = UUID.randomUUID(), description = "Product 2"),
         )
 
         val page = PageImpl(products, pageable, products.size.toLong())
@@ -135,7 +135,7 @@ class ProductServiceTest {
 
         assertAll(
             Executable { assertThat(result is ReasonCodeException) },
-            Executable { assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, result.reasonCode.status) }
+            Executable { assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, result.reasonCode.status) },
         )
 
         verify(exactly = 1) { repository.findAll(any()) }

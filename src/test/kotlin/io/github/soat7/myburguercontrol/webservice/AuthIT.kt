@@ -31,7 +31,7 @@ class AuthIT : BaseIntegrationTest() {
         assertAll(
             Executable { assertTrue(response.statusCode.is2xxSuccessful) },
             Executable { assertNotNull(response.body) },
-            Executable { assertTrue(response.body!!.contains("accessToken")) }
+            Executable { assertTrue(response.body!!.contains("accessToken")) },
         )
     }
 
@@ -47,7 +47,7 @@ class AuthIT : BaseIntegrationTest() {
         val response = restTemplate.exchange<String>(
             url = "/auth",
             method = HttpMethod.POST,
-            requestEntity = HttpEntity(inputAuthData, null)
+            requestEntity = HttpEntity(inputAuthData, null),
         )
 
         assertAll(
@@ -57,10 +57,10 @@ class AuthIT : BaseIntegrationTest() {
                 assertThat(
                     objectMapper.readValue(
                         response.body,
-                        ProblemDetail::class.java
-                    ).detail!!.contains("Bad Credentials")
+                        ProblemDetail::class.java,
+                    ).detail!!.contains("Bad Credentials"),
                 )
-            }
+            },
         )
     }
 }

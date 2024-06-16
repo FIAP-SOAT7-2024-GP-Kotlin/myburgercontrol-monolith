@@ -13,12 +13,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 class SecurityConfiguration(
-    private val authenticationProvider: AuthenticationProvider
+    private val authenticationProvider: AuthenticationProvider,
 ) {
     @Bean
     fun securityFilterChain(
         http: HttpSecurity,
-        jwtAuthenticationFilter: JwtAuthenticationFilter
+        jwtAuthenticationFilter: JwtAuthenticationFilter,
     ): DefaultSecurityFilterChain =
         http
             .csrf { it.disable() }
@@ -30,7 +30,7 @@ class SecurityConfiguration(
                         "/error",
                         "/swagger-ui/**",
                         "/v3/api-docs/**",
-                        "/webjars/**"
+                        "/webjars/**",
                     )
                     .permitAll()
                     .requestMatchers(HttpMethod.POST, "/users")

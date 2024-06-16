@@ -10,25 +10,25 @@ fun UserCreationRequest.toDomain() = User(
     id = UUID.randomUUID(),
     cpf = this.cpf,
     password = this.password,
-    role = this.role
+    role = this.role,
 )
 
 fun UserEntity.toDomain() = User(
     id = this.id,
     cpf = this.cpf,
     password = this.password,
-    role = this.role
+    role = this.role,
 )
 
 fun User.toPersistence() = UserEntity(
     id = this.id,
     cpf = this.cpf,
     password = this.password,
-    role = this.role
+    role = this.role,
 )
 
 fun User.toResponse() = UserResponse(
     id = this.id,
     cpf = this.cpf,
-    role = this.role
+    role = this.role,
 )

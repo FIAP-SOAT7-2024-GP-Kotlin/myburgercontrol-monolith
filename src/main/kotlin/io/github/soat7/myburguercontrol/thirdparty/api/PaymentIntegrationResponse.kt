@@ -8,5 +8,5 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class PaymentIntegrationResponse(
     val authorizationId: String?,
-    val message: String
+    val message: String,
 )

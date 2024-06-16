@@ -1,19 +1,19 @@
 package io.github.soat7.myburguercontrol.business.service
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.github.soat7.myburguercontrol.business.exception.ReasonCode
 import io.github.soat7.myburguercontrol.business.exception.ReasonCodeException
 import io.github.soat7.myburguercontrol.business.model.Customer
 import io.github.soat7.myburguercontrol.business.repository.CustomerRepository
-import mu.KLogging
 import org.springframework.stereotype.Service
 import java.util.UUID
 
+private val logger = KotlinLogging.logger {}
+
 @Service
 class CustomerService(
-    private val databasePort: CustomerRepository
+    private val databasePort: CustomerRepository,
 ) {
-
-    private companion object : KLogging()
 
     fun create(customer: Customer): Customer = try {
         logger.info { "Creating new customer with cpf: [${customer.cpf}]" }

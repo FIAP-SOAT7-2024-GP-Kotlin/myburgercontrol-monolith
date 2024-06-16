@@ -21,7 +21,7 @@ import java.util.UUID
 @Entity
 @Table(
     name = "order",
-    schema = "myburguer"
+    schema = "myburguer",
 )
 class OrderEntity(
     @Id
@@ -43,11 +43,11 @@ class OrderEntity(
         fetch = FetchType.EAGER,
         cascade = [CascadeType.ALL],
         mappedBy = "order",
-        targetEntity = OrderItemEntity::class
+        targetEntity = OrderItemEntity::class,
     )
     var items: List<OrderItemEntity> = mutableListOf(),
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "payment_id", referencedColumnName = "id")
-    var payment: PaymentEntity?
+    var payment: PaymentEntity?,
 )

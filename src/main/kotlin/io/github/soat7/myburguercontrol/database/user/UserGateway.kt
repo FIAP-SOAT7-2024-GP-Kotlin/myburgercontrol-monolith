@@ -11,7 +11,7 @@ import java.util.UUID
 
 @Component
 class UserGateway(
-    private val repository: UserJpaRepository
+    private val repository: UserJpaRepository,
 ) : UserRepository {
 
     override fun create(user: User): User = repository.save(user.toPersistence()).toDomain()

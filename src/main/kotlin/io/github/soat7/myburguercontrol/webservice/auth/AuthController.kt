@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping(
     path = ["/auth"],
     produces = [MediaType.APPLICATION_JSON_VALUE],
-    consumes = [MediaType.APPLICATION_JSON_VALUE]
+    consumes = [MediaType.APPLICATION_JSON_VALUE],
 )
 class AuthController(
-    private val authenticationService: AuthenticationService
+    private val authenticationService: AuthenticationService,
 ) {
 
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE])
@@ -25,7 +25,7 @@ class AuthController(
         tags = ["0 - Jornada de Autenticação"],
         summary = "Utilize esta rota para autenticar um usuário já criado",
         description = "Utilize esta rota para autenticar um usuário já criado",
-        operationId = "auth_3"
+        operationId = "auth_3",
     )
     fun authenticate(@RequestBody authRequest: AuthRequest): AuthResponse =
         authenticationService.authenticate(authRequest)

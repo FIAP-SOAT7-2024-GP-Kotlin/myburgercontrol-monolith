@@ -1,23 +1,23 @@
 package io.github.soat7.myburguercontrol.database.product
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.github.soat7.myburguercontrol.business.mapper.toDomain
 import io.github.soat7.myburguercontrol.business.mapper.toPersistence
 import io.github.soat7.myburguercontrol.business.model.Product
 import io.github.soat7.myburguercontrol.business.repository.ProductRepository
 import io.github.soat7.myburguercontrol.database.product.repository.ProductJpaRepository
-import mu.KLogging
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import java.util.UUID
 
+private val logger = KotlinLogging.logger {}
+
 @Component
 class ProductGateway(
-    private val repository: ProductJpaRepository
+    private val repository: ProductJpaRepository,
 ) : ProductRepository {
-
-    private companion object : KLogging()
 
     override fun create(product: Product): Product = try {
         repository

@@ -1,22 +1,22 @@
 package io.github.soat7.myburguercontrol.business.service
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.github.soat7.myburguercontrol.business.exception.ReasonCode
 import io.github.soat7.myburguercontrol.business.exception.ReasonCode.PRODUCT_NOT_FOUND
 import io.github.soat7.myburguercontrol.business.exception.ReasonCodeException
 import io.github.soat7.myburguercontrol.business.model.Product
 import io.github.soat7.myburguercontrol.business.repository.ProductRepository
-import mu.KLogging
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import java.util.UUID
 
+private val logger = KotlinLogging.logger {}
+
 @Service
 class ProductService(
-    private val databasePort: ProductRepository
+    private val databasePort: ProductRepository,
 ) {
-
-    private companion object : KLogging()
 
     fun create(product: Product): Product = try {
         logger.debug { "Saving new product $product" }

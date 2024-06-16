@@ -13,5 +13,5 @@ data class UserCreationRequest(
     val password: String,
 
     @NotBlank
-    val role: UserRole
+    val role: UserRole,
 )

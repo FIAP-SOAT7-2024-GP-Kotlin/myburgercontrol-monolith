@@ -15,7 +15,7 @@ class MockServerContainer : BeforeAllCallback {
         private const val VERSION = "5.13.2"
 
         val container: MockServerContainer = MockServerContainer(
-            DockerImageName.parse("mockserver/mockserver:mockserver-$VERSION")
+            DockerImageName.parse("mockserver/mockserver:mockserver-$VERSION"),
         )
 
         lateinit var client: MockServerClient
@@ -31,7 +31,7 @@ class MockServerContainer : BeforeAllCallback {
 
             System.setProperty(
                 "mock-server.url",
-                String.format("http://%s:%d", container.host, container.getMappedPort(PORT))
+                String.format("http://%s:%d", container.host, container.getMappedPort(PORT)),
             )
         }
 

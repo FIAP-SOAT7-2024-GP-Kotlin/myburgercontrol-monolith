@@ -15,8 +15,8 @@ import java.util.UUID
     name = "customer",
     schema = "myburguer",
     uniqueConstraints = [
-        UniqueConstraint(name = "uk_customer_cpf", columnNames = ["cpf"])
-    ]
+        UniqueConstraint(name = "uk_customer_cpf", columnNames = ["cpf"]),
+    ],
 )
 data class CustomerEntity(
     @Id
@@ -37,5 +37,5 @@ data class CustomerEntity(
     val createdAt: Instant,
 
     @Column(name = "updated_at", nullable = false)
-    val updatedAt: Instant?
+    val updatedAt: Instant?,
 )

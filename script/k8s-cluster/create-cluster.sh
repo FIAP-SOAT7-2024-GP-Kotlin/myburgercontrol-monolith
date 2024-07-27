@@ -22,3 +22,5 @@ echo "Cluster ID = $DO_CLUSTER_ID"
 
 echo "Assign K8s Cluster (ID=$DO_CLUSTER_ID) with Myburger Project (ID=1f3e6919-579f-400b-9dab-a6dafaaaafa7)"
 doctl projects resources assign 1f3e6919-579f-400b-9dab-a6dafaaaafa7 --resource="do:kubernetes:$DO_CLUSTER_ID"
+
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
